@@ -1,0 +1,9 @@
+.topbar{
+  text-align: center;
+}
+
+.topbarname {
+  font-size: 2rem;
+  color: white;
+  line-height: 40px;
+}

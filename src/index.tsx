@@ -1,10 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+
+//This is bad. Link not working from index.html
+import './css /bootstrap.css'
+
+import {HeaderElement} from "./components/HeaderElement";
+import {MainComponent} from "./components/MainBlock";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App/>
+      <HeaderElement/>
+      <MainComponent/>
   </React.StrictMode>,
   document.getElementById('root')
 );
