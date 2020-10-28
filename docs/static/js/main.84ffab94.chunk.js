@@ -1,2 +1,0 @@
-(this["webpackJsonptrello-task1"]=this["webpackJsonptrello-task1"]||[]).push([[0],{9:function(t,e,n){"use strict";n.r(e);var r=n(1),s=n(0),c=n.n(s),o=n(3);var i=function(){return Object(r.jsx)("div",{children:"test"})};n.n(o).a.render(Object(r.jsx)(c.a.StrictMode,{children:Object(r.jsx)(i,{})}),document.getElementById("root"))}},[[9,1,2]]]);
-//# sourceMappingURL=main.84ffab94.chunk.js.map
