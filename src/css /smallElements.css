@@ -1,0 +1,22 @@
+.topbar {
+  text-align: center;
+}
+
+.topbarname {
+  font-size: 2rem;
+  color: white;
+  line-height: 40px;
+}
+
+.loginPopup {
+  text-align: center;
+}
+
+.fillAll {
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3)
+}

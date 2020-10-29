@@ -1,5 +1,5 @@
 import React from 'react';
-import './../css /topbar.css';
+import './../css /smallElements.css';
 
 export const HeaderElement : React.FC = () => ((
     <div className='topbar topbarName'>
