@@ -1,8 +1,12 @@
 import React from 'react';
-import './../css /board.css';
-import {Column} from "./BoardColumn";
+import '../../css /board.css';
+import {Column} from "../boardcolumn/BoardColumn";
 
-export const Board : React.FC = () => ((
+interface Props {
+    boardContent?: object;
+}
+
+export const Board : React.FC<Props> = () => ((
     <div className="columnsContainer">
         <Column name="TODO" cardsContent={["test", "test"]}/>
         <Column name="In Progress" cardsContent={["test", "test"]}/>

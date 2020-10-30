@@ -4,14 +4,16 @@ import ReactDOM from 'react-dom';
 //This is bad. Link not working from index.html
 import './css /bootstrap.css'
 
-import {HeaderElement} from "./components/HeaderElement";
-import {MainComponent} from "./components/MainBlock";
-import {LoginPopup} from "./components/LoginPopup";
+import {HeaderElement} from "./components/headerelement/HeaderElement";
+import {MainComponent} from "./components/mainblock/MainBlock";
+import {LoginPopup} from "./components/loginpopup";
+
 
 //For test purpose
 localStorage.clear()
 
 // localStorage.setItem("user", "Test user")
+// localStorage.setItem("boardContent", '{"s": ["test", "test"]}')
 
 ReactDOM.render(
   <React.StrictMode>

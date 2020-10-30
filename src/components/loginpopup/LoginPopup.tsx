@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+import "./Styles";
+import {Background} from "./Styles";
 
 interface Props {
     initState?: boolean;
@@ -10,7 +12,7 @@ export const LoginPopup: React.FC<Props> = (props) => {
     let inputValue: string;
 
     return (
-        <div style={{display: (display ? 'block' : 'none')}} className="fillAll">
+        <Background style={{display: (display ? 'block' : 'none')}}>
             <div className="modal">
                 <div className="modal-header loginPopup">
                     <h3>Hi!</h3>
@@ -30,6 +32,6 @@ export const LoginPopup: React.FC<Props> = (props) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </Background>
     );
 }

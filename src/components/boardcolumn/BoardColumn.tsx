@@ -1,5 +1,5 @@
 import React from "react";
-import {ColumnCard} from "./ColumnCard";
+import {ColumnCard} from "../columncard/ColumnCard";
 
 interface Props {
   name: string;
