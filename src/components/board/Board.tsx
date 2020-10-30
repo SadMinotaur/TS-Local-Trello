@@ -1,16 +1,16 @@
 import React from 'react';
-import '../../css /board.css';
-import {Column} from "../boardcolumn/BoardColumn";
+import {BoardColumn} from "../boardcolumn";
+import {ColumnsContainer} from "./Styles";
 
 interface Props {
-    boardContent?: object;
+  boardContent?: object;
 }
 
-export const Board : React.FC<Props> = () => ((
-    <div className="columnsContainer">
-        <Column name="TODO" cardsContent={["test", "test"]}/>
-        <Column name="In Progress" cardsContent={["test", "test"]}/>
-        <Column name="Testing" cardsContent={["test", "test"]}/>
-        <Column name="Done" cardsContent={["test", "test"]}/>
-    </div>
+export const Board: React.FC<Props> = () => ((
+  <ColumnsContainer>
+    <BoardColumn name="TODO" cardsContent={["test", "test"]}/>
+    <BoardColumn name="In Progress" cardsContent={["test", "test"]}/>
+    <BoardColumn name="Testing" cardsContent={["test", "test"]}/>
+    <BoardColumn name="Done" cardsContent={["test", "test"]}/>
+  </ColumnsContainer>
 ));

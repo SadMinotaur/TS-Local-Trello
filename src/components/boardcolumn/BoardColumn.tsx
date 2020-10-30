@@ -1,12 +1,13 @@
 import React from "react";
-import {ColumnCard} from "../columncard/ColumnCard";
+import {ColumnsContainer, ColumnNameInput, ColumnBorder} from "./Styles";
+import {ColumnCard} from "../columncard";
 
 interface Props {
   name: string;
   cardsContent?: string[];
 }
 
-export const Column: React.FC<Props> = (props) => {
+export const BoardColumn: React.FC<Props> = (props) => {
 
   let renderCards;
   if (props.cardsContent !== undefined && props.cardsContent.length !== 0) {
@@ -16,13 +17,14 @@ export const Column: React.FC<Props> = (props) => {
     })
   }
 
-  return (<div className="columnBorder">
-    <input className="columnNameInput" placeholder={props.name}/>
-    <div className="cardsContainer">
-      {renderCards}
-      <button className="btn primary">
-        Add card
-      </button>
-    </div>
-  </div>);
+  return (<ColumnsContainer>
+      <ColumnBorder>
+        <ColumnNameInput type="text" placeholder={props.name}/>
+        {renderCards}
+        <button className="btn primary">
+          Add card
+        </button>
+      </ColumnBorder>
+    </ColumnsContainer>
+  )
 }

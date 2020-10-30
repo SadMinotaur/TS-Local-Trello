@@ -1,5 +1,5 @@
 import React from "react";
-
+import {ColCard} from "./Styles";
 
 interface Props {
   name: string;
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const ColumnCard: React.FC<Props> = (props) => ((
-  <div className="boardCard" onClick={props.onClick}>
+  <ColCard onClick={props.onClick}>
     {props.name}
-  </div>
+  </ColCard>
 ));

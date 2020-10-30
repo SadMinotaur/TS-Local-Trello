@@ -4,10 +4,9 @@ import ReactDOM from 'react-dom';
 //This is bad. Link not working from index.html
 import './css /bootstrap.css'
 
-import {HeaderElement} from "./components/headerelement/HeaderElement";
-import {MainComponent} from "./components/mainblock/MainBlock";
+import {Header} from "./components/header/";
+import {MainComponent} from "./components/mainblock";
 import {LoginPopup} from "./components/loginpopup";
-
 
 //For test purpose
 localStorage.clear()
@@ -17,7 +16,7 @@ localStorage.clear()
 
 ReactDOM.render(
   <React.StrictMode>
-      <HeaderElement/>
+      <Header/>
       <MainComponent/>
       {/*Not sure about popup position in code */}
       <LoginPopup/>
