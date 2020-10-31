@@ -10,10 +10,24 @@ export const LoginPopup: React.FC<Props> = (props) => {
   const [display, changeDisplayProperty] = useState(props.initState ? props.initState : localStorage.getItem("user") === null);
   let inputValue: string;
 
+  function changeDisplayState(): void {
+    localStorage.setItem("user", inputValue);
+    changeDisplayProperty(prevState => !prevState);
+  }
+
+  //Not sure about using useEffect
+  function onEnterPress(event: React.KeyboardEvent<HTMLDivElement>): void {
+    if (event.key === 'Enter') {
+      changeDisplayState()
+    }
+  }
+
   return (
-    <Background style={{display: (display ? 'block' : 'none')}}>
+    <Background
+      onKeyDown={onEnterPress}
+      style={{display: (display ? 'block' : 'none')}}>
       {/*Ugly position*/}
-      <div className="modal" style={{top: 500}}>
+      <div className="modal" style={{left: "48%", top: 400}}>
         <div className="modal-header">
           <h3>Hi!</h3>
           <p>Enter your name</p>
@@ -23,10 +37,7 @@ export const LoginPopup: React.FC<Props> = (props) => {
             }}/>
           </div>
           <div className="modal-footer">
-            <button onClick={() => {
-              localStorage.setItem("user", inputValue);
-              changeDisplayProperty(prevState => !prevState);
-            }} className="btn primary">
+            <button onClick={changeDisplayState} className="btn primary">
               Done
             </button>
           </div>
