@@ -10,6 +10,7 @@ export const ColumnsContainer = styled.div`
     `
 export const ColumnNameInput = styled.input`
         width: 210px;
+        margin: 0 0 5px 0;
     `
 
 export const ColumnBorder = styled.div`

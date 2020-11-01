@@ -1,15 +1,16 @@
 export interface ColumnsContent {
   name : string;
-  content: Cards[];
+  cards: Cards[];
 }
 
-interface Cards {
+export interface Cards {
   name: string;
   author: string;
+  desc: string;
   comments: Comments[]
 }
 
-interface Comments {
+export interface Comments {
   author: string;
   content: string;
 }
