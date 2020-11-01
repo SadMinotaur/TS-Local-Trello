@@ -1,38 +1,35 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {ColumnsContainer, ColumnNameInput, ColumnBorder} from "./Styles";
-import {ColumnCard} from "../columncard";
-
-interface Card {
-  name: string;
-  comments: object[]
-}
+import {ColumnsContent} from "../columnsContent";
 
 interface Props {
   name: string;
-  cardsContent: object[];
 }
 
 export const BoardColumn: React.FC<Props> = (props) => {
 
-  const [name, setName] = useState(props.name);
+  const [name, setName] = useState("");
+  const columnFromStorage = localStorage.getItem(props.name);
 
-  useEffect(() => {
-    console.log("here1")
-  })
+  if (columnFromStorage == null)
+    return null;
 
-  let renderCards = Array(props.cardsContent.length);
-  props.cardsContent.forEach((value, i) => {
-    renderCards[i] = <ColumnCard name={(value as Card).name} key={i}/>
-  })
+  let column: ColumnsContent = JSON.parse(columnFromStorage);
+
+  function saveName(name: string) {
+    column.name = name;
+    setName(column.name);
+    localStorage.setItem(props.name, JSON.stringify(column))
+  }
 
   return (<ColumnsContainer>
       <ColumnBorder>
-        <ColumnNameInput type="text" placeholder={name} onBlur={event => {
+        <ColumnNameInput type="text" placeholder={name == "" ? column.name : name} onBlur={event => {
           event.target.value = '';
         }} onChange={event => {
-          setName(event.target.value);
+          saveName(event.target.value);
         }}/>
-        {renderCards}
+        {/*{renderCards}*/}
         <button className="btn primary">
           Add card
         </button>

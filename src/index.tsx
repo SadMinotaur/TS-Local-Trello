@@ -9,12 +9,13 @@ import {MainComponent} from "./components/mainblock";
 import {LoginPopup} from "./components/loginpopup";
 
 //For testing purposes
-localStorage.clear()
+// localStorage.clear()
 
 localStorage.setItem("user", "Test user")
-localStorage.setItem("boardContent", "{\"boardname\":\"Kanban\",\"columns\":[{\"name\":\"Todo\",\"cards\":[{\"name\":\"test\",\"comments\":[{\"text\":\"test\",\"author\":\"test\"}]}]},{\"name\":\"In Progress\",\"cards\":[{\"name\":\"test\",\"comments\":[{\"text\":\"test\",\"author\":\"test\"}]}]},{\"name\":\"Testing\",\"cards\":[{\"name\":\"test\",\"comments\":[{\"text\":\"test\",\"author\":\"test\"}]}]},{\"name\":\"Done\",\"cards\":[{\"name\":\"test\",\"comments\":[{\"text\":\"test\",\"author\":\"test\"}]}]}]}")
-
-console.log(JSON.parse(localStorage.getItem("boardContent") as string))
+// localStorage.setItem("Column0", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}")
+// localStorage.setItem("Column1", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}")
+// localStorage.setItem("Column2", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}")
+// localStorage.setItem("Column3", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}")
 
 ReactDOM.render(
   <React.StrictMode>
