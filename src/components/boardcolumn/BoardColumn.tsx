@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {ColumnsContainer, ColumnNameInput, ColumnBorder} from "./Styles";
+import {ColumnsContainer, ColumnNameInput, ColumnBorder, ColumnNameDiv} from "./styles";
 import {Cards, ColumnsContent} from "../columnsContent";
 import {ColumnCard} from "../columncard";
 
@@ -21,6 +21,9 @@ export const BoardColumn: React.FC<Props> = (props) => {
 
   const [colCards, setCards] = useState(cards);
   const [name, setName] = useState(column.name);
+  const [nameInputState, setNameInputState] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+  const [cardInput, setCardInput] = useState("");
 
   function saveName(name: string): void {
     column.name = name;
@@ -38,11 +41,18 @@ export const BoardColumn: React.FC<Props> = (props) => {
 
   return (<ColumnsContainer>
       <ColumnBorder>
-        <ColumnNameInput type="text" placeholder={name} onBlur={event => {
-          event.target.value = '';
-        }} onChange={event => {
-          saveName(event.target.value);
-        }}/>
+        <ColumnNameDiv style={{display: nameInputState ? 'none' : 'block'}}
+                       onClick={event => setNameInputState(prevState => !prevState)}>{name}</ColumnNameDiv>
+        <ColumnNameInput style={{display: nameInputState ? 'block' : 'none'}} value={nameInput} type="text"
+                         onChange={event => {
+                           setNameInput(event.target.value);
+                           saveName(event.target.value);
+                         }}
+                         onBlur={event => {
+                           setNameInputState(prevState => !prevState);
+                           setNameInput("");
+                         }}
+        />
         {colCards}
         <ColumnNameInput onBlur={event => {
           event.target.value = '';

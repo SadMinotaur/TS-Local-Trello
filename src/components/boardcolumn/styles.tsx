@@ -13,6 +13,17 @@ export const ColumnNameInput = styled.input`
         margin: 0 0 5px 0;
     `
 
+export const ColumnNameDiv = styled.div`
+        text-align: start;
+        text-indent: 10px;
+        width: 230px;
+        height: 20px;
+        padding: 7px 0 3px 0;
+        margin: 0 0 5px 0;
+        background: white;
+        border-radius: 5px;
+`
+
 export const ColumnBorder = styled.div`
         padding: 10px;
         text-align: center;

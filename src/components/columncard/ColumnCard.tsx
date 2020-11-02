@@ -1,5 +1,5 @@
 import React from "react";
-import {ColCard} from "./Styles";
+import {ColCard} from "./styles";
 
 interface Props {
   name: string;

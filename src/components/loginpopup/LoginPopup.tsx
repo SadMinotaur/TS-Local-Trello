@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Background} from "./Styles";
+import {Background} from "./styles";
 
 interface Props {
   initState?: boolean;

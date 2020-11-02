@@ -1,5 +1,5 @@
 import React from 'react';
-import {Topbar, TopbarName} from "./Styles";
+import {Topbar, TopbarName} from "./styles";
 
 export const Header: React.FC = () => {
   return (

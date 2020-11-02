@@ -11,11 +11,11 @@ import {LoginPopup} from "./components/loginpopup";
 //For testing purposes
 localStorage.clear()
 
-localStorage.setItem("user", "Test user")
-localStorage.setItem("Column0", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}")
-localStorage.setItem("Column1", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}")
-localStorage.setItem("Column2", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}")
-localStorage.setItem("Column3", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}")
+localStorage.setItem("user", "Test user");
+localStorage.setItem("Column0", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}");
+localStorage.setItem("Column1", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}");
+localStorage.setItem("Column2", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}");
+localStorage.setItem("Column3", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}");
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {BoardColumn} from "../boardcolumn";
-import {ColumnsContainer} from "./Styles";
+import {ColumnsContainer} from "./styles";
 
 export const Board: React.FC = () => {
 
