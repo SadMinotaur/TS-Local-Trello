@@ -15,7 +15,6 @@ export const LoginPopup: React.FC<Props> = (props) => {
     changeDisplayProperty(prevState => !prevState);
   }
 
-  //Not sure about using useEffect
   function onEnterPress(event: React.KeyboardEvent<HTMLDivElement>): void {
     if (event.key === 'Enter') {
       changeDisplayState()

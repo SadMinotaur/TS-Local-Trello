@@ -1,9 +1,9 @@
 export interface ColumnsContent {
   name : string;
-  cards: Cards[];
+  cards: Card[];
 }
 
-export interface Cards {
+export interface Card {
   name: string;
   author: string;
   desc: string;

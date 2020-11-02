@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import {ColumnsContainer, ColumnNameInput, ColumnBorder, ColumnNameDiv} from "./styles";
-import {Cards, ColumnsContent} from "../columnsContent";
+import {ColumnsContainer, ColumnNameInput, ColumnBorder, ColumnNameDiv, ColumnAddCardDiv, ButtonDiv} from "./styles";
+import {Card, ColumnsContent} from "../columnsContent";
 import {ColumnCard} from "../columncard";
 
 interface Props {
@@ -9,19 +9,17 @@ interface Props {
 
 export const BoardColumn: React.FC<Props> = (props) => {
 
-  //This is bad
   const column: ColumnsContent = JSON.parse(localStorage.getItem(props.name) as string);
 
   const cards = Array(column.cards.length);
   column.cards.forEach((value, i) => {
-    cards[i] = <ColumnCard key={i} name={value.name}/>
+    cards[i] = <ColumnCard key={i} index={i} saveCardState={saveCardChanges} card={value}/>
   });
-
-  let newCardContent = "";
 
   const [colCards, setCards] = useState(cards);
   const [name, setName] = useState(column.name);
   const [nameInputState, setNameInputState] = useState(false);
+  const [newCardState, setNewCardState] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [cardInput, setCardInput] = useState("");
 
@@ -32,9 +30,19 @@ export const BoardColumn: React.FC<Props> = (props) => {
   }
 
   function saveNewCard(): void {
-    column.cards.push({name: newCardContent, author: localStorage.getItem("user"), comments: [], desc: ""} as Cards);
+    const card = {name: cardInput, author: localStorage.getItem("user"), comments: [], desc: ""} as Card;
+    column.cards.push(card);
     setCards(prevState => {
-      return prevState.concat(<ColumnCard name={newCardContent} key={colCards.length}/>);
+      return prevState.concat(<ColumnCard index={colCards.length} saveCardState={saveCardChanges} card={card} key={colCards.length}/>);
+    });
+    localStorage.setItem(props.name, JSON.stringify(column));
+  }
+
+  function saveCardChanges(card: Card, index: number): void {
+    column.cards[index] = card;
+    setCards(prevState => {
+      prevState[index] = <ColumnCard index={index} saveCardState={saveCardChanges} card={card} key={index}/>
+      return prevState;
     });
     localStorage.setItem(props.name, JSON.stringify(column));
   }
@@ -42,8 +50,13 @@ export const BoardColumn: React.FC<Props> = (props) => {
   return (<ColumnsContainer>
       <ColumnBorder>
         <ColumnNameDiv style={{display: nameInputState ? 'none' : 'block'}}
-                       onClick={event => setNameInputState(prevState => !prevState)}>{name}</ColumnNameDiv>
+                       onClick={event => {
+                         setNameInputState(prevState => !prevState);
+                       }}>{name}</ColumnNameDiv>
         <ColumnNameInput style={{display: nameInputState ? 'block' : 'none'}} value={nameInput} type="text"
+                         onMouseOver={event => {
+                           event.currentTarget.focus();
+                         }}
                          onChange={event => {
                            setNameInput(event.target.value);
                            saveName(event.target.value);
@@ -54,14 +67,30 @@ export const BoardColumn: React.FC<Props> = (props) => {
                          }}
         />
         {colCards}
-        <ColumnNameInput onBlur={event => {
-          event.target.value = '';
-        }} onChange={event => newCardContent = event.target.value} placeholder="Add new card"/>
-        <button className="btn primary" onClick={event => {
-          saveNewCard()
-        }}>
-          Add card
-        </button>
+        <ColumnAddCardDiv style={{display: newCardState ? 'none' : 'block'}}
+                          onClick={event => {
+                            setNewCardState(prevState => !prevState);
+                          }}>
+          Add new card
+        </ColumnAddCardDiv>
+        <ColumnNameInput style={{display: newCardState ? 'block' : 'none'}} value={cardInput} onChange={event => {
+          setCardInput(event.target.value);
+        }} placeholder="Add new card"/>
+        <ButtonDiv>
+          <button style={{display: newCardState ? 'block' : 'none'}} className="btn primary" onClick={event => {
+            if (cardInput === "") return;
+            saveNewCard();
+            setCardInput("");
+            setNewCardState(prevState => !prevState);
+          }}>
+            Add card
+          </button>
+          <button style={{display: newCardState ? 'block' : 'none'}} className="btn" onClick={event => {
+            setNewCardState(prevState => !prevState);
+          }}>
+            Cancel
+          </button>
+        </ButtonDiv>
       </ColumnBorder>
     </ColumnsContainer>
   )
