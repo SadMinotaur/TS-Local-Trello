@@ -33,7 +33,8 @@ export const BoardColumn: React.FC<Props> = (props) => {
     const card = {name: cardInput, author: localStorage.getItem("user"), comments: [], desc: ""} as Card;
     column.cards.push(card);
     setCards(prevState => {
-      return prevState.concat(<ColumnCard index={colCards.length} saveCardState={saveCardChanges} card={card} key={colCards.length}/>);
+      return prevState.concat(<ColumnCard index={colCards.length} saveCardState={saveCardChanges} card={card}
+                                          key={colCards.length}/>);
     });
     localStorage.setItem(props.name, JSON.stringify(column));
   }
@@ -67,13 +68,16 @@ export const BoardColumn: React.FC<Props> = (props) => {
                          }}
         />
         {colCards}
+
         <ColumnAddCardDiv style={{display: newCardState ? 'none' : 'block'}}
                           onClick={event => {
                             setNewCardState(prevState => !prevState);
                           }}>
           Add new card
         </ColumnAddCardDiv>
-        <ColumnNameInput style={{display: newCardState ? 'block' : 'none'}} value={cardInput} onChange={event => {
+        <ColumnNameInput onMouseOver={event => {
+          event.currentTarget.focus();
+        }} style={{display: newCardState ? 'block' : 'none'}} value={cardInput} onChange={event => {
           setCardInput(event.target.value);
         }} placeholder="Add new card"/>
         <ButtonDiv>

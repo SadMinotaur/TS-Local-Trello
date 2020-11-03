@@ -52,9 +52,12 @@ export const ColumnAddCardDiv = styled.div`
            background: #dedede;
         }
 `
-
 export const ButtonDiv = styled.div`
         display: flex;
         width: 200px;
         justify-content: space-around;
+`
+
+export const Comments = styled.a`
+        
 `

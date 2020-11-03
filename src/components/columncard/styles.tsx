@@ -1,4 +1,6 @@
-import styled from "styled-components";
+import styledComponents from 'styled-components'
+import styledComponentsTS from 'styled-components-ts'
+import styled, {css} from "styled-components";
 
 export const CardContainer = styled.div`
     width: 100%;
@@ -10,7 +12,6 @@ export const ColCard = styled.div`
     background: white;
     text-align: start;
     width: 100%;
-    height: 25px;
     margin: 5px 0 5px 0;
     text-indent: 10px;
     line-height: 25px;
@@ -46,4 +47,20 @@ export const ClosePopup = styled.button`
     height: 20px;
     width: 20px;
     color: #999999;
+`
+
+export const CardComments = styled.div`
+    margin: 0 0 0 2px;
+    font-size: 7px;
+`
+
+interface CardContentProps {
+  empty: boolean;
+}
+
+export const CardContent = styledComponentsTS<CardContentProps>(styledComponents.div)`
+    text-indent: 10px;
+    padding: ${props => props.empty ? '7px 0 7px 0' : '7px 0 0 0'};
+    font-size: 15px;
+    line-height: 15px;
 `
