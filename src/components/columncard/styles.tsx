@@ -1,6 +1,6 @@
-import styledComponents from 'styled-components'
 import styledComponentsTS from 'styled-components-ts'
-import styled, {css} from "styled-components";
+import styled from "styled-components";
+import React from "react";
 
 export const CardContainer = styled.div`
     width: 100%;
@@ -58,9 +58,29 @@ interface CardContentProps {
   empty: boolean;
 }
 
-export const CardContent = styledComponentsTS<CardContentProps>(styledComponents.div)`
+export const CardContent = styledComponentsTS<CardContentProps>(styled.div)`
     text-indent: 10px;
     padding: ${props => props.empty ? '7px 0 7px 0' : '7px 0 0 0'};
     font-size: 15px;
     line-height: 15px;
+`
+
+export const PopupTitle = styled.div`
+    font-weight: bold;
+    margin: 15px 0 0 0;
+    text-align: center;
+    width: 100%;
+    height: 40px;
+    line-height: 20px;
+    color: #939393;
+`
+
+export const EditCardButton = styledComponentsTS<CardContentProps>(styled.div)`
+    margin: ${props => props.empty ? '-28px  0 0 200px' : '-20px  0 0 200px'};
+`
+
+export const NameInput = styled.input`
+    width: 190px;
+    margin: -25px 0 5px 0;
+    z-index: 200;    
 `

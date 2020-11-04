@@ -68,7 +68,6 @@ export const BoardColumn: React.FC<Props> = (props) => {
                          }}
         />
         {colCards}
-
         <ColumnAddCardDiv style={{display: newCardState ? 'none' : 'block'}}
                           onClick={event => {
                             setNewCardState(prevState => !prevState);

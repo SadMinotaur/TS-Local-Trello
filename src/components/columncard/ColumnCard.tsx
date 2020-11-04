@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   CardComments,
   CardContainer,
@@ -6,11 +6,13 @@ import {
   CardPopup,
   CardPopupBack,
   ClosePopup,
-  ColCard,
+  ColCard, NameInput, EditCardButton,
+  PopupTitle,
 } from "./styles";
 import {Card} from "../columnsContent";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faComment} from "@fortawesome/free-solid-svg-icons/faComment";
+import {faEdit} from "@fortawesome/free-solid-svg-icons/faEdit";
 
 interface Props {
   card: Card;
@@ -20,19 +22,47 @@ interface Props {
 
 export const ColumnCard: React.FC<Props> = (props) => {
 
+  const [cardInfo, setCardInfo] = useState(props.card);
   const [popupState, setPopupState] = useState(false);
-  const [showComments, setCommentCount] = useState(props.card.comments.length);
+  const [changeNameState, setChangeNameState] = useState(false);
+
+  //TODO: Use another hook
+  useEffect(() => {
+    props.saveCardState(cardInfo);
+  });
 
   return (
     <CardContainer>
-      <ColCard onClick={event => {
-        setPopupState(prevState => !prevState);
-      }}>
-        <CardContent empty={showComments <= 0}>
-          {props.card.name}
+      <ColCard>
+        <CardContent style={{color: changeNameState ? "white" : "grey"}} onClick={() => {
+          setPopupState(prevState => !prevState);
+        }} empty={cardInfo.comments.length <= 0}>
+          {cardInfo.name}
         </CardContent>
-        <CardComments style={{display: showComments > 0 ? "block" : "none"}}>
-          <FontAwesomeIcon icon={faComment}/> : {showComments}
+        <EditCardButton onClick={() => {
+          setChangeNameState(prevState => !prevState);
+        }} empty={cardInfo.comments.length <= 0}>
+          <FontAwesomeIcon icon={faEdit}/>
+        </EditCardButton>
+        <NameInput value={cardInfo.name} onChange={event => {
+          //TODO: Figure out which is better
+
+          // setCardInfo({
+          //   ...cardInfo,
+          //   name: event.target.value
+          // })
+
+          setCardInfo(prevState => {
+            return {...prevState, name: event.target.value};
+          });
+        }}
+                   onBlur={event => {
+                     setChangeNameState(prevState => !prevState);
+                   }}
+                   placeholder={"Enter new name"}
+                   style={{display: changeNameState ? "block" : "none"}}/>
+        <CardComments style={{display: cardInfo.comments.length > 0 ? "block" : "none"}}>
+          <FontAwesomeIcon icon={faComment}/> : {cardInfo.comments.length}
         </CardComments>
       </ColCard>
       <CardPopupBack style={{display: popupState ? "block" : "none"}}>
@@ -42,6 +72,9 @@ export const ColumnCard: React.FC<Props> = (props) => {
           )}>
             x
           </ClosePopup>
+          <PopupTitle>
+            {cardInfo.name}
+          </PopupTitle>
         </CardPopup>
       </CardPopupBack>
     </CardContainer>
