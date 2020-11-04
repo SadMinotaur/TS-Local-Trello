@@ -3,9 +3,6 @@ import {
   CardComments,
   CardContainer,
   CardContent,
-  CardPopup,
-  CardPopupBack,
-  ClosePopup,
   ColCard, NameInput, EditCardButton,
   PopupTitle,
 } from "./styles";
@@ -13,11 +10,12 @@ import {Card} from "../columnsContent";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faComment} from "@fortawesome/free-solid-svg-icons/faComment";
 import {faEdit} from "@fortawesome/free-solid-svg-icons/faEdit";
+import {Popup} from "../popup";
 
 interface Props {
   card: Card;
   index: number;
-  saveCardState: any;
+  saveCardState: (card: Card, index: number) => void;
 }
 
 export const ColumnCard: React.FC<Props> = (props) => {
@@ -28,7 +26,8 @@ export const ColumnCard: React.FC<Props> = (props) => {
 
   //TODO: Use another hook
   useEffect(() => {
-    props.saveCardState(cardInfo);
+    props.saveCardState(cardInfo, props.index);
+    console.log(cardInfo)
   });
 
   return (
@@ -45,16 +44,9 @@ export const ColumnCard: React.FC<Props> = (props) => {
           <FontAwesomeIcon icon={faEdit}/>
         </EditCardButton>
         <NameInput value={cardInfo.name} onChange={event => {
-          //TODO: Figure out which is better
-
-          // setCardInfo({
-          //   ...cardInfo,
-          //   name: event.target.value
-          // })
-
-          setCardInfo(prevState => {
-            return {...prevState, name: event.target.value};
-          });
+          setCardInfo(prevState => (
+            {...prevState, name: event.target.value}
+          ));
         }}
                    onBlur={event => {
                      setChangeNameState(prevState => !prevState);
@@ -65,18 +57,11 @@ export const ColumnCard: React.FC<Props> = (props) => {
           <FontAwesomeIcon icon={faComment}/> : {cardInfo.comments.length}
         </CardComments>
       </ColCard>
-      <CardPopupBack style={{display: popupState ? "block" : "none"}}>
-        <CardPopup style={{display: popupState ? "block" : "none"}}>
-          <ClosePopup onClick={event => setPopupState(
-            prevState => !prevState
-          )}>
-            x
-          </ClosePopup>
-          <PopupTitle>
-            {cardInfo.name}
-          </PopupTitle>
-        </CardPopup>
-      </CardPopupBack>
+      <Popup buttonX={true} popupState={popupState} setPopupState={setPopupState} popupContent={
+        <PopupTitle>
+          {cardInfo.name}
+        </PopupTitle>
+      }/>
     </CardContainer>
   )
 };

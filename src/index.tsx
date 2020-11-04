@@ -11,17 +11,16 @@ import {LoginPopup} from "./components/loginpopup";
 //For testing purposes
 localStorage.clear()
 
-localStorage.setItem("user", "Test user");
-localStorage.setItem("Column0", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}");
-localStorage.setItem("Column1", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}");
-localStorage.setItem("Column2", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}");
-localStorage.setItem("Column3", "{\"name\":\"TODO\",\"cards\":[{\"name\":\"test\",\"author\":\"test\",\"comments\":[{\"author\":\"test\",\"content\":\"ok\"}]}]}");
+// localStorage.setItem("user", "Test user");
+localStorage.setItem("Column0", "{\"name\":\"TODO\",\"cards\":[]}");
+localStorage.setItem("Column1", "{\"name\":\"In Progress\",\"cards\":[]}");
+localStorage.setItem("Column2", "{\"name\":\"Testing\",\"cards\":[]}");
+localStorage.setItem("Column3", "{\"name\":\"Done\",\"cards\":[]}");
 
 ReactDOM.render(
   <React.StrictMode>
     <Header/>
     <MainComponent/>
-    {/*Not sure about popup position in code */}
     <LoginPopup/>
   </React.StrictMode>,
   document.getElementById('root')
