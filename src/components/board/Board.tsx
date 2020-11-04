@@ -3,7 +3,6 @@ import {BoardColumn} from "../boardcolumn";
 import {ColumnsContainer} from "./styles";
 
 export const Board: React.FC = () => {
-
   return (<ColumnsContainer>
     <BoardColumn name={"Column0"}/>
     <BoardColumn name={"Column1"}/>

@@ -12,12 +12,13 @@ export const LoginPopup: React.FC<Props> = (props) => {
   const [inputState, changeInputState] = useState("");
 
   function changeDisplayState(): void {
+    if (inputState === "") return;
     localStorage.setItem("user", inputState);
     changeDisplayProperty(prevState => !prevState);
   }
 
   return (
-    <Popup buttonX={false} popupState={display} setPopupState={changeDisplayProperty} popupContent={
+    <Popup height={300} width={850} popupState={display} popupContent={
       <PopupContent onKeyDown={event => {
         if (event.key === 'Enter') changeDisplayState()
       }}>

@@ -19,9 +19,10 @@ export const ColumnNameDiv = styled.div`
         text-align: start;
         text-indent: 10px;
         width: 230px;
-        height: 20px;
-        line-height: 20px;
-        background: white;
+        height: 25px;
+        line-height: 25px;
+        background: #8d8d8d;
+        color: white;
         border-radius: 2px;
 `
 

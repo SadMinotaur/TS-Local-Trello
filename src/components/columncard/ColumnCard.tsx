@@ -4,7 +4,7 @@ import {
   CardContainer,
   CardContent,
   ColCard, NameInput, EditCardButton,
-  PopupTitle,
+  PopupTitle, PopupContent,
 } from "./styles";
 import {Card} from "../columnsContent";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -27,7 +27,6 @@ export const ColumnCard: React.FC<Props> = (props) => {
   //TODO: Use another hook
   useEffect(() => {
     props.saveCardState(cardInfo, props.index);
-    console.log(cardInfo)
   });
 
   return (
@@ -48,7 +47,7 @@ export const ColumnCard: React.FC<Props> = (props) => {
             {...prevState, name: event.target.value}
           ));
         }}
-                   onBlur={event => {
+                   onBlur={() => {
                      setChangeNameState(prevState => !prevState);
                    }}
                    placeholder={"Enter new name"}
@@ -57,11 +56,13 @@ export const ColumnCard: React.FC<Props> = (props) => {
           <FontAwesomeIcon icon={faComment}/> : {cardInfo.comments.length}
         </CardComments>
       </ColCard>
-      <Popup buttonX={true} popupState={popupState} setPopupState={setPopupState} popupContent={
-        <PopupTitle>
-          {cardInfo.name}
-        </PopupTitle>
+      <Popup height={300} width={850} popupState={popupState} setPopupState={setPopupState} popupContent={
+        <PopupContent>
+          <PopupTitle>
+            {cardInfo.name}
+          </PopupTitle>
+        </PopupContent>
       }/>
     </CardContainer>
   )
-};
+}

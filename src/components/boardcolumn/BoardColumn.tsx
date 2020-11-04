@@ -51,7 +51,7 @@ export const BoardColumn: React.FC<Props> = (props) => {
   return (<ColumnsContainer>
       <ColumnBorder>
         <ColumnNameDiv style={{display: nameInputState ? 'none' : 'block'}}
-                       onClick={event => {
+                       onClick={() => {
                          setNameInputState(prevState => !prevState);
                        }}>{name}</ColumnNameDiv>
         <ColumnNameInput style={{display: nameInputState ? 'block' : 'none'}} value={nameInput} type="text"
@@ -62,14 +62,14 @@ export const BoardColumn: React.FC<Props> = (props) => {
                            setNameInput(event.target.value);
                            saveName(event.target.value);
                          }}
-                         onBlur={event => {
+                         onBlur={() => {
                            setNameInputState(prevState => !prevState);
                            setNameInput("");
                          }}
         />
         {colCards}
         <ColumnAddCardDiv style={{display: newCardState ? 'none' : 'block'}}
-                          onClick={event => {
+                          onClick={() => {
                             setNewCardState(prevState => !prevState);
                           }}>
           Add new card
@@ -80,7 +80,7 @@ export const BoardColumn: React.FC<Props> = (props) => {
           setCardInput(event.target.value);
         }} placeholder="Add new card"/>
         <ButtonDiv>
-          <button style={{display: newCardState ? 'block' : 'none'}} className="btn primary" onClick={event => {
+          <button style={{display: newCardState ? 'block' : 'none'}} className="btn primary" onClick={() => {
             if (cardInput === "") return;
             saveNewCard();
             setCardInput("");
@@ -88,7 +88,7 @@ export const BoardColumn: React.FC<Props> = (props) => {
           }}>
             Add card
           </button>
-          <button style={{display: newCardState ? 'block' : 'none'}} className="btn" onClick={event => {
+          <button style={{display: newCardState ? 'block' : 'none'}} className="btn" onClick={() => {
             setNewCardState(prevState => !prevState);
           }}>
             Cancel

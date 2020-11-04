@@ -38,16 +38,24 @@ export const EditCardButton = styledComponentsTS<CardContentProps>(styled.div)`
 
 export const PopupTitle = styled.div`
     font-weight: bold;
-    margin: 15px 0 0 0;
     text-align: center;
-    width: 100%;
-    height: 40px;
-    line-height: 20px;
-    color: #939393;
+    width: 220px;
+    height: 30px;
+    line-height: 30px;
+    color: white;
+    background: #999999;
+    border-radius: 2px;
 `
 
 export const NameInput = styled.input`
     width: 190px;
     margin: -25px 0 5px 0;
-    z-index: 200;    
+`
+
+export const PopupContent = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
