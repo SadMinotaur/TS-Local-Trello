@@ -33,8 +33,7 @@ export const BoardColumn: React.FC<Props> = (props) => {
     const card = {name: cardInput, author: localStorage.getItem("user"), comments: [], desc: ""} as Card;
     column.cards.push(card);
     setCards(prevState => {
-      return prevState.concat(<ColumnCard index={colCards.length} saveCardState={saveCardChanges} card={card}
-                                          key={colCards.length}/>);
+      return prevState.concat(<ColumnCard index={colCards.length} saveCardState={saveCardChanges} card={card} key={colCards.length}/>);
     });
     localStorage.setItem(props.name, JSON.stringify(column));
   }
@@ -50,37 +49,32 @@ export const BoardColumn: React.FC<Props> = (props) => {
 
   return (<ColumnsContainer>
       <ColumnBorder>
-        <ColumnNameDiv style={{display: nameInputState ? 'none' : 'block'}}
-                       onClick={() => {
-                         setNameInputState(prevState => !prevState);
-                       }}>{name}</ColumnNameDiv>
-        <ColumnNameInput style={{display: nameInputState ? 'block' : 'none'}} value={nameInput} type="text"
-                         onMouseOver={event => {
-                           event.currentTarget.focus();
-                         }}
-                         onChange={event => {
-                           setNameInput(event.target.value);
-                           saveName(event.target.value);
-                         }}
-                         onBlur={() => {
-                           setNameInputState(prevState => !prevState);
-                           setNameInput("");
-                         }}
-        />
-        {colCards}
-        <ColumnAddCardDiv style={{display: newCardState ? 'none' : 'block'}}
-                          onClick={() => {
-                            setNewCardState(prevState => !prevState);
-                          }}>
-          Add new card
-        </ColumnAddCardDiv>
-        <ColumnNameInput onMouseOver={event => {
+        {nameInputState ? null : <ColumnNameDiv
+          onClick={() => {
+            setNameInputState(prevState => !prevState);
+          }}>{name}</ColumnNameDiv>}
+        {nameInputState ? <ColumnNameInput value={nameInput} type="text" onMouseOver={event => {
           event.currentTarget.focus();
-        }} style={{display: newCardState ? 'block' : 'none'}} value={cardInput} onChange={event => {
+        }} onChange={event => {
+          setNameInput(event.target.value);
+          saveName(event.target.value);
+        }} onBlur={() => {
+          setNameInputState(prevState => !prevState);
+          setNameInput("");
+        }}/> : null}
+        {colCards}
+        {newCardState ? null : <ColumnAddCardDiv
+          onClick={() => {
+            setNewCardState(prevState => !prevState);
+          }}>
+          Add new card </ColumnAddCardDiv>}
+        {newCardState ? <ColumnNameInput onMouseOver={event => {
+          event.currentTarget.focus();
+        }} value={cardInput} onChange={event => {
           setCardInput(event.target.value);
-        }} placeholder="Add new card"/>
-        <ButtonDiv>
-          <button style={{display: newCardState ? 'block' : 'none'}} className="btn primary" onClick={() => {
+        }} placeholder="Add new card"/> : null}
+        {newCardState ? <ButtonDiv>
+          <button className="btn primary" onClick={() => {
             if (cardInput === "") return;
             saveNewCard();
             setCardInput("");
@@ -88,12 +82,12 @@ export const BoardColumn: React.FC<Props> = (props) => {
           }}>
             Add card
           </button>
-          <button style={{display: newCardState ? 'block' : 'none'}} className="btn" onClick={() => {
+          <button className="btn" onClick={() => {
             setNewCardState(prevState => !prevState);
           }}>
             Cancel
           </button>
-        </ButtonDiv>
+        </ButtonDiv> : null}
       </ColumnBorder>
     </ColumnsContainer>
   )

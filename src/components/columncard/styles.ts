@@ -36,17 +36,6 @@ export const EditCardButton = styledComponentsTS<CardContentProps>(styled.div)`
     margin: ${props => props.empty ? '-28px  0 0 200px' : '-20px  0 0 200px'};
 `
 
-export const PopupTitle = styled.div`
-    font-weight: bold;
-    text-align: center;
-    width: 220px;
-    height: 30px;
-    line-height: 30px;
-    color: white;
-    background: #999999;
-    border-radius: 2px;
-`
-
 export const NameInput = styled.input`
     width: 190px;
     margin: -25px 0 5px 0;
@@ -58,4 +47,32 @@ export const PopupContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+`
+
+export const PopupTitle = styled.div`
+    margin: 5px 0 0 0;
+    font-weight: bold;
+    line-height: 20px;
+`
+
+export const PopupDesc = styled.input`
+    height: 50px;
+    width: 200px;
+    margin: 10px 0 10px 0;
+`
+
+export const Comments = styled.div`
+    margin: 10px 0 0 0;
+    font-weight: bold;
+    line-height: 30px;
+`
+
+export const CommentsInput = styled.input`
+    width: 220px;
+`
+
+export const UserComment = styled.div`
+    width: 220px;
+    border: grey 1px solid;
 `
