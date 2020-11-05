@@ -3,14 +3,15 @@ import {
   CardComments,
   CardContainer,
   CardContent,
-  ColCard, NameInput, EditCardButton,
-  PopupTitle, PopupContent, PopupDesc, Comments, CommentsInput, UserComment,
+  ColCard,
+  NameInput,
+  EditCardButton
 } from "./styles";
 import {Card} from "../columnsContent";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faComment} from "@fortawesome/free-solid-svg-icons/faComment";
 import {faEdit} from "@fortawesome/free-solid-svg-icons/faEdit";
-import {Popup} from "../popup";
+import {CardPopup} from "../cardpopup";
 
 interface Props {
   card: Card;
@@ -23,15 +24,6 @@ export const ColumnCard: React.FC<Props> = (props) => {
   const [cardInfo, setCardInfo] = useState(props.card);
   const [popupState, setPopupState] = useState(false);
   const [changeNameState, setChangeNameState] = useState(false);
-  const [changeNamePopup, setChangeNamePopup] = useState(false);
-  const [newCommentValue, setCommentValue] = useState("");
-
-  const cardComments: object[] = Array(cardInfo.comments.length);
-
-  cardInfo.comments.forEach((value, i) => {
-    //TODO: Make prettier
-    cardComments[i] = <UserComment>{value.author} : {value.content}</UserComment>;
-  });
 
   //TODO: Use another hook
   useEffect(() => {
@@ -39,9 +31,11 @@ export const ColumnCard: React.FC<Props> = (props) => {
   });
 
   function changeCardName(event: React.ChangeEvent<HTMLInputElement>) {
-    setCardInfo(prevState => (
-      {...prevState, name: event.target.value}
-    ));
+    setCardInfo(pS => ({...pS, name: event.target.value}));
+  }
+
+  function changeCardDecs(event: React.ChangeEvent<HTMLInputElement>) {
+    setCardInfo(pS => ({...pS, desc: event.target.value}));
   }
 
   return (
@@ -64,32 +58,8 @@ export const ColumnCard: React.FC<Props> = (props) => {
           <FontAwesomeIcon icon={faComment}/> : {cardInfo.comments.length}
         </CardComments>
       </ColCard>
-      {/* TODO: Move to another component*/}
-      <Popup height={300} width={350} popupState={popupState} setPopupState={setPopupState} popupContent={
-        <PopupContent>
-          <CardContent onClick={() => {
-            setChangeNamePopup(prevState => !prevState);
-          }} empty={cardInfo.comments.length <= 0} style={{color: changeNamePopup ? "white" : "grey"}}>
-            {cardInfo.name}
-          </CardContent>
-          {changeNamePopup ? <NameInput value={cardInfo.name} onChange={changeCardName} onBlur={() => {
-            setChangeNamePopup(prevState => !prevState);
-          }} placeholder={"Enter new name"} style={{display: changeNamePopup ? "block" : "none"}}/> : null}
-          <PopupTitle>
-            Description
-          </PopupTitle>
-          <PopupDesc value={cardInfo.desc} onChange={event => {
-            setCardInfo(pS => ({...pS, desc: event.target.value}));
-          }}/>
-          <PopupTitle>
-            Comments
-          </PopupTitle>
-          <CommentsInput value={newCommentValue} onChange={event => setCommentValue(event.target.value)}/>
-          <Comments>
-            {cardComments}
-          </Comments>
-        </PopupContent>
-      }/>
+      <CardPopup popupState={popupState} setPopupState={setPopupState} cardInfo={cardInfo}
+                 changeCardName={changeCardName} setCardInfo={changeCardDecs}/>
     </CardContainer>
   )
 }
