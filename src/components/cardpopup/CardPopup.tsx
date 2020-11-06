@@ -1,15 +1,15 @@
 import React, {useState} from "react";
 import {
   CardContent,
-  Comments,
-  CommentsInput,
+  CommentsArray,
+  CommentsInput, CommentsInputContainer,
   NameInput,
   PopupContent,
   PopupDesc,
   PopupTitle, UserComment
 } from "./styles";
 import {Popup} from "../popup";
-import {Card} from "../columnsContent";
+import {Card, Comments} from "../columnsContent";
 
 interface Props {
   cardInfo: Card;
@@ -17,20 +17,21 @@ interface Props {
   // TODO : Figure out types
   setPopupState: (prevState: any) => void;
   changeCardName: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  setCardInfo: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  changeCardDecs: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  addCardComment: (comment: Comments) => void;
 }
 
 export const CardPopup: React.FC<Props> = (props) => {
 
-  const [changeNamePopup, setChangeNamePopup] = useState(false);
-  const [newCommentValue, setCommentValue] = useState("");
-
   const cardComments: object[] = Array(props.cardInfo.comments.length);
-
   props.cardInfo.comments.forEach((value, i) => {
     //TODO: Make prettier
     cardComments[i] = <UserComment>{value.author} : {value.content}</UserComment>;
   });
+
+  const [commentsArray, setCommentsArray] = useState(cardComments);
+  const [changeNamePopup, setChangeNamePopup] = useState(false);
+  const [newCommentValue, setCommentValue] = useState("");
 
   return (
     <Popup height={300} width={350} popupState={props.popupState} setPopupState={props.setPopupState} popupContent={
@@ -46,14 +47,24 @@ export const CardPopup: React.FC<Props> = (props) => {
         <PopupTitle>
           Description
         </PopupTitle>
-        <PopupDesc value={props.cardInfo.desc} onChange={props.setCardInfo}/>
+        <PopupDesc value={props.cardInfo.desc} onChange={props.changeCardDecs}/>
         <PopupTitle>
           Comments
         </PopupTitle>
-        <CommentsInput value={newCommentValue} onChange={event => setCommentValue(event.target.value)}/>
-        <Comments>
-          {cardComments}
-        </Comments>
+        <CommentsInputContainer>
+          <CommentsInput value={newCommentValue} onChange={event => setCommentValue(event.target.value)}/>
+          <button onClick={() => {
+            props.addCardComment({author: localStorage.getItem("user") as string, content: newCommentValue});
+            setCommentsArray(prevState => {
+              return prevState.concat(<UserComment
+                key={prevState.length}>{localStorage.getItem("user")} : {newCommentValue}</UserComment>)
+            });
+          }} className={"btn primary"}>Send
+          </button>
+        </CommentsInputContainer>
+        <CommentsArray>
+          {commentsArray}
+        </CommentsArray>
       </PopupContent>
     }/>
   )

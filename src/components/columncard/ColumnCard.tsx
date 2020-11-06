@@ -7,7 +7,7 @@ import {
   NameInput,
   EditCardButton
 } from "./styles";
-import {Card} from "../columnsContent";
+import {Card, Comments} from "../columnsContent";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faComment} from "@fortawesome/free-solid-svg-icons/faComment";
 import {faEdit} from "@fortawesome/free-solid-svg-icons/faEdit";
@@ -27,6 +27,7 @@ export const ColumnCard: React.FC<Props> = (props) => {
 
   //TODO: Use another hook
   useEffect(() => {
+    console.log("here");
     props.saveCardState(cardInfo, props.index);
   });
 
@@ -36,6 +37,10 @@ export const ColumnCard: React.FC<Props> = (props) => {
 
   function changeCardDecs(event: React.ChangeEvent<HTMLInputElement>) {
     setCardInfo(pS => ({...pS, desc: event.target.value}));
+  }
+
+  function addCardComment(comment: Comments) {
+    setCardInfo(pS => ({...pS, comments: pS.comments.concat(comment)}));
   }
 
   return (
@@ -59,7 +64,7 @@ export const ColumnCard: React.FC<Props> = (props) => {
         </CardComments>
       </ColCard>
       <CardPopup popupState={popupState} setPopupState={setPopupState} cardInfo={cardInfo}
-                 changeCardName={changeCardName} setCardInfo={changeCardDecs}/>
+                 changeCardName={changeCardName} changeCardDecs={changeCardDecs} addCardComment={addCardComment}/>
     </CardContainer>
   )
 }

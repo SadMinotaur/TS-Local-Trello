@@ -48,10 +48,14 @@ export const NameInput = styled.input`
     margin: -25px 0 5px 0;
 `
 
-export const Comments = styled.div`
+export const CommentsArray = styled.div`
     margin: 10px 0 0 0;
     font-weight: bold;
     line-height: 30px;
+`
+
+export const CommentsInputContainer = styled.div`
+    display: flex;
 `
 
 export const CommentsInput = styled.input`
