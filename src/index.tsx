@@ -10,8 +10,7 @@ import {LoginPopup} from "./components/loginpopup";
 
 //For testing purposes
 localStorage.clear()
-
-// localStorage.setItem("user", "Test user");
+localStorage.setItem("user", "Test user");
 localStorage.setItem("Column0", "{\"name\":\"TODO\",\"cards\":[]}");
 localStorage.setItem("Column1", "{\"name\":\"In Progress\",\"cards\":[]}");
 localStorage.setItem("Column2", "{\"name\":\"Testing\",\"cards\":[]}");

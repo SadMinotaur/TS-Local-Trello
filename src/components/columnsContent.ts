@@ -1,5 +1,5 @@
 export interface ColumnsContent {
-  name : string;
+  name: string;
   cards: Card[];
 }
 
@@ -11,6 +11,7 @@ export interface Card {
 }
 
 export interface Comments {
+  id: number;
   author: string;
   content: string;
 }

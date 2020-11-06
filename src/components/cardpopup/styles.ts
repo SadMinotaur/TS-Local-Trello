@@ -61,8 +61,3 @@ export const CommentsInputContainer = styled.div`
 export const CommentsInput = styled.input`
     width: 220px;
 `
-
-export const UserComment = styled.div`
-    width: 220px;
-    border: grey 1px solid;
-`

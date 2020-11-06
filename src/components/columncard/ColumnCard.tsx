@@ -27,7 +27,6 @@ export const ColumnCard: React.FC<Props> = (props) => {
 
   //TODO: Use another hook
   useEffect(() => {
-    console.log("here");
     props.saveCardState(cardInfo, props.index);
   });
 
@@ -43,28 +42,37 @@ export const ColumnCard: React.FC<Props> = (props) => {
     setCardInfo(pS => ({...pS, comments: pS.comments.concat(comment)}));
   }
 
+  function deleteCardComment(id: number) {
+    setCardInfo(pS => {
+      console.log(pS.comments.splice(id, 1));
+      console.log(pS);
+      return {...pS};
+    });
+  }
+
   return (
     <CardContainer>
       <ColCard>
         <CardContent style={{color: changeNameState ? "white" : "grey"}} onClick={() => {
           setPopupState(prevState => !prevState);
-        }} empty={cardInfo.comments.length <= 0}>
+        }} empty={cardInfo.comments.length === 0}>
           {cardInfo.name}
         </CardContent>
         <EditCardButton onClick={() => {
           setChangeNameState(prevState => !prevState);
-        }} empty={cardInfo.comments.length <= 0}>
+        }} empty={cardInfo.comments.length === 0}>
           <FontAwesomeIcon icon={faEdit}/>
         </EditCardButton>
         {changeNameState ? <NameInput value={cardInfo.name} onChange={changeCardName} onBlur={() => {
           setChangeNameState(prevState => !prevState);
         }} placeholder={"Enter new name"} style={{display: changeNameState ? "block" : "none"}}/> : null}
-        <CardComments style={{display: cardInfo.comments.length > 0 ? "block" : "none"}}>
+        <CardComments style={{display: cardInfo.comments.length !== 0 ? "block" : "none"}}>
           <FontAwesomeIcon icon={faComment}/> : {cardInfo.comments.length}
         </CardComments>
       </ColCard>
       <CardPopup popupState={popupState} setPopupState={setPopupState} cardInfo={cardInfo}
-                 changeCardName={changeCardName} changeCardDecs={changeCardDecs} addCardComment={addCardComment}/>
+                 changeCardName={changeCardName} changeCardDecs={changeCardDecs} deleteCardComment={deleteCardComment}
+                 addCardComment={addCardComment}/>
     </CardContainer>
   )
 }
