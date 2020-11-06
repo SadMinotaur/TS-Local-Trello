@@ -10,11 +10,7 @@ interface Props {
 export const BoardColumn: React.FC<Props> = (props) => {
 
   const column: ColumnsContent = JSON.parse(localStorage.getItem(props.name) as string);
-
   const cards = Array(column.cards.length);
-  column.cards.forEach((value, i) => {
-    cards[i] = <ColumnCard key={i} index={i} saveCardState={saveCardChanges} card={value}/>
-  });
 
   const [colCards, setCards] = useState(cards);
   const [name, setName] = useState(column.name);
@@ -22,6 +18,10 @@ export const BoardColumn: React.FC<Props> = (props) => {
   const [newCardState, setNewCardState] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [cardInput, setCardInput] = useState("");
+
+  column.cards.forEach((value, i) => {
+    cards[i] = <ColumnCard deleteCard={deleteCard} key={i} index={i} saveCardState={saveCardChanges} card={value}/>
+  });
 
   function saveName(name: string): void {
     column.name = name;
@@ -33,7 +33,8 @@ export const BoardColumn: React.FC<Props> = (props) => {
     const card = {name: cardInput, author: localStorage.getItem("user"), comments: [], desc: ""} as Card;
     column.cards.push(card);
     setCards(prevState => {
-      return prevState.concat(<ColumnCard index={colCards.length} saveCardState={saveCardChanges} card={card} key={colCards.length}/>);
+      return prevState.concat(<ColumnCard deleteCard={deleteCard} index={colCards.length} saveCardState={saveCardChanges} card={card}
+                                          key={colCards.length}/>);
     });
     localStorage.setItem(props.name, JSON.stringify(column));
   }
@@ -41,10 +42,17 @@ export const BoardColumn: React.FC<Props> = (props) => {
   function saveCardChanges(card: Card, index: number): void {
     column.cards[index] = card;
     setCards(prevState => {
-      prevState[index] = <ColumnCard index={index} saveCardState={saveCardChanges} card={card} key={index}/>
+      prevState[index] = <ColumnCard deleteCard={deleteCard} index={index} saveCardState={saveCardChanges} card={card} key={index}/>
       return prevState;
     });
     localStorage.setItem(props.name, JSON.stringify(column));
+  }
+
+  function deleteCard(i: number) {
+    setCards(prevState => {
+      prevState.splice(i, 1, null);
+      return prevState;
+    })
   }
 
   return (<ColumnsContainer>

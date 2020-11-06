@@ -10,6 +10,11 @@ export const UserComment = styled.div`
     }
 `
 
+export const CommentInput = styled.input`
+    height: 30px;
+    width: 210px;
+`
+
 export const UserCommentDelete = styled.div`
     display: flex;
     justify-content: center;

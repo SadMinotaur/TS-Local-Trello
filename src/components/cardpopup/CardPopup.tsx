@@ -19,6 +19,7 @@ interface Props {
   setPopupState: (prevState: any) => void;
   changeCardName: (event: React.ChangeEvent<HTMLInputElement>) => void;
   changeCardDecs: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  changeCardComment: (i: number, event: React.ChangeEvent<HTMLInputElement>) => void;
   addCardComment: (comment: Comments) => void;
   deleteCardComment: (id: number) => void;
 }
@@ -35,7 +36,8 @@ export const CardPopup: React.FC<Props> = (props) => {
   props.cardInfo.comments.forEach((value, i) => {
     //TODO: Make prettier
     cardComments[i] =
-      <CardComment setCommentsArray={setCommentsArray} deleteCardComment={props.deleteCardComment} key={i}
+      <CardComment setCommentsArray={setCommentsArray} changeCardComment={props.changeCardComment}
+                   deleteCardComment={props.deleteCardComment} key={i}
                    comment={value}/>;
   });
 
@@ -68,14 +70,12 @@ export const CardPopup: React.FC<Props> = (props) => {
             });
             setCommentsArray(prevState => {
               return prevState.concat(
-                <CardComment setCommentsArray={setCommentsArray}
-                             deleteCardComment={props.deleteCardComment}
-                             comment={{
-                               id: cardCount,
-                               author: localStorage.getItem("user") as string,
-                               content: newCommentValue
-                             }}
-                             key={cardCount}/>);
+                <CardComment changeCardComment={props.changeCardComment} setCommentsArray={setCommentsArray}
+                             deleteCardComment={props.deleteCardComment} comment={{
+                  id: cardCount,
+                  author: localStorage.getItem("user") as string,
+                  content: newCommentValue
+                }} key={cardCount}/>);
             });
           }} className={"btn primary"}>Send
           </button>
