@@ -1,12 +1,12 @@
 import React from 'react';
-import '../board/Board'
-import {Board} from "../board";
-import {MainComp} from "./styles";
+import '../Board/Board'
+import { Board } from "../Board";
+import { MainComp } from "./styles";
 
 export const MainComponent: React.FC = () => {
   return (
     <MainComp>
-      <Board/>
+      <Board />
     </MainComp>
   )
 }

@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {Popup} from "../popup";
-import {PopupContent} from "./styles";
+import React, { useState } from "react";
+import { Popup } from "../Popup";
+import { PopupContent } from "./styles";
 
 interface Props {
   initState?: boolean;
@@ -29,7 +29,7 @@ export const LoginPopup: React.FC<Props> = (props) => {
         <div className="modal-body">
           <input type="text" placeholder="Name" value={inputState} onChange={event => {
             changeInputState(event.target.value);
-          }}/>
+          }} />
         </div>
         <div className="modal-footer">
           <button onClick={changeDisplayState} className="btn primary">

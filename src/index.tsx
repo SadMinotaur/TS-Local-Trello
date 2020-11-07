@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 
 import './css /bootstrap.css'
 
-import {Header} from "./components/header/";
-import {MainComponent} from "./components/mainblock";
-import {LoginPopup} from "./components/loginpopup";
+import { Header } from "./components/Header";
+import { MainComponent } from "./components/Mainblock";
+import { LoginPopup } from "./components/Loginpopup";
 
-// localStorage.clear()
+localStorage.clear()
 
 if (localStorage.getItem("Column0") === null) {
   localStorage.setItem("Column0", "{\"name\":\"TODO\",\"cards\":[]}");
@@ -18,9 +18,9 @@ if (localStorage.getItem("Column0") === null) {
 
 ReactDOM.render(
   <React.StrictMode>
-    <Header/>
-    <MainComponent/>
-    <LoginPopup/>
+    <Header />
+    <MainComponent />
+    <LoginPopup />
   </React.StrictMode>,
   document.getElementById('root')
 );
