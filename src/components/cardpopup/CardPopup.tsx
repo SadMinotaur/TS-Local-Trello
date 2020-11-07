@@ -37,7 +37,7 @@ export const CardPopup: React.FC<Props> = (props) => {
                                    deleteCardComment={props.deleteCardComment} key={i} comment={value}/>;
   });
 
-  function handleEsc(event: { keyCode: number; }) {
+  function handleEsc(event: { keyCode: number; }): void {
     if (event.keyCode === 27) props.setPopupState((ps: any) => !ps);
   }
 

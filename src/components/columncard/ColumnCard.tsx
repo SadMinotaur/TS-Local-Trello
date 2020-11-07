@@ -32,11 +32,11 @@ export const ColumnCard: React.FC<Props> = (props) => {
     props.saveCardState(cardInfo, props.index);
   });
 
-  function changeCardName(event: React.ChangeEvent<HTMLInputElement>) {
+  function changeCardName(event: React.ChangeEvent<HTMLInputElement>): void {
     setCardInfo(pS => ({...pS, name: event.target.value}));
   }
 
-  function changeCardComment(i: number, event: React.ChangeEvent<HTMLInputElement>) {
+  function changeCardComment(i: number, event: React.ChangeEvent<HTMLInputElement>): void {
     setCardInfo(pS => {
       pS.comments.forEach((value, index) => {
         if (value.id === i) {
@@ -48,15 +48,15 @@ export const ColumnCard: React.FC<Props> = (props) => {
     });
   }
 
-  function changeCardDecs(event: React.ChangeEvent<HTMLInputElement>) {
+  function changeCardDecs(event: React.ChangeEvent<HTMLInputElement>): void {
     setCardInfo(pS => ({...pS, desc: event.target.value}));
   }
 
-  function addCardComment(comment: Comments) {
+  function addCardComment(comment: Comments): void {
     setCardInfo(pS => ({...pS, comments: pS.comments.concat(comment)}));
   }
 
-  function deleteCardComment(id: number) {
+  function deleteCardComment(id: number): void {
     setCardInfo(pS => {
       pS.comments = pS.comments.filter(value => value.id !== id);
       return {...pS};
@@ -68,19 +68,20 @@ export const ColumnCard: React.FC<Props> = (props) => {
       <ColCard onContextMenu={() => {
         setHover(prevState => !prevState)
       }}>
-        <CardContent style={{color: changeNameState ? "white" : "grey"}} onClick={() => {
-          setPopupState(prevState => !prevState);
-        }} empty={cardInfo.comments.length === 0}>
+        <CardContent style={{color: changeNameState ? "white" : "grey", display: changeNameState ? "none" : "block"}}
+                     onClick={() => {
+                       setPopupState(prevState => !prevState);
+                     }} empty={cardInfo.comments.length === 0}>
           {cardInfo.name}
         </CardContent>
+        {changeNameState ? <NameInput value={cardInfo.name} onChange={changeCardName} onBlur={() => {
+          setChangeNameState(prevState => !prevState);
+        }} placeholder={"Enter new name"}/> : null}
         <EditCardButton onClick={() => {
           setChangeNameState(prevState => !prevState);
         }} empty={cardInfo.comments.length === 0}>
           <FontAwesomeIcon icon={faEdit}/>
         </EditCardButton>
-        {changeNameState ? <NameInput value={cardInfo.name} onChange={changeCardName} onBlur={() => {
-          setChangeNameState(prevState => !prevState);
-        }} placeholder={"Enter new name"}/> : null}
         {cardInfo.comments.length !== 0 ?
           <CardComments>
             <FontAwesomeIcon icon={faComment}/> : {cardInfo.comments.length}

@@ -37,8 +37,8 @@ export const EditCardButton = styledComponentsTS<CardContentProps>(styled.div)`
 `
 
 export const NameInput = styled.input`
-    width: 190px;
-    margin: -25px 0 5px 0;
+    width: 170px;
+    margin: 3px 0 0 0;
 `
 
 export const Comments = styled.div`

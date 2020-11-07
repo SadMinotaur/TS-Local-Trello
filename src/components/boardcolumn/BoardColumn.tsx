@@ -56,7 +56,7 @@ export const BoardColumn: React.FC<Props> = (props) => {
     localStorage.setItem(props.name, JSON.stringify(column));
   }
 
-  function deleteCard(i: number) {
+  function deleteCard(i: number): void {
     setCards(prevState => {
       return prevState.filter(value => value.key !== i.toString());
     })

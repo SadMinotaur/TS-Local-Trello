@@ -7,7 +7,7 @@ import {Header} from "./components/header/";
 import {MainComponent} from "./components/mainblock";
 import {LoginPopup} from "./components/loginpopup";
 
-localStorage.clear()
+// localStorage.clear()
 
 if (localStorage.getItem("Column0") === null) {
   localStorage.setItem("Column0", "{\"name\":\"TODO\",\"cards\":[]}");

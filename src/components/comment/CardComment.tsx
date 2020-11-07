@@ -17,7 +17,7 @@ export const CardComment: React.FC<Props> = (props) => {
   const [nameValue, setNameValue] = useState(props.comment.content);
 
   return (<div>
-    {nameState ? null : <UserComment onClick={event => setNameState(prevState => !prevState)}
+    {nameState ? null : <UserComment onClick={() => setNameState(prevState => !prevState)}
                                      key={props.comment.id}> {props.comment.author} : {nameValue}</UserComment>}
     {nameState ?
       <CommentInput value={nameValue} onChange={event => setNameValue(event.target.value)} onBlur={event => {
