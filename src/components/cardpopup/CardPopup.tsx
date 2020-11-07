@@ -34,11 +34,8 @@ export const CardPopup: React.FC<Props> = (props) => {
   const [newCommentValue, setCommentValue] = useState("");
 
   props.cardInfo.comments.forEach((value, i) => {
-    //TODO: Make prettier
-    cardComments[i] =
-      <CardComment setCommentsArray={setCommentsArray} changeCardComment={props.changeCardComment}
-                   deleteCardComment={props.deleteCardComment} key={i}
-                   comment={value}/>;
+    cardComments[i] = <CardComment setCommentsArray={setCommentsArray} changeCardComment={props.changeCardComment}
+                                   deleteCardComment={props.deleteCardComment} key={i} comment={value}/>;
   });
 
   return (

@@ -49,10 +49,12 @@ export const BoardColumn: React.FC<Props> = (props) => {
   }
 
   function deleteCard(i: number) {
+    //add normal removal
     setCards(prevState => {
       prevState.splice(i, 1, null);
-      return prevState;
+      return [...prevState];
     })
+    localStorage.setItem(props.name, JSON.stringify(column));
   }
 
   return (<ColumnsContainer>

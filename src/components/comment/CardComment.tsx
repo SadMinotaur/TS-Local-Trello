@@ -26,14 +26,8 @@ export const CardComment: React.FC<Props> = (props) => {
       }}/> : null}
     {nameState ? null : <UserCommentDelete onClick={() => {
       props.setCommentsArray((prevState: any[]) => {
-        prevState.forEach((value, i) => {
-          if (value.key === props.comment.id.toString()) {
-            props.deleteCardComment(i);
-            prevState.splice(i, 1);
-            return [...prevState];
-          }
-        });
-        return prevState;
+        props.deleteCardComment(props.comment.id);
+        return prevState.filter(value => value.key !== props.comment.id.toString());
       });
     }}>
       <FontAwesomeIcon icon={faTimes}/>

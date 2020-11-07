@@ -30,7 +30,6 @@ export const ColumnCard: React.FC<Props> = (props) => {
 
   //TODO: Use another hook
   useEffect(() => {
-    console.log("here")
     props.saveCardState(cardInfo, props.index);
   });
 
@@ -58,18 +57,18 @@ export const ColumnCard: React.FC<Props> = (props) => {
     setCardInfo(pS => ({...pS, comments: pS.comments.concat(comment)}));
   }
 
-  //TODO: Fix this
   function deleteCardComment(id: number) {
     setCardInfo(pS => {
-      console.log(pS.comments.splice(id, 1));
-      console.log(pS);
+      pS.comments = pS.comments.filter(value => value.id !== id);
       return {...pS};
     });
   }
 
   return (
     <CardContainer>
-      <ColCard>
+      <ColCard onContextMenu={event => {
+        setHover(prevState => !prevState)
+      }}>
         <CardContent style={{color: changeNameState ? "white" : "grey"}} onClick={() => {
           setPopupState(prevState => !prevState);
         }} empty={cardInfo.comments.length === 0}>
@@ -87,7 +86,7 @@ export const ColumnCard: React.FC<Props> = (props) => {
           <CardComments>
             <FontAwesomeIcon icon={faComment}/> : {cardInfo.comments.length}
           </CardComments> : null}
-        {hover ? <CardComments>
+        {hover ? <CardComments onClick={() => props.deleteCard(props.index)}>
           <FontAwesomeIcon icon={faTimes}/>
         </CardComments> : null}
       </ColCard>
