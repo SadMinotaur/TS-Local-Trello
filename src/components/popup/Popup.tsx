@@ -16,7 +16,8 @@ export const Popup: React.FC<Props> = (props) => {
       <CardPopup height={props.height} width={props.width}
                  display={props.popupState}>{props.setPopupState !== undefined ?
         <ClosePopup width={props.width} style={{display: props.popupState ? "block" : "none"}}
-                    onClick={() => props.setPopupState?.((prevState: any) => !prevState)}>x</ClosePopup> : null}{props.popupContent}
+                    onClick={() => props.setPopupState?.((prevState: any) => !prevState)}>x</ClosePopup> : null}
+        {props.popupContent}
       </CardPopup>
     </CardPopupBack>
   )

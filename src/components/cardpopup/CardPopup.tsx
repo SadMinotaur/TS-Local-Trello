@@ -27,7 +27,6 @@ interface Props {
 export const CardPopup: React.FC<Props> = (props) => {
 
   const cardComments: object[] = Array(props.cardInfo.comments.length);
-  let cardCount: number = cardComments.length - 1;
 
   const [commentsArray, setCommentsArray] = useState(cardComments);
   const [changeNamePopup, setChangeNamePopup] = useState(false);
@@ -59,9 +58,9 @@ export const CardPopup: React.FC<Props> = (props) => {
         <CommentsInputContainer>
           <CommentsInput value={newCommentValue} onChange={event => setCommentValue(event.target.value)}/>
           <button onClick={() => {
-            cardCount++;
+            if (newCommentValue === "") return;
             props.addCardComment({
-              id: cardCount,
+              id: cardComments.length,
               author: localStorage.getItem("user") as string,
               content: newCommentValue
             });
@@ -69,10 +68,10 @@ export const CardPopup: React.FC<Props> = (props) => {
               return prevState.concat(
                 <CardComment changeCardComment={props.changeCardComment} setCommentsArray={setCommentsArray}
                              deleteCardComment={props.deleteCardComment} comment={{
-                  id: cardCount,
+                  id: cardComments.length,
                   author: localStorage.getItem("user") as string,
                   content: newCommentValue
-                }} key={cardCount}/>);
+                }} key={cardComments.length}/>);
             });
           }} className={"btn primary"}>Send
           </button>

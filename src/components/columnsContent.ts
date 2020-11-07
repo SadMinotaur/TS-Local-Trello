@@ -4,6 +4,7 @@ export interface ColumnsContent {
 }
 
 export interface Card {
+  id: number;
   name: string;
   author: string;
   desc: string;

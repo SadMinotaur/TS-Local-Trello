@@ -28,7 +28,6 @@ export const ColumnCard: React.FC<Props> = (props) => {
   const [changeNameState, setChangeNameState] = useState(false);
   const [hover, setHover] = useState(false);
 
-  //TODO: Use another hook
   useEffect(() => {
     props.saveCardState(cardInfo, props.index);
   });
@@ -39,9 +38,9 @@ export const ColumnCard: React.FC<Props> = (props) => {
 
   function changeCardComment(i: number, event: React.ChangeEvent<HTMLInputElement>) {
     setCardInfo(pS => {
-      pS.comments.forEach(value => {
+      pS.comments.forEach((value, index) => {
         if (value.id === i) {
-          pS.comments[i].content = event.target.value;
+          pS.comments[index].content = event.target.value;
           return {...pS}
         }
       })

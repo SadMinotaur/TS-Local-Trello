@@ -30,10 +30,17 @@ export const BoardColumn: React.FC<Props> = (props) => {
   }
 
   function saveNewCard(): void {
-    const card = {name: cardInput, author: localStorage.getItem("user"), comments: [], desc: ""} as Card;
+    const card: Card = {
+      id: column.cards.length,
+      name: cardInput,
+      author: localStorage.getItem("user"),
+      comments: [],
+      desc: ""
+    } as Card;
     column.cards.push(card);
     setCards(prevState => {
-      return prevState.concat(<ColumnCard deleteCard={deleteCard} index={colCards.length} saveCardState={saveCardChanges} card={card}
+      return prevState.concat(<ColumnCard deleteCard={deleteCard} index={colCards.length}
+                                          saveCardState={saveCardChanges} card={card}
                                           key={colCards.length}/>);
     });
     localStorage.setItem(props.name, JSON.stringify(column));
@@ -42,18 +49,18 @@ export const BoardColumn: React.FC<Props> = (props) => {
   function saveCardChanges(card: Card, index: number): void {
     column.cards[index] = card;
     setCards(prevState => {
-      prevState[index] = <ColumnCard deleteCard={deleteCard} index={index} saveCardState={saveCardChanges} card={card} key={index}/>
+      prevState[index] =
+        <ColumnCard deleteCard={deleteCard} index={index} saveCardState={saveCardChanges} card={card} key={index}/>
       return prevState;
     });
     localStorage.setItem(props.name, JSON.stringify(column));
   }
 
   function deleteCard(i: number) {
-    //add normal removal
     setCards(prevState => {
-      prevState.splice(i, 1, null);
-      return [...prevState];
+      return prevState.filter(value => value.key !== i.toString());
     })
+    column.cards = column.cards.filter(value => value.id !== i);
     localStorage.setItem(props.name, JSON.stringify(column));
   }
 
