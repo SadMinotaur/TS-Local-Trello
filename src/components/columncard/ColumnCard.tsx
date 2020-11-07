@@ -65,7 +65,7 @@ export const ColumnCard: React.FC<Props> = (props) => {
 
   return (
     <CardContainer>
-      <ColCard onContextMenu={event => {
+      <ColCard onContextMenu={() => {
         setHover(prevState => !prevState)
       }}>
         <CardContent style={{color: changeNameState ? "white" : "grey"}} onClick={() => {
@@ -80,7 +80,7 @@ export const ColumnCard: React.FC<Props> = (props) => {
         </EditCardButton>
         {changeNameState ? <NameInput value={cardInfo.name} onChange={changeCardName} onBlur={() => {
           setChangeNameState(prevState => !prevState);
-        }} placeholder={"Enter new name"} style={{display: changeNameState ? "block" : "none"}}/> : null}
+        }} placeholder={"Enter new name"}/> : null}
         {cardInfo.comments.length !== 0 ?
           <CardComments>
             <FontAwesomeIcon icon={faComment}/> : {cardInfo.comments.length}

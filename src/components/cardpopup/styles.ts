@@ -34,11 +34,13 @@ export const ColCard = styled.div`
 
 interface CardContentProps {
   empty: boolean;
+  curr: boolean;
 }
 
 export const CardContent = styledComponentsTS<CardContentProps>(styled.div)`
     text-indent: 10px;
     padding: ${props => props.empty ? '7px 0 7px 0' : '7px 0 0 0'};
+    color: ${props => props.curr ? 'white' : 'grey'};
     font-size: 15px;
     line-height: 15px;
 `

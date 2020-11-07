@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   CardContent,
   CommentsArray,
@@ -37,17 +37,28 @@ export const CardPopup: React.FC<Props> = (props) => {
                                    deleteCardComment={props.deleteCardComment} key={i} comment={value}/>;
   });
 
+  function handleEsc(event: { keyCode: number; }) {
+    if (event.keyCode === 27) props.setPopupState((ps: any) => !ps);
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEsc);
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  });
+
   return (
     <Popup height={300} width={350} popupState={props.popupState} setPopupState={props.setPopupState} popupContent={
       <PopupContent>
         <CardContent onClick={() => {
           setChangeNamePopup(prevState => !prevState);
-        }} empty={props.cardInfo.comments.length <= 0} style={{color: changeNamePopup ? "white" : "grey"}}>
+        }} empty={props.cardInfo.comments.length <= 0} curr={changeNamePopup}>
           {props.cardInfo.name}
         </CardContent>
         {changeNamePopup ? <NameInput value={props.cardInfo.name} onChange={props.changeCardName} onBlur={() => {
           setChangeNamePopup(prevState => !prevState);
-        }} placeholder={"Enter new name"} style={{display: changeNamePopup ? "block" : "none"}}/> : null}
+        }} placeholder={"Enter new name"}/> : null}
         <PopupTitle>
           Description
         </PopupTitle>
