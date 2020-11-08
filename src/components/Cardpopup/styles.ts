@@ -1,13 +1,9 @@
 import styled from "styled-components";
-import styledComponentsTS from "styled-components-ts";
 
 export const PopupContent = styled.div`
     width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    height: 100%; 
+    padding: 30px
 `
 
 export const PopupTitle = styled.div`
@@ -18,8 +14,8 @@ export const PopupTitle = styled.div`
 
 export const PopupDesc = styled.input`
     height: 50px;
-    width: 200px;
-    margin: 10px 0 10px 0;
+    width: 85%;
+    margin: 10px 0 10px 0px;
 `
 
 export const ColCard = styled.div`
@@ -31,17 +27,9 @@ export const ColCard = styled.div`
     text-indent: 10px;
     line-height: 25px;
 `
-
-interface CardContentProps {
-  empty: boolean;
-  curr: boolean;
-}
-
-export const CardContent = styledComponentsTS<CardContentProps>(styled.div)`
-    text-indent: 10px;
-    padding: ${props => props.empty ? '7px 0 7px 0' : '7px 0 0 0'};
-    color: ${props => props.curr ? 'white' : 'grey'};
-    font-size: 15px;
+export const CardContent = styled.div`
+    margin: 0 0 10px 0;
+    font-size: 22px;
     line-height: 15px;
 `
 
@@ -50,16 +38,37 @@ export const NameInput = styled.input`
     margin: -25px 0 5px 0;
 `
 
-export const CommentsArray = styled.div`
-    margin: 10px 0 0 0;
-    font-weight: bold;
-    line-height: 30px;
+export const CommentsInput = styled.input`
+    flex: 2;
+    margin: 0 0 0 10px;
+`
+
+export const CommentsBorder = styled.div`
+    width: 86%;
+    border: 0.2px grey solid;
+    border-radius: 2px
 `
 
 export const CommentsInputContainer = styled.div`
+    width: 100%;
     display: flex;
 `
 
-export const CommentsInput = styled.input`
-    width: 220px;
+export const CommentsInputButton = styled.button`
+    height: 30px;
+    color: grey;
+    background-color: white;
+    border-radius: 2px;
+    width: 100px;
+    border: 0;
+`
+
+export const CommentsArray = styled.div`
+    margin: 10px 0 0 0;
+    width: 86%;
+    font-weight: bold;
+    line-height: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center
 `

@@ -16,11 +16,12 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   card: Card;
+  column: string;
   saveCardState: (card: Card, index: number) => void;
   deleteCard: (i: number) => void;
 }
 
-export const ColumnCard: React.FC<Props> = ({ card, saveCardState, deleteCard }) => {
+export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, deleteCard }) => {
   const { id, name, author, desc, comments } = card;
 
   const [cardName, setCardName] = useState<string>(name);
@@ -64,6 +65,7 @@ export const ColumnCard: React.FC<Props> = ({ card, saveCardState, deleteCard })
     {popupState ? <CardPopup
       setPopupState={setPopupState}
       cardInfo={{ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }}
+      column={column}
       changeCardName={setCardName}
       changeCardDecs={setCardDesc}
       setCardsComments={setComments} /> : null}

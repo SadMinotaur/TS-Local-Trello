@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   CardContent,
   CommentsArray,
-  CommentsInput, CommentsInputContainer,
+  CommentsBorder,
+  CommentsInput, CommentsInputButton, CommentsInputContainer,
   NameInput,
   PopupContent,
   PopupDesc,
@@ -14,18 +15,20 @@ import { CardComment } from "../Comment";
 
 interface Props {
   cardInfo: Card;
+  column: string;
   setPopupState: (prevState: boolean) => void;
   changeCardName: (v: string) => void;
   changeCardDecs: (v: string) => void;
   setCardsComments: (comms: Comments[]) => void;
 }
 
-export const CardPopup: React.FC<Props> = ({ cardInfo, setPopupState, changeCardName, changeCardDecs, setCardsComments }) => {
+export const CardPopup: React.FC<Props> = ({ cardInfo, column, setPopupState, changeCardName, changeCardDecs, setCardsComments }) => {
 
   const [name, setName] = useState<string>(cardInfo.name);
   const [decs, setDesc] = useState<string>(cardInfo.desc);
   const [commentsArray, setCommentsArray] = useState<Comments[]>(cardInfo.comments);
   const [changeNamePopup, setChangeNamePopup] = useState<boolean>(false);
+  const [addCommentState, setAddCommentState] = useState<boolean>(false);
   const [newCommentValue, setCommentValue] = useState<string>("");
 
   function changeCardComment(i: number, event: React.ChangeEvent<HTMLInputElement>) {
@@ -51,6 +54,7 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, setPopupState, changeCard
   }
 
   function saveComment() {
+    setAddCommentState(false);
     if (newCommentValue.trim() === "") return;
     const c: Comments = {
       id: commentsArray.length,
@@ -71,20 +75,24 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, setPopupState, changeCard
     return () => { window.removeEventListener('keydown', handleEsc); };
   });
 
-  return <Popup height={500} width={768} setPopupState={setPopupState}
+  return <Popup height={"fit-content"} width={"768px"} setPopupState={setPopupState}
     popupContent={
       <PopupContent>
-        <CardContent
-          onClick={() => setChangeNamePopup(ps => !ps)}
-          empty={commentsArray.length <= 0}
-          curr={changeNamePopup}>
+        {!changeNamePopup && <CardContent
+          onClick={() => setChangeNamePopup(ps => !ps)}>
           {name}
-        </CardContent>
-        {changeNamePopup ? <NameInput
+        </CardContent>}
+        {changeNamePopup && <NameInput
           value={name}
           onChange={changeName}
           onBlur={() => setChangeNamePopup(ps => !ps)}
-        /> : null}
+        />}
+        <PopupTitle>
+          In column: {column}
+        </PopupTitle>
+        <PopupTitle>
+          Author: {cardInfo.author}
+        </PopupTitle>
         <PopupTitle>
           Description
         </PopupTitle>
@@ -96,16 +104,25 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, setPopupState, changeCard
             changeCardDecs(v);
           }}
         />
-        <PopupTitle>Comments</PopupTitle>
-        <CommentsInputContainer>
-          <CommentsInput
-            value={newCommentValue}
-            onChange={event => setCommentValue(event.target.value)}
-          />
-          <button onClick={saveComment} className={"btn primary"}>
-            Send
-          </button>
-        </CommentsInputContainer>
+        <PopupTitle>
+          Comments
+        </PopupTitle>
+        <CommentsBorder>
+          <CommentsInputContainer>
+            <PopupTitle>
+              Author: {cardInfo.author}
+            </PopupTitle>
+            <CommentsInput
+              onClick={() => setAddCommentState(true)}
+              placeholder={"Write new comment"}
+              value={newCommentValue}
+              onChange={event => setCommentValue(event.target.value)}
+            />
+          </CommentsInputContainer>
+          {addCommentState && <CommentsInputButton onClick={saveComment}>
+            Save
+          </CommentsInputButton>}
+        </CommentsBorder>
         <CommentsArray>
           {commentsArray.map(({ id, author, content }) => <CardComment
             index={id}

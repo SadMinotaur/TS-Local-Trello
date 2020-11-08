@@ -16,7 +16,7 @@ export const LoginPopup: React.FC<Props> = ({ togglePopup }) => {
     localStorage.setItem("user", inputState);
   }
 
-  return <Popup height={300} width={350} popupContent={
+  return <Popup height={"180px"} width={"350px"} popupContent={
     <PopupContent onKeyDown={event => {
       if (event.key === 'Enter') changeDisplayState()
     }}>
@@ -32,7 +32,7 @@ export const LoginPopup: React.FC<Props> = ({ togglePopup }) => {
       <div className="modal-footer">
         <button onClick={changeDisplayState} className="btn primary">
           Done
-          </button>
+        </button>
       </div>
     </PopupContent>
   }>

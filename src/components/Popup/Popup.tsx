@@ -3,20 +3,23 @@ import { CardPopupBack } from "./styles";
 import { CardPopup, ClosePopup } from "./styles";
 
 interface Props {
-  width: number;
-  height: number;
+  width: string;
+  height: string;
   setPopupState?: (state: boolean) => void;
   popupContent: object;
 }
 
 export const Popup: React.FC<Props> = (props) => {
+
+  const buttonPos: number = Number(props.width.slice(0, props.width.length - 2)) - 10;
+
   return (
     <CardPopupBack>
       <CardPopup
         height={props.height}
         width={props.width}>
         {props.setPopupState !== undefined ? <ClosePopup
-          width={props.width}
+          width={buttonPos}
           onClick={() => props.setPopupState?.(false)}>
           x
         </ClosePopup> : null}

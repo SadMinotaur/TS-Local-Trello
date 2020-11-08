@@ -75,6 +75,7 @@ export const BoardColumn: React.FC<Props> = (props) => {
       }}
     /> : null}
     {colCards.map((card) => <ColumnCard
+      column={name}
       card={card}
       key={card.id}
       deleteCard={deleteCard}
