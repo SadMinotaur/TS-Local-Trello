@@ -18,10 +18,9 @@ interface PopupProps {
 
 export const CardPopup = styledComponentsTS<PopupProps>(styled.div)`
   position: absolute;
+  margin: 0 auto 100px auto; 
   left: 0; 
-  right: 0; 
-  margin-left: auto; 
-  margin-right: auto;
+  right: 0;
   top: 35px;
   height: ${props => props.height};
   width: ${props => props.width};

@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const PopupContent = styled.div`
     width: 100%;
     height: 100%; 
-    padding: 30px
+    padding: 30px;
+    box-sizing: border-box;
 `
 
 export const PopupText = styled.div`
@@ -13,8 +14,8 @@ export const PopupText = styled.div`
 `
 
 export const PopupDesc = styled.textarea`
-    height: 50px;
-    width: 85.5%;
+    height: 60px;
+    width: 100%;
     margin: 10px 0 10px 0px;
     border-radius: 2px;
     border: 0.2px solid grey;
@@ -22,15 +23,14 @@ export const PopupDesc = styled.textarea`
     resize: none;
     overflow: hidden;
 `
-export const PopupDescDiv = styled.textarea`
-    height: 50px;
-    width: 85.5%;
+export const PopupDescDiv = styled.div`
+    height: 60px;
+    width: 100%;
     margin: 10px 0 10px 0px;
     border-radius: 2px;
     border: 0.2px solid grey;
     overflow-wrap: break-word;
-    resize: none;
-    overflow: hidden;
+    overflow: scroll;
 `
 
 export const ColCard = styled.div`
@@ -53,20 +53,20 @@ export const NameInput = styled.input`
     margin: -25px 0 5px 0;
 `
 
+export const CommentsBorder = styled.div`
+    width: 100%;
+    border: 0.2px grey solid;
+    border-radius: 2px
+`
+
 export const CommentsInput = styled.textarea`
-    width: 90%;
+    width: 95%;
     margin: 5px;
     border-radius: 2px;
     border: 0;
     overflow-wrap: break-word;
     resize: none;
     overflow: hidden;
-`
-
-export const CommentsBorder = styled.div`
-    width: 86%;
-    border: 0.2px grey solid;
-    border-radius: 2px
 `
 
 export const CommentsInputButton = styled.button`
@@ -80,6 +80,6 @@ export const CommentsInputButton = styled.button`
 
 export const CommentsArray = styled.div`
     margin: 10px 0 0 0;
-    width: 85%;
+    width: 100%;
     font-weight: bold;
 `

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   CardComments,
   CardContainer,
@@ -13,7 +13,6 @@ import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
 import { CardPopup } from "../Cardpopup";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-
 interface Props {
   card: Card;
   column: string;
@@ -31,11 +30,18 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
   const [changeNameState, setChangeNameState] = useState<boolean>(false);
   const [hover, setHover] = useState<boolean>(false);
 
+  const isFirstRun = useRef<boolean>(true);
+
   useEffect(() => {
-    saveCardState({ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }, id);
-    return () => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+    } else {
+      // Parent is rendering new card on saveCardState call.
+      if (name !== cardName || desc !== cardDesc || comments !== cardComments) {
+        saveCardState({ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }, id);
+      }
     }
-  }, [id, cardName, author, cardDesc, cardComments, saveCardState]);
+  }, [id, cardName, author, cardDesc, cardComments, saveCardState, name, desc, comments]);
 
   return <CardContainer>
     <ColCard onContextMenu={e => {
@@ -48,6 +54,7 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
         {cardName}
       </CardContent>}
       {changeNameState && <NameInput
+        type="text"
         value={cardName}
         onChange={ev => {
           const v: string = ev.target.value;
@@ -72,8 +79,8 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
       cardInfo={{ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }}
       column={column}
       changeCardName={setCardName}
-      changeCardDecs={setCardDesc}
-      setCardsComments={setComments}
+      changeCardDesc={setCardDesc}
+      setParentCardsComments={setComments}
     />}
   </CardContainer>
 }

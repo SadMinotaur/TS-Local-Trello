@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CommentInput, UserComment, UserCommentDelete } from "./styles";
+import { CommentInput, UserComment, UserCommentDelete, CommentEdit } from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
@@ -22,20 +22,17 @@ export const CardComment: React.FC<Props> = ({ content, author, index, deleteCar
       key={index}>
       {author} : {nameValue}
     </UserComment>}
-    {nameState &&
-      <div>
-        <CommentInput
-          value={nameValue}
-          onChange={event => setNameValue(event.target.value)}
-          onBlur={event => {
-            changeCardComment(index, event);
-            setNameState(ps => !ps)
-          }} />
-        <UserCommentDelete onClick={() => {
-          deleteCardComment(index);
-        }}>
-          <FontAwesomeIcon icon={faTimes} />
-        </UserCommentDelete>
-      </div>}
+    {nameState && <CommentEdit>
+      <CommentInput
+        value={nameValue}
+        onChange={event => setNameValue(event.target.value)}
+        onBlur={event => {
+          changeCardComment(index, event);
+          setNameState(ps => !ps);
+        }} />
+      <UserCommentDelete onClick={() => deleteCardComment(index)}>
+        <FontAwesomeIcon icon={faTimes} />
+      </UserCommentDelete>
+    </CommentEdit>}
   </div>
 }

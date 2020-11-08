@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 export const UserComment = styled.div`
-  padding: 2%;
+  box-sizing: border-box;
   word-wrap: break-word;
-  text-indent: 10px;
-  margin: 3px 0 0 0;
   line-height: 30px;
-  width: 97%;
+  padding: 5px;
+  margin: 3px 0 0 0;
+  width: 100%;
   border: grey 1px solid;
   border-radius: 2px;
   &:hover {
@@ -14,12 +14,16 @@ export const UserComment = styled.div`
   }
 `
 
-export const CommentInput = styled.textarea`
-  margin: 3px 0 0 0 ;
+export const CommentEdit = styled.div`
   border: grey 1px solid;
   border-radius: 2px;
+`
+
+export const CommentInput = styled.textarea`
+  margin: 3px 0 0 3px ;
+  border: 0;
   line-height: 30px;
-  width: 100%;
+  width: 99%;
   resize: none;
 `
 
@@ -27,8 +31,6 @@ export const UserCommentDelete = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  margin: -28px 0 0 79%;
   background: #cbcaca;
   height: 20px;
   width: 20px;

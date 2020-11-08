@@ -7,6 +7,6 @@ export const ColumnsContainer = styled.div`
     justify-content: space-evenly;
     background-color: #adadbd;
     @media (max-width: 1100px) {
-            justify-content: start;
+      justify-content: start;
     }
 `
