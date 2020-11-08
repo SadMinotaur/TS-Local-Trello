@@ -14,10 +14,13 @@ export const UserComment = styled.div`
   }
 `
 
-export const CommentInput = styled.input`
-  margin: 3px;
+export const CommentInput = styled.textarea`
+  margin: 3px 0 0 0 ;
+  border: grey 1px solid;
+  border-radius: 2px;
   line-height: 30px;
-  width: 98%;
+  width: 100%;
+  resize: none;
 `
 
 export const UserCommentDelete = styled.div`

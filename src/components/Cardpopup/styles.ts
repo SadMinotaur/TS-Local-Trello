@@ -22,6 +22,16 @@ export const PopupDesc = styled.textarea`
     resize: none;
     overflow: hidden;
 `
+export const PopupDescDiv = styled.textarea`
+    height: 50px;
+    width: 85.5%;
+    margin: 10px 0 10px 0px;
+    border-radius: 2px;
+    border: 0.2px solid grey;
+    overflow-wrap: break-word;
+    resize: none;
+    overflow: hidden;
+`
 
 export const ColCard = styled.div`
     border-radius: 5px;

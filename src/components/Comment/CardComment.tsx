@@ -8,7 +8,7 @@ interface Props {
   author: string;
   index: number;
   deleteCardComment: (key: number) => void;
-  changeCardComment: (i: number, event: React.ChangeEvent<HTMLInputElement>) => void;
+  changeCardComment: (i: number, event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 export const CardComment: React.FC<Props> = ({ content, author, index, deleteCardComment, changeCardComment }) => {

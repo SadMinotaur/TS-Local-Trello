@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  CardName,
-  CommentsArray,
-  CommentsBorder,
-  CommentsInput, CommentsInputButton,
-  NameInput,
-  PopupContent,
-  PopupDesc,
-  PopupText
-} from "./styles";
+import { CardName, CommentsArray, CommentsBorder, PopupDescDiv, CommentsInput, CommentsInputButton, NameInput, PopupContent, PopupDesc, PopupText } from "./styles";
 import { Popup } from "../Popup";
 import { Card, Comments } from "../../utils/ColumnsContent";
 import { CardComment } from "../Comment";
@@ -29,9 +20,10 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, column, setPopupState, ch
   const [commentsArray, setCommentsArray] = useState<Comments[]>(cardInfo.comments);
   const [changeNamePopup, setChangeNamePopup] = useState<boolean>(false);
   const [addCommentState, setAddCommentState] = useState<boolean>(false);
+  const [descState, setDescState] = useState<boolean>(false);
   const [newCommentValue, setCommentValue] = useState<string>("");
 
-  function changeCardComment(i: number, event: React.ChangeEvent<HTMLInputElement>) {
+  function changeCardComment(i: number, event: React.ChangeEvent<HTMLTextAreaElement>) {
     const content: string = event.target.value;
     const copy: Comments[] = [...commentsArray];
     const elIndex: number = copy.findIndex(v => v.id === i);
@@ -96,14 +88,17 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, column, setPopupState, ch
         <PopupText>
           Description
         </PopupText>
-        <PopupDesc
+        {!descState && <PopupDescDiv onClick={() => setDescState(ps => !ps)}>
+          {decs}
+        </PopupDescDiv>}
+        {descState && <PopupDesc
           value={decs}
+          onBlur={() => { setDescState(ps => !ps) }}
           onChange={ev => {
             const v: string = ev.target.value;
-            setDesc(v)
+            setDesc(v);
             changeCardDecs(v);
-          }}
-        />
+          }} />}
         <PopupText>
           Comments
         </PopupText>
