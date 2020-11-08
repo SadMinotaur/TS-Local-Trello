@@ -6,16 +6,24 @@ interface Props {
   width: number;
   height: number;
   popupState: boolean;
-  setPopupState?: (prevState: boolean) => void;
+  setPopupState?: (state: boolean) => void;
   popupContent: object;
 }
 
 export const Popup: React.FC<Props> = (props) => {
   return (
     <CardPopupBack style={{ display: props.popupState ? "block" : "none" }}>
-      <CardPopup height={props.height} width={props.width}>{props.setPopupState !== undefined ?
-        <ClosePopup width={props.width} style={{ display: props.popupState ? "block" : "none" }}
-          onClick={() => props.setPopupState?.(false)}>x</ClosePopup> : null}
+      <CardPopup
+        height={props.height}
+        width={props.width}>
+        {props.setPopupState !== undefined ?
+          <ClosePopup
+            width={props.width}
+            style={{ display: props.popupState ? "block" : "none" }}
+            onClick={() => props.setPopupState?.(false)}>
+            x
+          </ClosePopup>
+          : null}
         {props.popupContent}
       </CardPopup>
     </CardPopupBack>

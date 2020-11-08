@@ -7,32 +7,34 @@ interface Props {
   content: string;
   author: string;
   index: number;
-  setCommentsArray: (ps: any) => void;
   deleteCardComment: (key: number) => void;
   changeCardComment: (i: number, event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const CardComment: React.FC<Props> = ({ content, author, index, deleteCardComment, changeCardComment, setCommentsArray }) => {
+export const CardComment: React.FC<Props> = ({ content, author, index, deleteCardComment, changeCardComment }) => {
 
   const [nameState, setNameState] = useState<boolean>(false);
   const [nameValue, setNameValue] = useState<string>(content);
 
   return <div>
     {nameState ? null :
-      <UserComment onClick={() => setNameState(prevState => !prevState)} key={index}>
+      <UserComment onClick={() => setNameState(ps => !ps)} key={index}>
         {author} : {nameValue}
       </UserComment>}
     {nameState ?
-      <CommentInput value={nameValue} onChange={event => setNameValue(event.target.value)} onBlur={event => {
-        changeCardComment(index, event);
-        setNameState(prevState => !prevState)
-      }} /> : null}
-    {nameState ? null : <UserCommentDelete onClick={() => {
-      setCommentsArray((ps: any[]) => ps.filter(v => v.id !== index))
-      deleteCardComment(index);
-    }}>
-      <FontAwesomeIcon icon={faTimes} />
-    </UserCommentDelete>
-    }
-  </div >
+      <div>
+        <CommentInput
+          value={nameValue}
+          onChange={event => setNameValue(event.target.value)}
+          onBlur={event => {
+            changeCardComment(index, event);
+            setNameState(ps => !ps)
+          }} />
+        <UserCommentDelete onClick={() => {
+          deleteCardComment(index);
+        }}>
+          <FontAwesomeIcon icon={faTimes} />
+        </UserCommentDelete>
+      </div> : null}
+  </div>
 }

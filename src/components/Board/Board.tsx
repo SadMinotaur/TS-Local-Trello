@@ -3,10 +3,10 @@ import { BoardColumn } from "../Boardcolumn";
 import { ColumnsContainer } from "./styles";
 
 export const Board: React.FC = () => {
-  return (<ColumnsContainer>
+  return <ColumnsContainer>
     <BoardColumn name={"Column0"} />
     <BoardColumn name={"Column1"} />
     <BoardColumn name={"Column2"} />
     <BoardColumn name={"Column3"} />
-  </ColumnsContainer>)
+  </ColumnsContainer>
 }

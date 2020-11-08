@@ -18,7 +18,7 @@ export const LoginPopup: React.FC<Props> = (props) => {
   }
 
   return (
-    <Popup height={300} width={850} popupState={display} popupContent={
+    <Popup height={300} width={350} popupState={display} popupContent={
       <PopupContent onKeyDown={event => {
         if (event.key === 'Enter') changeDisplayState()
       }}>

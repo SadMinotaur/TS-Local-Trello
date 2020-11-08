@@ -38,29 +38,8 @@ export const ColumnCard: React.FC<Props> = ({ card, saveCardState, deleteCard })
     setCardName(event.target.value);
   }
 
-  function changeCardComment(i: number, event: React.ChangeEvent<HTMLInputElement>): void {
-    setComments(ps => {
-      ps.forEach((value, index) => {
-        if (value.id === i) {
-          ps[index].content = event.target.value;
-          return { ...ps }
-        }
-      });
-      return { ...ps }
-    });
-  }
-
   function changeCardDecs(event: React.ChangeEvent<HTMLInputElement>): void {
     setCardDesc(event.target.value);
-  }
-
-  function addCardComment(comment: Comments): void {
-    setComments(ps => ps.concat(comment));
-  }
-
-  function deleteCardComment(id: number): void {
-    setComments(ps => ps.filter(v => v.id !== id));
-    console.log(cardComments);
   }
 
   return (
@@ -68,15 +47,21 @@ export const ColumnCard: React.FC<Props> = ({ card, saveCardState, deleteCard })
       <ColCard onContextMenu={() => {
         setHover(prevState => !prevState)
       }}>
-        <CardContent style={{ color: changeNameState ? "white" : "grey", display: changeNameState ? "none" : "block" }}
+        <CardContent style={{
+          color: changeNameState ? "white" : "grey",
+          display: changeNameState ? "none" : "block"
+        }}
           onClick={() => {
             setPopupState(prevState => !prevState);
           }} empty={cardComments.length === 0}>
           {cardName}
         </CardContent>
-        {changeNameState ? <NameInput value={cardName} onChange={changeCardName} onBlur={() => {
-          setChangeNameState(prevState => !prevState);
-        }} placeholder={"Enter new name"} /> : null}
+        {changeNameState ? <NameInput
+          value={cardName}
+          onChange={changeCardName}
+          onBlur={() => {
+            setChangeNameState(prevState => !prevState);
+          }} /> : null}
         <EditCardButton onClick={() => {
           setChangeNameState(prevState => !prevState);
         }} empty={cardComments.length === 0}>
@@ -90,12 +75,11 @@ export const ColumnCard: React.FC<Props> = ({ card, saveCardState, deleteCard })
           <FontAwesomeIcon icon={faTimes} />
         </CardComments> : null}
       </ColCard>
-      <CardPopup popupState={popupState} setPopupState={setPopupState} cardInfo={
-        { id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }
-      }
-        changeCardName={changeCardName} changeCardComment={changeCardComment} changeCardDecs={changeCardDecs}
-        deleteCardComment={deleteCardComment}
-        addCardComment={addCardComment} />
+      <CardPopup popupState={popupState} setPopupState={setPopupState}
+        cardInfo={{ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }}
+        changeCardName={changeCardName}
+        changeCardDecs={changeCardDecs}
+        setCardsComments={setComments} />
     </CardContainer>
   )
 }

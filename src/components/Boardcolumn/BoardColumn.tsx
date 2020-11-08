@@ -18,8 +18,8 @@ export const BoardColumn: React.FC<Props> = (props) => {
   const [newCardState, setNewCardState] = useState<boolean>(false);
   const [cardInput, setCardInput] = useState<string>("");
 
-  function store() {
-    localStorage.setItem(columnName, JSON.stringify({ name, colCards }));
+  function store(): void {
+    localStorage.setItem(columnName, JSON.stringify({ name: name, cards: colCards }));
   }
 
   function saveName(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -28,6 +28,7 @@ export const BoardColumn: React.FC<Props> = (props) => {
   }
 
   function saveNewCard(): void {
+    if (cardInput.trim() === "") return;
     const card: Card = {
       id: colCards.length,
       name: cardInput,
@@ -37,12 +38,14 @@ export const BoardColumn: React.FC<Props> = (props) => {
     } as Card;
     setCards(colCards.concat(card));
     store();
+    setCardInput("");
+    setNewCardState(prevState => !prevState);
   }
 
   function saveCardChanges(card: Card, index: number): void {
     setCards(ps => {
-      ps[index] = card;
-      return ps
+      ps[ps.findIndex(v => v.id === index)] = card;
+      return ps;
     });
     store();
   }
@@ -52,41 +55,55 @@ export const BoardColumn: React.FC<Props> = (props) => {
     store();
   }
 
-  return (<ColumnsContainer>
+  return <ColumnsContainer>
     <ColumnBorder>
-      {nameInputState ? null : <ColumnNameDiv
-        onClick={() => { setNameInputState(prevState => !prevState); }}>
-        {name}
-      </ColumnNameDiv>}
-      {nameInputState ? <ColumnNameInput value={name} type="text" onMouseOver={event => {
-        event.currentTarget.focus();
-      }} onChange={saveName} onBlur={() => {
-        setNameInputState(prevState => !prevState);
-      }} /> : null}
-      {colCards.map((card) => <ColumnCard card={card} key={card.id} deleteCard={deleteCard} saveCardState={saveCardChanges} />)}
-      {newCardState ? null : <ColumnAddCardDiv onClick={() => { setNewCardState(prevState => !prevState); }}>
-        Add new card </ColumnAddCardDiv>}
-      {newCardState ? <ColumnNameInput onMouseOver={event => {
-        event.currentTarget.focus();
-      }} value={cardInput} onChange={event => {
-        setCardInput(event.target.value);
-      }} placeholder="Add new card" /> : null}
-      {newCardState ? <ButtonDiv>
-        <button className="btn primary" onClick={() => {
-          if (cardInput === "") return;
-          saveNewCard();
-          setCardInput("");
-          setNewCardState(prevState => !prevState);
-        }}>
-          Add card
+      {nameInputState ? null :
+        <ColumnNameDiv onClick={() => { setNameInputState(prevState => !prevState); }}>
+          {name}
+        </ColumnNameDiv>}
+      {nameInputState ?
+        <ColumnNameInput
+          value={name}
+          type="text"
+          onMouseOver={event => {
+            event.currentTarget.focus();
+          }}
+          onChange={saveName}
+          onBlur={() => {
+            setNameInputState(prevState => !prevState);
+          }} />
+        : null}
+      {colCards.map((card) =>
+        <ColumnCard
+          card={card}
+          key={card.id}
+          deleteCard={deleteCard}
+          saveCardState={saveCardChanges} />)}
+      {newCardState ? null :
+        <ColumnAddCardDiv onClick={() => { setNewCardState(prevState => !prevState); }}>
+          Add new card
+        </ColumnAddCardDiv>}
+      {newCardState ?
+        <ColumnNameInput onMouseOver={event => {
+          event.currentTarget.focus();
+        }}
+          value={cardInput}
+          onChange={event => {
+            setCardInput(event.target.value);
+          }} placeholder="Add new card" />
+        : null}
+      {newCardState ?
+        <ButtonDiv>
+          <button className="btn primary" onClick={saveNewCard}>
+            Add card
           </button>
-        <button className="btn" onClick={() => {
-          setNewCardState(prevState => !prevState);
-        }}>
-          Cancel
+          <button className="btn" onClick={() => {
+            setNewCardState(prevState => !prevState);
+          }}>
+            Cancel
           </button>
-      </ButtonDiv> : null}
+        </ButtonDiv>
+        : null}
     </ColumnBorder>
   </ColumnsContainer>
-  )
 }
