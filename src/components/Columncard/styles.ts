@@ -40,18 +40,3 @@ export const NameInput = styled.input`
     width: 170px;
     margin: 3px 0 0 0;
 `
-
-export const Comments = styled.div`
-    margin: 10px 0 0 0;
-    font-weight: bold;
-    line-height: 30px;
-`
-
-export const CommentsInput = styled.input`
-    width: 220px;
-`
-
-export const UserComment = styled.div`
-    width: 220px;
-    border: grey 1px solid;
-`

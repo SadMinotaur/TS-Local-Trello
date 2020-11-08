@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { ColumnsContainer, ColumnNameInput, ColumnBorder, ColumnNameDiv, ColumnAddCardDiv, ButtonDiv } from "./styles";
-import { Card, ColumnsContent } from "../columnsContent";
+import { ColumnNameInput, ColumnBorder, ColumnNameDiv, ColumnAddCardDiv, ButtonDiv } from "./styles";
+import { Card, ColumnsContent } from "../../utils/ColumnsContent";
 import { ColumnCard } from "../Columncard";
+import { ColumnsContainer } from "../../common/types";
 
 interface Props {
   name: string;

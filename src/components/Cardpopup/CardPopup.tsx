@@ -9,7 +9,7 @@ import {
   PopupTitle
 } from "./styles";
 import { Popup } from "../Popup";
-import { Card, Comments } from "../columnsContent";
+import { Card, Comments } from "../../utils/ColumnsContent";
 import { CardComment } from "../Comment";
 
 interface Props {

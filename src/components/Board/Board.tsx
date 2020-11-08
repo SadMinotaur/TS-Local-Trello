@@ -1,6 +1,6 @@
 import React from 'react';
+import { ColumnsContainer } from '../../common/types';
 import { BoardColumn } from "../Boardcolumn";
-import { ColumnsContainer } from "./styles";
 
 export const Board: React.FC = () => {
   return <ColumnsContainer>

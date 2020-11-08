@@ -7,7 +7,7 @@ import {
   NameInput,
   EditCardButton
 } from "./styles";
-import { Card, Comments } from "../columnsContent";
+import { Card, Comments } from "../../utils/ColumnsContent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
