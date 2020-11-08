@@ -1,9 +1,12 @@
 import styled from "styled-components";
 
 export const UserComment = styled.div`
+  padding: 2%;
+  word-wrap: break-word;
   text-indent: 10px;
-  margin: 3px;
-  width: 350px;
+  margin: 3px 0 0 0;
+  line-height: 30px;
+  width: 97%;
   border: grey 1px solid;
   border-radius: 2px;
   &:hover {
@@ -13,8 +16,8 @@ export const UserComment = styled.div`
 
 export const CommentInput = styled.input`
   margin: 3px;
-  height: 30px;
-  width: 345px;
+  line-height: 30px;
+  width: 98%;
 `
 
 export const UserCommentDelete = styled.div`
@@ -22,7 +25,7 @@ export const UserCommentDelete = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
-  margin: -28px 0 0 325px;
+  margin: -28px 0 0 79%;
   background: #cbcaca;
   height: 20px;
   width: 20px;

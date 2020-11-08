@@ -10,7 +10,6 @@ interface Props {
 }
 
 export const Popup: React.FC<Props> = (props) => {
-
   const buttonPos: number = Number(props.width.slice(0, props.width.length - 2)) - 10;
 
   return (
@@ -18,11 +17,11 @@ export const Popup: React.FC<Props> = (props) => {
       <CardPopup
         height={props.height}
         width={props.width}>
-        {props.setPopupState !== undefined ? <ClosePopup
+        {props.setPopupState !== undefined && <ClosePopup
           width={buttonPos}
           onClick={() => props.setPopupState?.(false)}>
           x
-        </ClosePopup> : null}
+        </ClosePopup>}
         {props.popupContent}
       </CardPopup>
     </CardPopupBack>

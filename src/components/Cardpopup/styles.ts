@@ -6,16 +6,21 @@ export const PopupContent = styled.div`
     padding: 30px
 `
 
-export const PopupTitle = styled.div`
+export const PopupText = styled.div`
     margin: 5px 0 0 0;
     font-weight: bold;
     line-height: 20px;
 `
 
-export const PopupDesc = styled.input`
+export const PopupDesc = styled.textarea`
     height: 50px;
-    width: 85%;
+    width: 85.5%;
     margin: 10px 0 10px 0px;
+    border-radius: 2px;
+    border: 0.2px solid grey;
+    overflow-wrap: break-word;
+    resize: none;
+    overflow: hidden;
 `
 
 export const ColCard = styled.div`
@@ -27,7 +32,7 @@ export const ColCard = styled.div`
     text-indent: 10px;
     line-height: 25px;
 `
-export const CardContent = styled.div`
+export const CardName = styled.div`
     margin: 0 0 10px 0;
     font-size: 22px;
     line-height: 15px;
@@ -38,20 +43,20 @@ export const NameInput = styled.input`
     margin: -25px 0 5px 0;
 `
 
-export const CommentsInput = styled.input`
-    flex: 2;
-    margin: 0 0 0 10px;
+export const CommentsInput = styled.textarea`
+    width: 90%;
+    margin: 5px;
+    border-radius: 2px;
+    border: 0;
+    overflow-wrap: break-word;
+    resize: none;
+    overflow: hidden;
 `
 
 export const CommentsBorder = styled.div`
     width: 86%;
     border: 0.2px grey solid;
     border-radius: 2px
-`
-
-export const CommentsInputContainer = styled.div`
-    width: 100%;
-    display: flex;
 `
 
 export const CommentsInputButton = styled.button`
@@ -65,10 +70,6 @@ export const CommentsInputButton = styled.button`
 
 export const CommentsArray = styled.div`
     margin: 10px 0 0 0;
-    width: 86%;
+    width: 85%;
     font-weight: bold;
-    line-height: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center
 `

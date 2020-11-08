@@ -12,7 +12,7 @@ export const MainComponent: React.FC = () => {
   return (
     <MainComp>
       <Board />
-      {popupState ? <LoginPopup togglePopup={setPopupState} /> : null}
+      {popupState && <LoginPopup togglePopup={setPopupState} />}
     </MainComp>
   )
 }

@@ -22,7 +22,7 @@ export const CardPopup = styledComponentsTS<PopupProps>(styled.div)`
   right: 0; 
   margin-left: auto; 
   margin-right: auto;
-  top: 65px;
+  top: 35px;
   height: ${props => props.height};
   width: ${props => props.width};
   background: white;
@@ -47,7 +47,7 @@ export const ClosePopup = styledComponentsTS<ButtonProps>(styled.button)`
   color: #999999;
   @media (max-width: ${props => props.width}px) {
     position: fixed;
-    top: 60px;
+    top: 20px;
     right 5px;
   }
 `

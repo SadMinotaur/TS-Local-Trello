@@ -33,41 +33,47 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
 
   useEffect(() => {
     saveCardState({ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }, id);
-  });
+    return () => {
+    }
+  }, [id, cardName, author, cardDesc, cardComments, saveCardState]);
 
   return <CardContainer>
-    <ColCard onContextMenu={() => setHover(prevState => !prevState)}>
-      {changeNameState ? null : <CardContent
+    <ColCard onContextMenu={e => {
+      e.preventDefault();
+      setHover(prevState => !prevState);
+    }}>
+      {!changeNameState && <CardContent
         onClick={() => { setPopupState(prevState => !prevState); }}
         empty={cardComments.length === 0}>
         {cardName}
       </CardContent>}
-      {changeNameState ? <NameInput
+      {changeNameState && <NameInput
         value={cardName}
         onChange={ev => {
           const v: string = ev.target.value;
           if (v.trim() === "") return;
           setCardName(v);
         }}
-        onBlur={() => setChangeNameState(prevState => !prevState)} /> : null}
+        onBlur={() => setChangeNameState(prevState => !prevState)} />}
       <EditCardButton
         onClick={() => setChangeNameState(prevState => !prevState)}
         empty={cardComments.length === 0}>
         <FontAwesomeIcon icon={faEdit} />
       </EditCardButton>
-      {cardComments.length !== 0 ? <CardComments>
+      {cardComments.length !== 0 && <CardComments>
         <FontAwesomeIcon icon={faComment} /> : {cardComments.length}
-      </CardComments> : null}
-      {hover ? <CardComments onClick={() => deleteCard(id)}>
+      </CardComments>}
+      {hover && <CardComments onClick={() => deleteCard(id)}>
         <FontAwesomeIcon icon={faTimes} />
-      </CardComments> : null}
+      </CardComments>}
     </ColCard>
-    {popupState ? <CardPopup
+    {popupState && <CardPopup
       setPopupState={setPopupState}
       cardInfo={{ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }}
       column={column}
       changeCardName={setCardName}
       changeCardDecs={setCardDesc}
-      setCardsComments={setComments} /> : null}
+      setCardsComments={setComments}
+    />}
   </CardContainer>
 }

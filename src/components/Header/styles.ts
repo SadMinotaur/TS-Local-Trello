@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
-export const Topbar = styled.div`
-    text-align: center;
-`
-
 export const TopbarName = styled.div`
+    top:0;
+    position: fixed;
+    width: 100%;
+    text-align: center;
     font-size: 2rem;
     color: white;
-    line-height: 40px;
+    line-height: 20px;
+    background-color: grey;
+    z-index: -1;
 `

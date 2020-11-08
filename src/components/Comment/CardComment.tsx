@@ -17,12 +17,12 @@ export const CardComment: React.FC<Props> = ({ content, author, index, deleteCar
   const [nameValue, setNameValue] = useState<string>(content);
 
   return <div>
-    {nameState ? null : <UserComment
+    {!nameState && <UserComment
       onClick={() => setNameState(ps => !ps)}
       key={index}>
       {author} : {nameValue}
     </UserComment>}
-    {nameState ?
+    {nameState &&
       <div>
         <CommentInput
           value={nameValue}
@@ -36,6 +36,6 @@ export const CardComment: React.FC<Props> = ({ content, author, index, deleteCar
         }}>
           <FontAwesomeIcon icon={faTimes} />
         </UserCommentDelete>
-      </div> : null}
+      </div>}
   </div>
 }

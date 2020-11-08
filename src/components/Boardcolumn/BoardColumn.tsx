@@ -59,11 +59,11 @@ export const BoardColumn: React.FC<Props> = (props) => {
   }
 
   return <ColumnBorder>
-    {nameInputState ? null : <ColumnNameDiv
+    {!nameInputState && <ColumnNameDiv
       onClick={() => setNameInputState(prevState => !prevState)}>
       {name}
     </ColumnNameDiv>}
-    {nameInputState ? <ColumnNameInput
+    {nameInputState && <ColumnNameInput
       value={name}
       type="text"
       onMouseOver={event => {
@@ -73,7 +73,7 @@ export const BoardColumn: React.FC<Props> = (props) => {
       onBlur={() => {
         setNameInputState(prevState => !prevState);
       }}
-    /> : null}
+    />}
     {colCards.map((card) => <ColumnCard
       column={name}
       card={card}
@@ -81,16 +81,16 @@ export const BoardColumn: React.FC<Props> = (props) => {
       deleteCard={deleteCard}
       saveCardState={saveCardChanges}
     />)}
-    {newCardState ? null : <ColumnAddCardDiv onClick={() => setNewCardState(prevState => !prevState)}>
+    {!newCardState && <ColumnAddCardDiv onClick={() => setNewCardState(prevState => !prevState)}>
       Add new card
     </ColumnAddCardDiv>}
-    {newCardState ? <ColumnNameInput
+    {newCardState && <ColumnNameInput
       onMouseOver={(event) => event.currentTarget.focus()}
       value={cardInput}
       onChange={event => {
         setCardInput(event.target.value);
-      }} placeholder="Add new card" /> : null}
-    {newCardState ? <ButtonDiv>
+      }} placeholder="Add new card" />}
+    {newCardState && <ButtonDiv>
       <button className="btn primary" onClick={saveNewCard}>
         Add card
       </button>
@@ -99,6 +99,6 @@ export const BoardColumn: React.FC<Props> = (props) => {
       }}>
         Cancel
       </button>
-    </ButtonDiv> : null}
+    </ButtonDiv>}
   </ColumnBorder>
 }

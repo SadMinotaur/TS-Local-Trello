@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
-  CardContent,
+  CardName,
   CommentsArray,
   CommentsBorder,
-  CommentsInput, CommentsInputButton, CommentsInputContainer,
+  CommentsInput, CommentsInputButton,
   NameInput,
   PopupContent,
   PopupDesc,
-  PopupTitle
+  PopupText
 } from "./styles";
 import { Popup } from "../Popup";
 import { Card, Comments } from "../../utils/ColumnsContent";
@@ -78,24 +78,24 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, column, setPopupState, ch
   return <Popup height={"fit-content"} width={"768px"} setPopupState={setPopupState}
     popupContent={
       <PopupContent>
-        {!changeNamePopup && <CardContent
+        {!changeNamePopup && <CardName
           onClick={() => setChangeNamePopup(ps => !ps)}>
           {name}
-        </CardContent>}
+        </CardName>}
         {changeNamePopup && <NameInput
           value={name}
           onChange={changeName}
           onBlur={() => setChangeNamePopup(ps => !ps)}
         />}
-        <PopupTitle>
+        <PopupText>
           In column: {column}
-        </PopupTitle>
-        <PopupTitle>
+        </PopupText>
+        <PopupText>
           Author: {cardInfo.author}
-        </PopupTitle>
-        <PopupTitle>
+        </PopupText>
+        <PopupText>
           Description
-        </PopupTitle>
+        </PopupText>
         <PopupDesc
           value={decs}
           onChange={ev => {
@@ -104,21 +104,16 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, column, setPopupState, ch
             changeCardDecs(v);
           }}
         />
-        <PopupTitle>
+        <PopupText>
           Comments
-        </PopupTitle>
+        </PopupText>
         <CommentsBorder>
-          <CommentsInputContainer>
-            <PopupTitle>
-              Author: {cardInfo.author}
-            </PopupTitle>
-            <CommentsInput
-              onClick={() => setAddCommentState(true)}
-              placeholder={"Write new comment"}
-              value={newCommentValue}
-              onChange={event => setCommentValue(event.target.value)}
-            />
-          </CommentsInputContainer>
+          <CommentsInput
+            onClick={() => setAddCommentState(true)}
+            placeholder={"Write new comment"}
+            value={newCommentValue}
+            onChange={event => setCommentValue(event.target.value)}
+          />
           {addCommentState && <CommentsInputButton onClick={saveComment}>
             Save
           </CommentsInputButton>}
