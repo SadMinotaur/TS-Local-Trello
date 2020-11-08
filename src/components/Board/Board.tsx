@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColumnsContainer } from '../../common/types';
+import { ColumnsContainer } from './styles';
 import { BoardColumn } from "../Boardcolumn";
 
 export const Board: React.FC = () => {

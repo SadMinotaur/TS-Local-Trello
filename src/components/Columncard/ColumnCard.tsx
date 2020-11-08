@@ -34,52 +34,38 @@ export const ColumnCard: React.FC<Props> = ({ card, saveCardState, deleteCard })
     saveCardState({ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }, id);
   });
 
-  function changeCardName(event: React.ChangeEvent<HTMLInputElement>): void {
-    setCardName(event.target.value);
-  }
-
-  function changeCardDecs(event: React.ChangeEvent<HTMLInputElement>): void {
-    setCardDesc(event.target.value);
-  }
-
-  return (
-    <CardContainer>
-      <ColCard onContextMenu={() => {
-        setHover(prevState => !prevState)
-      }}>
-        <CardContent style={{
-          color: changeNameState ? "white" : "grey",
-          display: changeNameState ? "none" : "block"
+  return <CardContainer>
+    <ColCard onContextMenu={() => setHover(prevState => !prevState)}>
+      {changeNameState ? null : <CardContent
+        onClick={() => { setPopupState(prevState => !prevState); }}
+        empty={cardComments.length === 0}>
+        {cardName}
+      </CardContent>}
+      {changeNameState ? <NameInput
+        value={cardName}
+        onChange={ev => {
+          const v: string = ev.target.value;
+          if (v.trim() === "") return;
+          setCardName(v);
         }}
-          onClick={() => {
-            setPopupState(prevState => !prevState);
-          }} empty={cardComments.length === 0}>
-          {cardName}
-        </CardContent>
-        {changeNameState ? <NameInput
-          value={cardName}
-          onChange={changeCardName}
-          onBlur={() => {
-            setChangeNameState(prevState => !prevState);
-          }} /> : null}
-        <EditCardButton onClick={() => {
-          setChangeNameState(prevState => !prevState);
-        }} empty={cardComments.length === 0}>
-          <FontAwesomeIcon icon={faEdit} />
-        </EditCardButton>
-        {cardComments.length !== 0 ?
-          <CardComments>
-            <FontAwesomeIcon icon={faComment} /> : {cardComments.length}
-          </CardComments> : null}
-        {hover ? <CardComments onClick={() => deleteCard(id)}>
-          <FontAwesomeIcon icon={faTimes} />
-        </CardComments> : null}
-      </ColCard>
-      <CardPopup popupState={popupState} setPopupState={setPopupState}
-        cardInfo={{ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }}
-        changeCardName={changeCardName}
-        changeCardDecs={changeCardDecs}
-        setCardsComments={setComments} />
-    </CardContainer>
-  )
+        onBlur={() => setChangeNameState(prevState => !prevState)} /> : null}
+      <EditCardButton
+        onClick={() => setChangeNameState(prevState => !prevState)}
+        empty={cardComments.length === 0}>
+        <FontAwesomeIcon icon={faEdit} />
+      </EditCardButton>
+      {cardComments.length !== 0 ? <CardComments>
+        <FontAwesomeIcon icon={faComment} /> : {cardComments.length}
+      </CardComments> : null}
+      {hover ? <CardComments onClick={() => deleteCard(id)}>
+        <FontAwesomeIcon icon={faTimes} />
+      </CardComments> : null}
+    </ColCard>
+    {popupState ? <CardPopup
+      setPopupState={setPopupState}
+      cardInfo={{ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }}
+      changeCardName={setCardName}
+      changeCardDecs={setCardDesc}
+      setCardsComments={setComments} /> : null}
+  </CardContainer>
 }

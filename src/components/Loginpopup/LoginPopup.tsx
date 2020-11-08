@@ -3,41 +3,38 @@ import { Popup } from "../Popup";
 import { PopupContent } from "./styles";
 
 interface Props {
-  initState?: boolean;
+  togglePopup: (val: boolean) => void;
 }
 
-export const LoginPopup: React.FC<Props> = (props) => {
+export const LoginPopup: React.FC<Props> = ({ togglePopup }) => {
 
-  const [display, changeDisplayProperty] = useState(props.initState ? props.initState : localStorage.getItem("user") === null);
   const [inputState, changeInputState] = useState("");
 
   function changeDisplayState(): void {
-    if (inputState === "") return;
+    if (inputState.trim() === "") return;
+    togglePopup(false);
     localStorage.setItem("user", inputState);
-    changeDisplayProperty(prevState => !prevState);
   }
 
-  return (
-    <Popup height={300} width={350} popupState={display} popupContent={
-      <PopupContent onKeyDown={event => {
-        if (event.key === 'Enter') changeDisplayState()
-      }}>
-        <div>
-          <h3>Hi!</h3>
-          <p>Enter your name</p>
-        </div>
-        <div className="modal-body">
-          <input type="text" placeholder="Name" value={inputState} onChange={event => {
-            changeInputState(event.target.value);
-          }} />
-        </div>
-        <div className="modal-footer">
-          <button onClick={changeDisplayState} className="btn primary">
-            Done
+  return <Popup height={300} width={350} popupContent={
+    <PopupContent onKeyDown={event => {
+      if (event.key === 'Enter') changeDisplayState()
+    }}>
+      <div>
+        <h3>Hi!</h3>
+        <p>Enter your name</p>
+      </div>
+      <div className="modal-body">
+        <input type="text" placeholder="Name" value={inputState} onChange={event => {
+          changeInputState(event.target.value);
+        }} />
+      </div>
+      <div className="modal-footer">
+        <button onClick={changeDisplayState} className="btn primary">
+          Done
           </button>
-        </div>
-      </PopupContent>
-    }>
-    </Popup>
-  );
+      </div>
+    </PopupContent>
+  }>
+  </Popup>
 }

@@ -5,9 +5,6 @@ import './css /bootstrap.css'
 
 import { Header } from "./components/Header";
 import { MainComponent } from "./components/Mainblock";
-import { LoginPopup } from "./components/Loginpopup";
-
-// localStorage.clear()
 
 if (localStorage.getItem("Column0") === null) {
   localStorage.setItem("Column0", "{\"name\":\"TODO\",\"cards\":[]}");
@@ -20,7 +17,6 @@ ReactDOM.render(
   <React.StrictMode>
     <Header />
     <MainComponent />
-    <LoginPopup />
   </React.StrictMode>,
   document.getElementById('root')
 );

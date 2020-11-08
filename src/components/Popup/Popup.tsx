@@ -5,25 +5,21 @@ import { CardPopup, ClosePopup } from "./styles";
 interface Props {
   width: number;
   height: number;
-  popupState: boolean;
   setPopupState?: (state: boolean) => void;
   popupContent: object;
 }
 
 export const Popup: React.FC<Props> = (props) => {
   return (
-    <CardPopupBack style={{ display: props.popupState ? "block" : "none" }}>
+    <CardPopupBack>
       <CardPopup
         height={props.height}
         width={props.width}>
-        {props.setPopupState !== undefined ?
-          <ClosePopup
-            width={props.width}
-            style={{ display: props.popupState ? "block" : "none" }}
-            onClick={() => props.setPopupState?.(false)}>
-            x
-          </ClosePopup>
-          : null}
+        {props.setPopupState !== undefined ? <ClosePopup
+          width={props.width}
+          onClick={() => props.setPopupState?.(false)}>
+          x
+        </ClosePopup> : null}
         {props.popupContent}
       </CardPopup>
     </CardPopupBack>
