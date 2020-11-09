@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
-  CardName, CommentsArray, CommentsBorder, PopupDescDiv, CommentsInput, CommentsInputButton,
-  NameInput, PopupContent, PopupDesc, PopupText
+  CardName, CommentsArray, CommentsBorder, PopupDescDiv,
+  CommentsInput, CommentsInputButton, NameInput, PopupContent,
+  PopupDesc, PopupText
 } from "./styles";
 import { Popup } from "../Popup";
 import { Card, Comments } from "../../utils/columns-content";
@@ -80,57 +81,56 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, column, setPopupState, ch
   return <Popup
     height={"fit-content"}
     width={"768px"}
-    setPopupState={setPopupState}
-    popupContent={
-      <PopupContent>
-        {!changeNamePopup && <CardName onClick={() => setChangeNamePopup(ps => !ps)}>
-          {name}
-        </CardName>}
-        {changeNamePopup && <NameInput
-          onMouseOver={e => e.currentTarget.focus()}
-          value={name}
-          onChange={changeName}
-          onBlur={() => setChangeNamePopup(ps => !ps)}
-        />}
-        <PopupText>
-          In column: {column}
+    setPopupState={setPopupState}>
+    <PopupContent>
+      {!changeNamePopup && <CardName onClick={() => setChangeNamePopup(ps => !ps)}>
+        {name}
+      </CardName>}
+      {changeNamePopup && <NameInput
+        onMouseOver={e => e.currentTarget.focus()}
+        value={name}
+        onChange={changeName}
+        onBlur={() => setChangeNamePopup(ps => !ps)}
+      />}
+      <PopupText>
+        In column: {column}
+      </PopupText>
+      <PopupText>
+        Created by: {cardInfo.author}
+      </PopupText>
+      <PopupText>
+        Description
         </PopupText>
-        <PopupText>
-          Created by: {cardInfo.author}
+      {!descState && <PopupDescDiv onClick={() => setDescState(ps => !ps)}>
+        {desc}
+      </PopupDescDiv>}
+      {descState && <PopupDesc
+        value={desc}
+        onMouseOver={e => e.currentTarget.focus()}
+        onBlur={() => { setDescState(ps => !ps) }}
+        onChange={changeDesc} />}
+      <PopupText>
+        Comments
         </PopupText>
-        <PopupText>
-          Description
-        </PopupText>
-        {!descState && <PopupDescDiv onClick={() => setDescState(ps => !ps)}>
-          {desc}
-        </PopupDescDiv>}
-        {descState && <PopupDesc
-          value={desc}
-          onMouseOver={e => e.currentTarget.focus()}
-          onBlur={() => { setDescState(ps => !ps) }}
-          onChange={changeDesc} />}
-        <PopupText>
-          Comments
-        </PopupText>
-        <CommentsBorder>
-          <CommentsInput
-            onClick={() => setAddCommentState(true)}
-            placeholder={"Write new comment"}
-            value={newCommentValue}
-            onChange={event => setCommentValue(event.target.value)} />
-          {addCommentState && <CommentsInputButton onClick={saveComment}>
-            Save
+      <CommentsBorder>
+        <CommentsInput
+          onClick={() => setAddCommentState(true)}
+          placeholder={"Write new comment"}
+          value={newCommentValue}
+          onChange={event => setCommentValue(event.target.value)} />
+        {addCommentState && <CommentsInputButton onClick={saveComment}>
+          Save
           </CommentsInputButton>}
-        </CommentsBorder>
-        <CommentsArray>
-          {commentsArray.map(({ id, author, content }) => <CardComment
-            index={id}
-            key={id}
-            author={author}
-            content={content}
-            changeCardComment={changeCardComment}
-            deleteCardComment={deleteCardComment} />)}
-        </CommentsArray>
-      </PopupContent>
-    } />
+      </CommentsBorder>
+      <CommentsArray>
+        {commentsArray.map(({ id, author, content }) => <CardComment
+          index={id}
+          key={id}
+          author={author}
+          content={content}
+          changeCardComment={changeCardComment}
+          deleteCardComment={deleteCardComment} />)}
+      </CommentsArray>
+    </PopupContent>
+  </Popup>
 }

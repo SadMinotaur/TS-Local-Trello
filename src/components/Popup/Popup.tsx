@@ -6,23 +6,22 @@ interface Props {
   width: string;
   height: string;
   setPopupState?: (state: boolean) => void;
-  popupContent: object;
 }
 
-export const Popup: React.FC<Props> = (props) => {
-  const buttonPos: number = Number(props.width.slice(0, props.width.length - 2)) - 10;
+export const Popup: React.FC<Props> = ({ width, height, setPopupState, children }) => {
+  const buttonPos: number = Number(width.slice(0, width.length - 2)) - 10;
 
   return (
     <CardPopupBack>
       <CardPopup
-        height={props.height}
-        width={props.width}>
-        {props.setPopupState !== undefined && <ClosePopup
+        height={height}
+        width={width}>
+        {setPopupState !== undefined && <ClosePopup
           width={buttonPos}
-          onClick={() => props.setPopupState?.(false)}>
+          onClick={() => setPopupState?.(false)}>
           x
         </ClosePopup>}
-        {props.popupContent}
+        {children}
       </CardPopup>
     </CardPopupBack>
   )
