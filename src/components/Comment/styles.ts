@@ -23,7 +23,7 @@ export const CommentInput = styled.textarea`
   margin: 3px 0 0 3px ;
   border: 0;
   line-height: 30px;
-  width: 99%;
+  width: 95%;
   resize: none;
 `
 

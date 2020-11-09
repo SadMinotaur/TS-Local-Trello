@@ -25,9 +25,11 @@ export const LoginPopup: React.FC<Props> = ({ togglePopup }) => {
         <p>Enter your name</p>
       </div>
       <div className="modal-body">
-        <input type="text" placeholder="Name" value={inputState} onChange={event => {
-          changeInputState(event.target.value);
-        }} />
+        <input
+          type="text"
+          placeholder="Name"
+          value={inputState}
+          onChange={event => changeInputState(event.target.value)} />
       </div>
       <div className="modal-footer">
         <button onClick={changeDisplayState} className="btn primary">

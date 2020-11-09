@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ColumnNameInput, ColumnBorder, ColumnNameDiv, ColumnAddCardDiv, ButtonDiv } from "./styles";
-import { Card, ColumnsContent } from "../../utils/ColumnsContent";
+import { Card, ColumnsContent } from "../../utils/columns-content";
 import { ColumnCard } from "../Columncard";
 
 interface Props {
@@ -14,9 +14,11 @@ export const BoardColumn: React.FC<Props> = (props) => {
 
   const [name, setName] = useState<string>(column.name);
   const [colCards, setCardsArray] = useState<Card[]>(column.cards);
+  const [cardInput, setCardInput] = useState<string>("");
+
   const [nameInputState, setNameInputState] = useState<boolean>(false);
   const [newCardState, setNewCardState] = useState<boolean>(false);
-  const [cardInput, setCardInput] = useState<string>("");
+
   const isFirstRun = useRef<boolean>(true);
 
   useEffect(() => {
@@ -61,7 +63,11 @@ export const BoardColumn: React.FC<Props> = (props) => {
       value={name}
       type="text"
       onMouseOver={event => event.currentTarget.focus()}
-      onChange={event => setName(event.target.value)}
+      onChange={event => {
+        const v: string = event.target.value;
+        if (v.trim() === "") return;
+        setName(v)
+      }}
       onBlur={() => setNameInputState(prevState => !prevState)}
     />}
     {colCards.map((card) => <ColumnCard
@@ -75,7 +81,7 @@ export const BoardColumn: React.FC<Props> = (props) => {
       Add new card
     </ColumnAddCardDiv>}
     {newCardState && <ColumnNameInput
-      onMouseOver={(event) => event.currentTarget.focus()}
+      onMouseOver={event => event.currentTarget.focus()}
       value={cardInput}
       onChange={event => setCardInput(event.target.value)}
       placeholder="Add new card"

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CardComments,
   CardContainer,
@@ -7,7 +7,7 @@ import {
   NameInput,
   EditCardButton
 } from "./styles";
-import { Card, Comments } from "../../utils/ColumnsContent";
+import { Card, Comments } from "../../utils/columns-content";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
@@ -30,16 +30,10 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
   const [changeNameState, setChangeNameState] = useState<boolean>(false);
   const [hover, setHover] = useState<boolean>(false);
 
-  const isFirstRun = useRef<boolean>(true);
-
   useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-    } else {
-      // Parent is rendering new card on saveCardState call.
-      if (name !== cardName || desc !== cardDesc || comments !== cardComments) {
-        saveCardState({ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }, id);
-      }
+    // Parent is rendering new card on saveCardState call.
+    if (name !== cardName || desc !== cardDesc || comments !== cardComments) {
+      saveCardState({ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }, id);
     }
   }, [id, cardName, author, cardDesc, cardComments, saveCardState, name, desc, comments]);
 

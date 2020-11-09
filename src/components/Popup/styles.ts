@@ -44,7 +44,7 @@ export const ClosePopup = styledComponentsTS<ButtonProps>(styled.button)`
   height: 20px;
   width: 20px;
   color: #999999;
-  @media (max-width: ${props => props.width}px) {
+  @media (max-width: ${props => props.width + 20}px) {
     position: fixed;
     top: 20px;
     right 5px;

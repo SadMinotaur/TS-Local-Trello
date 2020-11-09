@@ -4,7 +4,7 @@ import {
   NameInput, PopupContent, PopupDesc, PopupText
 } from "./styles";
 import { Popup } from "../Popup";
-import { Card, Comments } from "../../utils/ColumnsContent";
+import { Card, Comments } from "../../utils/columns-content";
 import { CardComment } from "../Comment";
 
 interface Props {
@@ -20,12 +20,12 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, column, setPopupState, ch
 
   const [name, setName] = useState<string>(cardInfo.name);
   const [desc, setDesc] = useState<string>(cardInfo.desc);
+  const [newCommentValue, setCommentValue] = useState<string>("");
   const [commentsArray, setCommentsArray] = useState<Comments[]>(cardInfo.comments);
 
   const [changeNamePopup, setChangeNamePopup] = useState<boolean>(false);
   const [addCommentState, setAddCommentState] = useState<boolean>(false);
   const [descState, setDescState] = useState<boolean>(false);
-  const [newCommentValue, setCommentValue] = useState<string>("");
 
   useEffect(() => {
     window.addEventListener('keydown', handleEsc);
@@ -87,6 +87,7 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, column, setPopupState, ch
           {name}
         </CardName>}
         {changeNamePopup && <NameInput
+          onMouseOver={e => e.currentTarget.focus()}
           value={name}
           onChange={changeName}
           onBlur={() => setChangeNamePopup(ps => !ps)}
@@ -95,7 +96,7 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, column, setPopupState, ch
           In column: {column}
         </PopupText>
         <PopupText>
-          Author: {cardInfo.author}
+          Created by: {cardInfo.author}
         </PopupText>
         <PopupText>
           Description

@@ -25,7 +25,11 @@ export const CardComment: React.FC<Props> = ({ content, author, index, deleteCar
     {nameState && <CommentEdit>
       <CommentInput
         value={nameValue}
-        onChange={event => setNameValue(event.target.value)}
+        onChange={event => {
+          const v: string = event.target.value;
+          if (v.trim() === "") return;
+          setNameValue(v);
+        }}
         onBlur={event => {
           changeCardComment(index, event);
           setNameState(ps => !ps);
