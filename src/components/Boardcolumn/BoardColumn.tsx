@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ColumnNameInput, ColumnBorder, ColumnNameDiv, ColumnAddCardDiv, ButtonDiv } from "./styles";
 import { Card, ColumnsContent } from "../../utils/columns-content";
 import { ColumnCard } from "../Columncard";
@@ -29,7 +29,7 @@ export const BoardColumn: React.FC<Props> = (props) => {
     }
   }, [colCards, columnName, name]);
 
-  function saveNewCard(): void {
+  const saveNewCard = useCallback(() => {
     if (cardInput.trim() === "") return;
     const card: Card = {
       id: colCards.length,
@@ -41,18 +41,19 @@ export const BoardColumn: React.FC<Props> = (props) => {
     setCardInput("");
     setCardsArray(colCards.concat(card));
     setNewCardState(prevState => !prevState);
-  }
+  },
+    [cardInput, colCards]
+  );
 
-  function saveCardChanges(card: Card, index: number): void {
-    setCardsArray(ps => {
-      ps[ps.findIndex(v => v.id === index)] = card;
-      return [...ps];
-    });
-  }
+  const saveCardChanges = useCallback((card: Card, index: number) =>
+    setCardsArray(colCards.map((cardArray): Card => cardArray.id !== index ? cardArray : card)),
+    [colCards]
+  );
 
-  function deleteCard(i: number): void {
-    setCardsArray(colCards.filter(value => value.id !== i));
-  }
+  const deleteCard = useCallback((index: number) =>
+    setCardsArray(colCards.filter(value => value.id !== index)),
+    [colCards]
+  );
 
   return <ColumnBorder>
     {!nameInputState && <ColumnNameDiv

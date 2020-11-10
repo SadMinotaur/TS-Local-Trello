@@ -37,8 +37,7 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
 
   const [popupState, setPopupState] = useState<boolean>(false);
   const [changeNameState, setChangeNameState] = useState<boolean>(false);
-  const [hover, setHover] = useState<boolean>(false);
-
+  const [rightClickState, setRightClickState] = useState<boolean>(false);
 
   useEffect(() => {
     // Parent is rendering new card on saveCardState call.
@@ -50,7 +49,7 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
   return <CardContainer>
     <ColCard onContextMenu={e => {
       e.preventDefault();
-      setHover(prevState => !prevState);
+      setRightClickState(prevState => !prevState);
     }}>
       {!changeNameState && <CardContent
         onClick={() => { setPopupState(prevState => !prevState); }}
@@ -74,7 +73,7 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
       {cardComments.length !== 0 && <CardComments>
         <FontAwesomeIcon icon={faComment} /> : {cardComments.length}
       </CardComments>}
-      {hover && <CardComments onClick={() => deleteCard(id)}>
+      {rightClickState && <CardComments onClick={() => deleteCard(id)}>
         <FontAwesomeIcon icon={faTimes} />
       </CardComments>}
     </ColCard>
