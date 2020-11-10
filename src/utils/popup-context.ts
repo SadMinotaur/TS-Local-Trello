@@ -5,6 +5,7 @@ interface PopupContext {
   name: string;
   desc: string;
   comments: Comments[];
+  author: string;
 }
 
 export const PopupCardContext = React.createContext<PopupContext>({} as PopupContext);

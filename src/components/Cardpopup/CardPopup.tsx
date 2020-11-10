@@ -12,22 +12,25 @@ import { PopupCardContext } from "../../utils/popup-context";
 
 interface Props {
   column: string;
-  author: string;
   setPopupState: (prevState: boolean) => void;
   changeCardName: (v: string) => void;
   changeCardDesc: (v: string) => void;
   setCardsComments: (comms: Comments[]) => void;
 }
 
-export const CardPopup: React.FC<Props> = ({ column, author, setPopupState, changeCardName, changeCardDesc, setCardsComments }) => {
+export const CardPopup: React.FC<Props> = ({ column, setPopupState, changeCardName, changeCardDesc, setCardsComments }) => {
 
   const [newCommentValue, setCommentValue] = useState<string>("");
   const context = useContext(PopupCardContext);
-  const { name, desc, comments } = context;
+  const { name, desc, comments, author } = context;
 
   const [changeNamePopup, setChangeNamePopup] = useState<boolean>(false);
   const [addCommentState, setAddCommentState] = useState<boolean>(false);
   const [descState, setDescState] = useState<boolean>(false);
+
+  function handleEsc(event: { keyCode: number }): void {
+    if (event.keyCode === 27) setPopupState(false);
+  }
 
   useEffect(() => {
     window.addEventListener('keydown', handleEsc);
@@ -35,10 +38,6 @@ export const CardPopup: React.FC<Props> = ({ column, author, setPopupState, chan
       window.removeEventListener('keydown', handleEsc);
     };
   });
-
-  function handleEsc(event: { keyCode: number }): void {
-    if (event.keyCode === 27) setPopupState(false);
-  }
 
   const changeCardComment = useCallback((i: number, event: React.ChangeEvent<HTMLTextAreaElement>) =>
     setCardsComments(comments.map((comment) =>
@@ -98,13 +97,14 @@ export const CardPopup: React.FC<Props> = ({ column, author, setPopupState, chan
       <PopupText>
         Description
       </PopupText>
-      {!descState && <PopupDescDiv onClick={() => setDescState(ps => !ps)}>
+      {!descState && <PopupDescDiv
+        onClick={() => setDescState(ps => !ps)}>
         {desc}
       </PopupDescDiv>}
       {descState && <PopupDesc
         value={desc}
         onMouseOver={e => e.currentTarget.focus()}
-        onBlur={() => { setDescState(ps => !ps) }}
+        onBlur={() => setDescState(ps => !ps)}
         onChange={changeDesc} />}
       <PopupText>
         Comments

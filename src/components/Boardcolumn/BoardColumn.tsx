@@ -31,15 +31,14 @@ export const BoardColumn: React.FC<Props> = (props) => {
 
   const saveNewCard = useCallback(() => {
     if (cardInput.trim() === "") return;
-    const card: Card = {
+    setCardInput("");
+    setCardsArray(colCards.concat({
       id: colCards.length,
       name: cardInput,
       author: localStorage.getItem("user") as string,
       comments: [],
       desc: ""
-    };
-    setCardInput("");
-    setCardsArray(colCards.concat(card));
+    }));
     setNewCardState(prevState => !prevState);
   },
     [cardInput, colCards]
