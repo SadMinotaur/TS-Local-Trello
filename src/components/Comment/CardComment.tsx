@@ -13,7 +13,7 @@ interface Props {
 
 export const CardComment: React.FC<Props> = ({ index, author, content, deleteCardComment, changeCardComment }) => {
 
-  const [nameState, setNameState] = useState<boolean>(false)
+  const [nameState, setNameState] = useState<boolean>(false);
 
   return <div>
     {!nameState && <UserComment

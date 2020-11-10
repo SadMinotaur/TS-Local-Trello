@@ -5,7 +5,6 @@ import {
   PopupDesc, PopupText
 } from "./styles";
 import { Popup } from "../Popup";
-import { Comments } from "../../utils/columns-content";
 import { CardComment } from "../Comment";
 import { useContext } from "react";
 import { PopupCardContext } from "../../utils/popup-context";
@@ -13,16 +12,13 @@ import { PopupCardContext } from "../../utils/popup-context";
 interface Props {
   column: string;
   setPopupState: (prevState: boolean) => void;
-  changeCardName: (v: string) => void;
-  changeCardDesc: (v: string) => void;
-  setCardsComments: (comms: Comments[]) => void;
 }
 
-export const CardPopup: React.FC<Props> = ({ column, setPopupState, changeCardName, changeCardDesc, setCardsComments }) => {
+export const CardPopup: React.FC<Props> = ({ column, setPopupState }) => {
+
+  const { name, desc, comments, author, changeCardName, changeCardDesc, setCardsComments } = useContext(PopupCardContext);
 
   const [newCommentValue, setCommentValue] = useState<string>("");
-  const context = useContext(PopupCardContext);
-  const { name, desc, comments, author } = context;
 
   const [changeNamePopup, setChangeNamePopup] = useState<boolean>(false);
   const [addCommentState, setAddCommentState] = useState<boolean>(false);

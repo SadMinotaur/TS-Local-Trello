@@ -75,14 +75,14 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
         name: cardName,
         desc: cardDesc,
         comments: cardComments,
-        author: localStorage.getItem("user") as string
+        author: localStorage.getItem("user") as string,
+        changeCardName: setCardName,
+        changeCardDesc: setCardDesc,
+        setCardsComments: setComments
       }}>
         <CardPopup
           column={column}
           setPopupState={setPopupState}
-          changeCardName={setCardName}
-          changeCardDesc={setCardDesc}
-          setCardsComments={setComments}
         />
       </PopupCardContext.Provider>}
   </CardContainer >

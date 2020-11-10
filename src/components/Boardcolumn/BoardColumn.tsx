@@ -77,7 +77,8 @@ export const BoardColumn: React.FC<Props> = (props) => {
       deleteCard={deleteCard}
       saveCardState={saveCardChanges}
     />)}
-    {!newCardState && <ColumnAddCardDiv onClick={() => setNewCardState(prevState => !prevState)}>
+    {!newCardState && <ColumnAddCardDiv
+      onClick={() => setNewCardState(prevState => !prevState)}>
       Add new card
     </ColumnAddCardDiv>}
     {newCardState && <ColumnNameInput
