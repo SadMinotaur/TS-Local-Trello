@@ -13,20 +13,13 @@ import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
 import { CardPopup } from "../Cardpopup";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { PopupCardContext } from "../../utils/popup-context";
 interface Props {
   card: Card;
   column: string;
   saveCardState: (card: Card, index: number) => void;
   deleteCard: (i: number) => void;
 }
-
-interface PopupContext {
-  name: string;
-  desc: string;
-  comments: Comments[];
-}
-
-export const PopupCardContext = React.createContext<PopupContext>({} as PopupContext);
 
 export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, deleteCard }) => {
   const { id, name, author, desc, comments } = card;

@@ -7,8 +7,8 @@ import {
 import { Popup } from "../Popup";
 import { Comments } from "../../utils/columns-content";
 import { CardComment } from "../Comment";
-import { PopupCardContext } from "../Columncard/ColumnCard";
 import { useContext } from "react";
+import { PopupCardContext } from "../../utils/popup-context";
 
 interface Props {
   column: string;
@@ -23,6 +23,7 @@ export const CardPopup: React.FC<Props> = ({ column, author, setPopupState, chan
 
   const [newCommentValue, setCommentValue] = useState<string>("");
   const context = useContext(PopupCardContext);
+  const { name, desc, comments } = context;
 
   const [changeNamePopup, setChangeNamePopup] = useState<boolean>(false);
   const [addCommentState, setAddCommentState] = useState<boolean>(false);
@@ -30,25 +31,25 @@ export const CardPopup: React.FC<Props> = ({ column, author, setPopupState, chan
 
   useEffect(() => {
     window.addEventListener('keydown', handleEsc);
-    return () => { window.removeEventListener('keydown', handleEsc); };
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
   });
 
   function handleEsc(event: { keyCode: number }): void {
     if (event.keyCode === 27) setPopupState(false);
   }
 
-  const changeCardComment = useCallback((i: number, event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const content: string = event.target.value;
-    const ar: Comments[] = context.comments.map((comment) =>
-      comment.id === i ? { ...comment, content: content } : comment
-    );
-    setCardsComments(ar);
-  }, [context.comments, setCardsComments]
+  const changeCardComment = useCallback((i: number, event: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setCardsComments(comments.map((comment) =>
+      comment.id === i ? { ...comment, content: event.target.value } : comment
+    )),
+    [comments, setCardsComments]
   );
 
   const deleteCardComment = useCallback((i: number) =>
-    setCardsComments(context.comments.filter(v => v.id !== i)),
-    [context.comments, setCardsComments]
+    setCardsComments(comments.filter(v => v.id !== i)),
+    [comments, setCardsComments]
   );
 
   function changeName(ev: React.ChangeEvent<HTMLInputElement>): void {
@@ -64,14 +65,13 @@ export const CardPopup: React.FC<Props> = ({ column, author, setPopupState, chan
   const saveComment = useCallback(() => {
     setAddCommentState(false);
     if (newCommentValue.trim() === "") return;
-    const c: Comments = {
-      id: context.comments.length,
+    setCommentValue("");
+    setCardsComments(comments.concat({
+      id: comments.length,
       author: author,
       content: newCommentValue
-    };
-    setCommentValue("");
-    setCardsComments(context.comments.concat(c));
-  }, [author, context.comments, newCommentValue, setCardsComments]
+    }));
+  }, [author, comments, newCommentValue, setCardsComments]
   );
 
   return <Popup
@@ -81,11 +81,11 @@ export const CardPopup: React.FC<Props> = ({ column, author, setPopupState, chan
     <PopupContent>
       {!changeNamePopup && <CardName
         onClick={() => setChangeNamePopup(ps => !ps)}>
-        {context.name}
+        {name}
       </CardName>}
       {changeNamePopup && <NameInput
         onMouseOver={e => e.currentTarget.focus()}
-        value={context.name}
+        value={name}
         onChange={changeName}
         onBlur={() => setChangeNamePopup(ps => !ps)}
       />}
@@ -99,10 +99,10 @@ export const CardPopup: React.FC<Props> = ({ column, author, setPopupState, chan
         Description
       </PopupText>
       {!descState && <PopupDescDiv onClick={() => setDescState(ps => !ps)}>
-        {context.desc}
+        {desc}
       </PopupDescDiv>}
       {descState && <PopupDesc
-        value={context.desc}
+        value={desc}
         onMouseOver={e => e.currentTarget.focus()}
         onBlur={() => { setDescState(ps => !ps) }}
         onChange={changeDesc} />}
@@ -121,7 +121,7 @@ export const CardPopup: React.FC<Props> = ({ column, author, setPopupState, chan
           </CommentsInputButton>}
       </CommentsBorder>
       <CommentsArray>
-        {context.comments.map(({ id, author, content }) => <CardComment
+        {comments.map(({ id, author, content }) => <CardComment
           index={id}
           author={author}
           content={content}
