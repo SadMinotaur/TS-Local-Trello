@@ -5,24 +5,22 @@ import {
   PopupDesc, PopupText
 } from "./styles";
 import { Popup } from "../Popup";
-import { Card, Comments } from "../../utils/columns-content";
+import { Comments } from "../../utils/columns-content";
 import { CardComment } from "../Comment";
+import { PopupCardContext } from "../Columncard/ColumnCard";
 
 interface Props {
-  cardInfo: Card;
   column: string;
+  author: string;
   setPopupState: (prevState: boolean) => void;
   changeCardName: (v: string) => void;
   changeCardDesc: (v: string) => void;
-  setParentCardsComments: (comms: Comments[]) => void;
+  setCardsComments: (comms: Comments[]) => void;
 }
 
-export const CardPopup: React.FC<Props> = ({ cardInfo, column, setPopupState, changeCardName, changeCardDesc: changeCardDecs, setParentCardsComments }) => {
+export const CardPopup: React.FC<Props> = ({ column, author, setPopupState, changeCardName, changeCardDesc, setCardsComments }) => {
 
-  const [name, setName] = useState<string>(cardInfo.name);
-  const [desc, setDesc] = useState<string>(cardInfo.desc);
   const [newCommentValue, setCommentValue] = useState<string>("");
-  const [commentsArray, setCommentsArray] = useState<Comments[]>(cardInfo.comments);
 
   const [changeNamePopup, setChangeNamePopup] = useState<boolean>(false);
   const [addCommentState, setAddCommentState] = useState<boolean>(false);
@@ -37,100 +35,97 @@ export const CardPopup: React.FC<Props> = ({ cardInfo, column, setPopupState, ch
     if (event.keyCode === 27) setPopupState(false);
   }
 
-  function changeCardComment(i: number, event: React.ChangeEvent<HTMLTextAreaElement>): void {
+  function changeCardComment(i: number, comments: Comments[], event: React.ChangeEvent<HTMLTextAreaElement>): void {
     const content: string = event.target.value;
-    const copy: Comments[] = [...commentsArray];
-    const elIndex: number = copy.findIndex(v => v.id === i);
-    copy[elIndex] = { id: i, author: copy[elIndex].author, content: content };
-    setCommentsArray(copy);
-    setParentCardsComments(copy);
+    const ar: Comments[] = comments.map((comment) =>
+      comment.id === i ? { ...comment, content: content } : comment
+    );
+    setCardsComments(ar);
   }
 
-  function deleteCardComment(i: number): void {
-    const ar: Comments[] = commentsArray.filter(v => v.id !== i);
-    setCommentsArray(ar);
-    setParentCardsComments(ar);
+  function deleteCardComment(i: number, comments: Comments[]): void {
+    setCardsComments(comments.filter(v => v.id !== i));
   }
 
   function changeName(ev: React.ChangeEvent<HTMLInputElement>): void {
     const v: string = ev.target.value;
     if (v.trim() === "") return
-    setName(v);
     changeCardName(v);
   }
 
   function changeDesc(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
-    const v: string = ev.target.value;
-    setDesc(v);
-    changeCardDecs(v);
+    changeCardDesc(ev.target.value);
   }
 
-  function saveComment(): void {
+  function saveComment(comments: Comments[]): void {
     setAddCommentState(false);
     if (newCommentValue.trim() === "") return;
     const c: Comments = {
-      id: commentsArray.length,
-      author: localStorage.getItem("user") as string,
+      id: comments.length,
+      author: author,
       content: newCommentValue
     };
-    const ar: Comments[] = commentsArray.concat(c);
-    setCommentsArray(ar);
-    setParentCardsComments(ar);
+    setCardsComments(comments.concat(c));
   }
 
   return <Popup
     height={"fit-content"}
     width={"768px"}
     setPopupState={setPopupState}>
-    <PopupContent>
-      {!changeNamePopup && <CardName onClick={() => setChangeNamePopup(ps => !ps)}>
-        {name}
-      </CardName>}
-      {changeNamePopup && <NameInput
-        onMouseOver={e => e.currentTarget.focus()}
-        value={name}
-        onChange={changeName}
-        onBlur={() => setChangeNamePopup(ps => !ps)}
-      />}
-      <PopupText>
-        In column: {column}
-      </PopupText>
-      <PopupText>
-        Created by: {cardInfo.author}
-      </PopupText>
-      <PopupText>
-        Description
+    <PopupCardContext.Consumer>
+      {consumer => <PopupContent>
+        {!changeNamePopup && <CardName
+          onClick={() => setChangeNamePopup(ps => !ps)}>
+          {consumer.name}
+        </CardName>}
+        {changeNamePopup && <NameInput
+          onMouseOver={e => e.currentTarget.focus()}
+          value={consumer.name}
+          onChange={changeName}
+          onBlur={() => setChangeNamePopup(ps => !ps)}
+        />}
+        <PopupText>
+          In column: {column}
         </PopupText>
-      {!descState && <PopupDescDiv onClick={() => setDescState(ps => !ps)}>
-        {desc}
-      </PopupDescDiv>}
-      {descState && <PopupDesc
-        value={desc}
-        onMouseOver={e => e.currentTarget.focus()}
-        onBlur={() => { setDescState(ps => !ps) }}
-        onChange={changeDesc} />}
-      <PopupText>
-        Comments
+        <PopupText>
+          Created by: {author}
         </PopupText>
-      <CommentsBorder>
-        <CommentsInput
-          onClick={() => setAddCommentState(true)}
-          placeholder={"Write new comment"}
-          value={newCommentValue}
-          onChange={event => setCommentValue(event.target.value)} />
-        {addCommentState && <CommentsInputButton onClick={saveComment}>
-          Save
+        <PopupText>
+          Description
+          </PopupText>
+        {!descState && <PopupDescDiv onClick={() => setDescState(ps => !ps)}>
+          {consumer.desc}
+        </PopupDescDiv>}
+        {descState && <PopupDesc
+          value={consumer.desc}
+          onMouseOver={e => e.currentTarget.focus()}
+          onBlur={() => { setDescState(ps => !ps) }}
+          onChange={changeDesc} />}
+        <PopupText>
+          Comments
+          </PopupText>
+        <CommentsBorder>
+          <CommentsInput
+            onClick={() => setAddCommentState(true)}
+            placeholder={"Write new comment"}
+            value={newCommentValue}
+            onChange={event => setCommentValue(event.target.value)} />
+          {addCommentState && <CommentsInputButton
+            onClick={() => saveComment(consumer.comments)}>
+            Save
           </CommentsInputButton>}
-      </CommentsBorder>
-      <CommentsArray>
-        {commentsArray.map(({ id, author, content }) => <CardComment
-          index={id}
-          key={id}
-          author={author}
-          content={content}
-          changeCardComment={changeCardComment}
-          deleteCardComment={deleteCardComment} />)}
-      </CommentsArray>
-    </PopupContent>
-  </Popup>
+        </CommentsBorder>
+        <CommentsArray>
+          {consumer.comments.map(({ id, author, content }) => <CardComment
+            index={id}
+            author={author}
+            content={content}
+            key={id}
+            changeCardComment={changeCardComment}
+            deleteCardComment={deleteCardComment}
+          />)}
+        </CommentsArray>
+      </PopupContent>}
+    </PopupCardContext.Consumer>
+  </Popup >
 }

@@ -20,15 +20,25 @@ interface Props {
   deleteCard: (i: number) => void;
 }
 
+interface PopupContext {
+  name: string;
+  desc: string;
+  comments: Comments[];
+}
+
+export const PopupCardContext = React.createContext<PopupContext>({} as PopupContext);
+
 export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, deleteCard }) => {
   const { id, name, author, desc, comments } = card;
 
   const [cardName, setCardName] = useState<string>(name);
   const [cardDesc, setCardDesc] = useState<string>(desc);
   const [cardComments, setComments] = useState<Comments[]>(comments);
+
   const [popupState, setPopupState] = useState<boolean>(false);
   const [changeNameState, setChangeNameState] = useState<boolean>(false);
   const [hover, setHover] = useState<boolean>(false);
+
 
   useEffect(() => {
     // Parent is rendering new card on saveCardState call.
@@ -68,13 +78,20 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
         <FontAwesomeIcon icon={faTimes} />
       </CardComments>}
     </ColCard>
-    {popupState && <CardPopup
-      setPopupState={setPopupState}
-      cardInfo={{ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }}
-      column={column}
-      changeCardName={setCardName}
-      changeCardDesc={setCardDesc}
-      setParentCardsComments={setComments}
-    />}
-  </CardContainer>
+    {popupState &&
+      <PopupCardContext.Provider value={{
+        name: cardName,
+        desc: cardDesc,
+        comments: cardComments
+      }}>
+        <CardPopup
+          author={author}
+          column={column}
+          setPopupState={setPopupState}
+          changeCardName={setCardName}
+          changeCardDesc={setCardDesc}
+          setCardsComments={setComments}
+        />
+      </PopupCardContext.Provider>}
+  </CardContainer >
 }
