@@ -1,22 +1,36 @@
-import React, { DispatchWithoutAction, useContext, useReducer } from "react";
+import React, { Dispatch, useContext, useEffect, useReducer, useState } from "react";
+import { LoginPopup } from "../components/Loginpopup";
 import { GState } from "./global-context-types";
 
-export const AppContext = React.createContext<Partial<{
-  initialState: GState;
-  reducer: DispatchWithoutAction;
-}>>(null!)
+const AppContext = React.createContext<{
+  state: GState;
+  userReducer: Dispatch<UserAction>;
+}>(null!)
 
-export const useStateValue = () => useContext(AppContext);
+export type UserAction =
+  | { type: 'CHANGE_USER', payload: string };
 
-export const State: React.FC<{
+const AppState: React.FC<{
   initialState: GState;
-  reducer: () => GState;
-}> = ({ initialState, reducer, children }) => {
-  const [state, red] = useReducer(reducer, initialState)
+  userReducer: (state: GState, action: UserAction) => GState;
+}> = ({ initialState, userReducer, children }) => {
+
+  const [state, userRed] = useReducer(userReducer, initialState);
+  const [popupState, setPopupState] = useState<boolean>(state.user === "" ? true : false);
+
+  useEffect(() => {
+    localStorage.setItem("state", JSON.stringify(state));
+  })
+
   return <AppContext.Provider value={{
-    initialState: state,
-    reducer: red
+    state: state,
+    userReducer: userRed
   }} >
+    {popupState && <LoginPopup togglePopup={setPopupState} />}
     {children}
   </AppContext.Provider>
 }
+
+const useStateValue = () => useContext(AppContext);
+
+export { useStateValue, AppState }

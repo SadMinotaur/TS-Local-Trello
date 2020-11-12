@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useStateValue } from "../../utils/global-context";
 import { Popup } from "../Popup";
 import { PopupContent } from "./styles";
 
@@ -9,11 +10,12 @@ interface Props {
 export const LoginPopup: React.FC<Props> = ({ togglePopup }) => {
 
   const [inputState, changeInputState] = useState("");
+  const context = useStateValue()
 
   function changeDisplayState(): void {
     if (inputState.trim() === "") return;
     togglePopup(false);
-    localStorage.setItem("user", inputState);
+    context.userReducer({ type: "CHANGE_USER", payload: inputState })
   }
 
   return <Popup height={"180px"} width={"350px"}>

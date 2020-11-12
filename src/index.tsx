@@ -5,6 +5,9 @@ import './css /bootstrap.css'
 
 import { Header } from "./components/Header";
 import { MainComponent } from "./components/Mainblock";
+import { AppState } from './utils/global-context';
+import { GState } from './utils/global-context-types';
+import { userReducer } from './utils/state-reducers';
 
 // localStorage.clear()
 
@@ -15,10 +18,24 @@ if (localStorage.getItem("Column0") === null) {
   localStorage.setItem("Column3", "{\"name\":\"Done\",\"cards\":[]}");
 }
 
+const initialState: GState = {
+  user: "",
+  columns: [{ id: 0, name: "TODO" }, { id: 0, name: "TODO" }, { id: 0, name: "TODO" }, { id: 0, name: "TODO" }],
+  cards: [],
+  comments: []
+}
+
 ReactDOM.render(
   <React.StrictMode>
-    <Header />
-    <MainComponent />
+    <AppState
+      initialState={
+        localStorage.getItem("state") === null ?
+          initialState :
+          JSON.parse(localStorage.getItem("state") as string)}
+      userReducer={userReducer}>
+      <Header />
+      <MainComponent />
+    </AppState>
   </React.StrictMode>,
   document.getElementById('root')
 );

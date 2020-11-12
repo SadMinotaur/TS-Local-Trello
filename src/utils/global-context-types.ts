@@ -1,6 +1,8 @@
 export interface GState {
   user: string;
   columns: Column[];
+  cards: Card[];
+  comments: Comm[];
 }
 
 export interface Column {
