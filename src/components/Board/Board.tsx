@@ -1,12 +1,14 @@
 import React from 'react';
 import { ColumnsContainer } from './styles';
 import { BoardColumn } from "../Boardcolumn";
+import { useStateValue } from '../AppContext/GlobalContext';
 
 export const Board: React.FC = () => {
+
+  const context = useStateValue()
+
   return <ColumnsContainer>
-    <BoardColumn name={"Column0"} />
-    <BoardColumn name={"Column1"} />
-    <BoardColumn name={"Column2"} />
-    <BoardColumn name={"Column3"} />
+    {context.state.columns.map(({ id, name }) =>
+      <BoardColumn initName={name} key={id} id={id} />)}
   </ColumnsContainer>
 }

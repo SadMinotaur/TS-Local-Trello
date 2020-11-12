@@ -5,9 +5,9 @@ import './css /bootstrap.css'
 
 import { Header } from "./components/Header";
 import { MainComponent } from "./components/Mainblock";
-import { AppState } from './utils/global-context';
-import { GState } from './utils/global-context-types';
-import { userReducer } from './utils/state-reducers';
+import { AppState } from './components/AppContext/GlobalContext';
+import { AState } from './utils/global-context-types';
+import { reducer } from './utils/state-reducers';
 
 // localStorage.clear()
 
@@ -18,9 +18,9 @@ if (localStorage.getItem("Column0") === null) {
   localStorage.setItem("Column3", "{\"name\":\"Done\",\"cards\":[]}");
 }
 
-const initialState: GState = {
+const initialState: AState = {
   user: "",
-  columns: [{ id: 0, name: "TODO" }, { id: 0, name: "TODO" }, { id: 0, name: "TODO" }, { id: 0, name: "TODO" }],
+  columns: [{ id: 0, name: "TODO" }, { id: 1, name: "In Progress" }, { id: 2, name: "Testing" }, { id: 3, name: "DONE" }],
   cards: [],
   comments: []
 }
@@ -28,11 +28,8 @@ const initialState: GState = {
 ReactDOM.render(
   <React.StrictMode>
     <AppState
-      initialState={
-        localStorage.getItem("state") === null ?
-          initialState :
-          JSON.parse(localStorage.getItem("state") as string)}
-      userReducer={userReducer}>
+      initialState={localStorage.getItem("state") === null ? initialState : JSON.parse(localStorage.getItem("state") as string)}
+      reducer={reducer}>
       <Header />
       <MainComponent />
     </AppState>

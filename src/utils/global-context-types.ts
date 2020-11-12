@@ -1,4 +1,4 @@
-export interface GState {
+export interface AState {
   user: string;
   columns: Column[];
   cards: Card[];

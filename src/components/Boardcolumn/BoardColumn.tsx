@@ -2,32 +2,35 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ColumnNameInput, ColumnBorder, ColumnNameDiv, ColumnAddCardDiv, ButtonDiv } from "./styles";
 import { Card, ColumnsContent } from "../../utils/columns-content";
 import { ColumnCard } from "../Columncard";
+import { useStateValue } from "../AppContext/GlobalContext";
 
 interface Props {
-  name: string;
+  id: number;
+  initName: string;
 }
 
-export const BoardColumn: React.FC<Props> = (props) => {
-  const columnName: string = props.name;
+export const BoardColumn: React.FC<Props> = ({ id, initName }) => {
 
-  const column: ColumnsContent = JSON.parse(localStorage.getItem(columnName) as string);
+  // const column: ColumnsContent = JSON.parse(localStorage.getItem(initName) as string);
 
-  const [name, setName] = useState<string>(column.name);
-  const [colCards, setCardsArray] = useState<Card[]>(column.cards);
+  const context = useStateValue()
+
+  const [name, setName] = useState<string>(initName);
+  const [colCards, setCardsArray] = useState<Card[]>([]);
   const [cardInput, setCardInput] = useState<string>("");
 
   const [nameInputState, setNameInputState] = useState<boolean>(false);
   const [newCardState, setNewCardState] = useState<boolean>(false);
 
-  const isFirstRun = useRef<boolean>(true);
+  // const isFirstRun = useRef<boolean>(true);
 
-  useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-    } else {
-      localStorage.setItem(columnName, JSON.stringify({ name: name, cards: colCards }));
-    }
-  }, [colCards, columnName, name]);
+  // useEffect(() => {
+  //   if (isFirstRun.current) {
+  //     isFirstRun.current = false;
+  //   } else {
+  //     localStorage.setItem(initName, JSON.stringify({ name: name, cards: colCards }));
+  //   }
+  // }, [colCards, initName, name]);
 
   const saveNewCard = useCallback(() => {
     if (cardInput.trim() === "") return;
@@ -68,7 +71,10 @@ export const BoardColumn: React.FC<Props> = (props) => {
         if (v.trim() === "") return;
         setName(v)
       }}
-      onBlur={() => setNameInputState(prevState => !prevState)}
+      onBlur={() => {
+        context.reducer({ type: "CHANGE_COL_NAME", payload: { id: id, name: name } })
+        setNameInputState(prevState => !prevState)
+      }}
     />}
     {colCards.map((card) => <ColumnCard
       column={name}
