@@ -1,32 +1,21 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CardName, CommentsArray, CommentsBorder, PopupDescDiv,
   CommentsInput, CommentsInputButton, NameInput, PopupContent,
   PopupDesc, PopupText
 } from "./styles";
 import { Popup } from "../Popup";
-import { CardComment } from "../Comment";
-import { useContext } from "react";
-import { PopupCardContext } from "../../utils/popup-context";
+import { useStateValue } from "../AppContext/GlobalContext";
+import { Card } from "../../utils/global-context-types";
 
-interface Props {
-  column: string;
-  setPopupState: (prevState: boolean) => void;
-}
+export const CardPopup: React.FC = () => {
 
-export const CardPopup: React.FC<Props> = ({ column, setPopupState }) => {
-
-  const { name, desc, comments, author, changeCardName, changeCardDesc, setCardsComments } = useContext(PopupCardContext);
-
+  const { state, reducer } = useStateValue();
   const [newCommentValue, setCommentValue] = useState<string>("");
 
   const [changeNamePopup, setChangeNamePopup] = useState<boolean>(false);
   const [addCommentState, setAddCommentState] = useState<boolean>(false);
   const [descState, setDescState] = useState<boolean>(false);
-
-  function handleEsc(event: { keyCode: number }): void {
-    if (event.keyCode === 27) setPopupState(false);
-  }
 
   useEffect(() => {
     window.addEventListener('keydown', handleEsc);
@@ -35,39 +24,42 @@ export const CardPopup: React.FC<Props> = ({ column, setPopupState }) => {
     };
   });
 
-  const changeCardComment = useCallback((i: number, event: React.ChangeEvent<HTMLTextAreaElement>) =>
-    setCardsComments(comments.map((comment) =>
-      comment.id === i ? { ...comment, content: event.target.value } : comment
-    )),
-    [comments, setCardsComments]
-  );
+  const res = state.cards.find((crd) => crd.id === state.popup.idCard);
+  const [nameValue, setNameValue] = useState<string>(res ? res.name : "");
+  const [descValue, setDescValue] = useState<string>(res ? res.desc : "");
+  if (!res) return null;
+  const card: Card = res as Card;
 
-  const deleteCardComment = useCallback((i: number) =>
-    setCardsComments(comments.filter(v => v.id !== i)),
-    [comments, setCardsComments]
-  );
+  function setPopupState(setState: boolean) {
+    reducer({ type: "CHANGE_POPUP", payload: { state: setState, idCard: -1 } })
+  }
+
+  function handleEsc(event: { keyCode: number }): void {
+    if (event.keyCode === 27) { setPopupState(false) };
+  }
 
   function changeName(ev: React.ChangeEvent<HTMLInputElement>): void {
     const v: string = ev.target.value;
-    if (v.trim() === "") return
-    changeCardName(v);
+    if (v.trim() === "") return;
+    setNameValue(v);
+  }
+
+  function changeNameOnBlur(ev: React.ChangeEvent<HTMLInputElement>): void {
+    const { id, author, idColumn } = card;
+    setChangeNamePopup(ps => !ps);
+    reducer({
+      type: "CHANGE_CARD", payload:
+        { id: id, name: nameValue, author: author, columnId: idColumn, desc: descValue }
+    });
   }
 
   function changeDesc(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
-    changeCardDesc(ev.target.value);
+
   }
 
-  const saveComment = useCallback(() => {
-    setAddCommentState(false);
-    if (newCommentValue.trim() === "") return;
-    setCommentValue("");
-    setCardsComments(comments.concat({
-      id: comments.length,
-      author: author,
-      content: newCommentValue
-    }));
-  }, [author, comments, newCommentValue, setCardsComments]
-  );
+  function saveComment() {
+
+  }
 
   return <Popup
     height={"fit-content"}
@@ -76,32 +68,32 @@ export const CardPopup: React.FC<Props> = ({ column, setPopupState }) => {
     <PopupContent>
       {!changeNamePopup && <CardName
         onClick={() => setChangeNamePopup(ps => !ps)}>
-        {name}
+        {nameValue}
       </CardName>}
       {changeNamePopup && <NameInput
         onMouseOver={e => e.currentTarget.focus()}
-        value={name}
+        value={nameValue}
         onChange={changeName}
-        onBlur={() => setChangeNamePopup(ps => !ps)}
+        onBlur={changeNameOnBlur}
       />}
       <PopupText>
-        In column: {column}
+        In column: {state.columns.find((col) => col.id === card.idColumn)?.name}
       </PopupText>
       <PopupText>
-        Created by: {author}
+        Created by: {card.author}
       </PopupText>
       <PopupText>
         Description
       </PopupText>
       {!descState && <PopupDescDiv
         onClick={() => setDescState(ps => !ps)}>
-        {desc}
+        {descValue}
       </PopupDescDiv>}
       {descState && <PopupDesc
-        value={desc}
+        value={descValue}
         onMouseOver={e => e.currentTarget.focus()}
         onBlur={() => setDescState(ps => !ps)}
-        onChange={changeDesc} />}
+        onChange={e => setDescValue(e.target.value)} />}
       <PopupText>
         Comments
       </PopupText>
@@ -117,14 +109,6 @@ export const CardPopup: React.FC<Props> = ({ column, setPopupState }) => {
           </CommentsInputButton>}
       </CommentsBorder>
       <CommentsArray>
-        {comments.map(({ id, author, content }) => <CardComment
-          index={id}
-          author={author}
-          content={content}
-          key={id}
-          changeCardComment={changeCardComment}
-          deleteCardComment={deleteCardComment}
-        />)}
       </CommentsArray>
     </PopupContent>
   </Popup >

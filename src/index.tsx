@@ -22,13 +22,16 @@ const initialState: AState = {
   user: "",
   columns: [{ id: 0, name: "TODO" }, { id: 1, name: "In Progress" }, { id: 2, name: "Testing" }, { id: 3, name: "DONE" }],
   cards: [],
-  comments: []
+  comments: [],
+  popup: { idCard: -1, state: false }
 }
 
 ReactDOM.render(
   <React.StrictMode>
     <AppState
-      initialState={localStorage.getItem("state") === null ? initialState : JSON.parse(localStorage.getItem("state") as string)}
+      initialState={localStorage.getItem("state") === null ?
+        initialState :
+        JSON.parse(localStorage.getItem("state") as string)}
       reducer={mainReducer}>
       <Header />
       <MainComponent />

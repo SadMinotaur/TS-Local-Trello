@@ -3,6 +3,7 @@ export interface AState {
   columns: Column[];
   cards: Card[];
   comments: Comm[];
+  popup: Popup;
 }
 
 export interface Column {
@@ -23,4 +24,9 @@ export interface Comm {
   author: string;
   content: string;
   idCard: number;
+}
+
+export interface Popup {
+  idCard: number;
+  state: boolean;
 }

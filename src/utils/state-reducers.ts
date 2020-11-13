@@ -1,5 +1,5 @@
 import { AState } from "./global-context-types";
-import { changeUser, changeColName, addCard, changeCard, delCard, addComm, changeCommContent, delComm } from "./handlers";
+import { changeUser, changeColName, addCard, changeCard, delCard, addComm, changeCommContent, delComm, popupChange } from "./handlers";
 
 export const mainReducer = (state: AState, action: Action) => {
   // TODO: Fix this.
@@ -15,13 +15,15 @@ export const AllActionCollection = {
   'DEL_CARD': delCard,
   'ADD_COMM': addComm,
   'CHANGE_COMM_CONTENT': changeCommContent,
-  'DEL_COMM': delComm
+  'DEL_COMM': delComm,
+  'CHANGE_POPUP': popupChange
 }
 
 export type Action =
   | UserActions
   | ColumnAction
   | CardAction
+  | PopupAction
   | СommAction;
 
 export type UserActions =
@@ -40,6 +42,9 @@ export type СommAction =
   | { type: 'CHANGE_COMM_CONTENT', payload: ICommPayload }
   | { type: 'DEL_COMM', payload: ICommPayload };
 
+export type PopupAction =
+  | { type: 'CHANGE_POPUP', payload: IPopupPayload };
+
 interface IUserPayload {
   name: string;
 }
@@ -54,4 +59,9 @@ interface ICardPayload {
 
 interface ICommPayload {
   id: number, content: string, author: string, cardId: number
+}
+
+interface IPopupPayload {
+  state: boolean,
+  idCard: number
 }

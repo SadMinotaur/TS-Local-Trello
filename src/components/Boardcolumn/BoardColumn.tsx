@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ColumnNameInput, ColumnBorder, ColumnNameDiv, ColumnAddCardDiv, ButtonDiv } from "./styles";
-import { Card, ColumnsContent } from "../../utils/columns-content";
 import { ColumnCard } from "../Columncard";
 import { useStateValue } from "../AppContext/GlobalContext";
 
