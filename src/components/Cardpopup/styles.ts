@@ -21,16 +21,14 @@ export const PopupDesc = styled.textarea`
     border: 0.2px solid grey;
     overflow-wrap: break-word;
     resize: none;
-    overflow: hidden;
 `
 export const PopupDescDiv = styled.div`
-    height: 60px;
+    min-height: 60px;
     width: 100%;
     margin: 10px 0 10px 0px;
     border-radius: 2px;
     border: 0.2px solid grey;
     overflow-wrap: break-word;
-    overflow: scroll;
 `
 
 export const ColCard = styled.div`
@@ -66,7 +64,6 @@ export const CommentsInput = styled.textarea`
     border: 0;
     overflow-wrap: break-word;
     resize: none;
-    overflow: hidden;
 `
 
 export const CommentsInputButton = styled.button`

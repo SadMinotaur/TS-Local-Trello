@@ -1,34 +1,59 @@
 import React, { useState } from "react";
-import { CommentInput, UserComment, UserCommentDelete, CommentEdit } from "./styles";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { CommentInput, UserComment, CommentEdit, CommentBorders, UserCommentBar } from "./styles";
+import { useStateValue } from "../AppContext/GlobalContext";
+import { Comm } from "../../utils/global-context-types";
 
 interface Props {
-  index: number;
-  author: string;
-  content: string;
-  deleteCardComment: (i: number) => void;
-  changeCardComment: (i: number, event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  id: number;
 }
 
-export const CardComment: React.FC<Props> = ({ index, author, content, deleteCardComment, changeCardComment }) => {
+export const CardComment: React.FC<Props> = ({ id }) => {
 
+  const { state, reducer } = useStateValue();
   const [nameState, setNameState] = useState<boolean>(false);
 
+  const commentState = state.comments.find((comment) => comment.id === id);
+  if (!commentState) return null;
+  const comment: Comm = commentState;
+
+  function onChange(event: React.ChangeEvent<HTMLTextAreaElement>): void {
+    const { id, author, idCard } = comment;
+    const v = event.target.value;
+    if (v === "") return;
+    reducer({
+      type: "CHANGE_COMM_CONTENT",
+      payload: { id, author, content: v, cardId: idCard }
+    });
+  }
+
+  function deleteCard(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+    const { id, author, content, idCard } = comment;
+    reducer({
+      type: "DEL_COMM",
+      payload: { id, author, content, cardId: idCard }
+    });
+  }
+
   return <div>
-    {!nameState && <UserComment
-      onClick={() => setNameState(ps => !ps)}
-      key={index}>
-      {author} : {content}
-    </UserComment>}
+    {!nameState && <CommentBorders>
+      {comment.author}
+      <UserComment>
+        {comment.content}
+      </UserComment>
+      <UserCommentBar>
+        <div onClick={deleteCard}>
+          Delete
+        </div>
+        <div onClick={() => setNameState(ps => !ps)}>
+          Change
+        </div>
+      </UserCommentBar>
+    </CommentBorders>}
     {nameState && <CommentEdit>
       <CommentInput
-        value={content}
-        onChange={event => changeCardComment(index, event)}
+        value={comment.content}
+        onChange={onChange}
         onBlur={() => setNameState(ps => !ps)} />
-      <UserCommentDelete onClick={() => deleteCardComment(index)}>
-        <FontAwesomeIcon icon={faTimes} />
-      </UserCommentDelete>
     </CommentEdit>}
   </div>
 }

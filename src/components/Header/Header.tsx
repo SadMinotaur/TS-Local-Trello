@@ -6,7 +6,7 @@ export const Header: React.FC = () => {
     <TopbarName>
       <h6>
         Trello
-        </h6>
+      </h6>
     </TopbarName>
   );
 }

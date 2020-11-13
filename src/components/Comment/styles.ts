@@ -9,9 +9,6 @@ export const UserComment = styled.div`
   width: 100%;
   border: grey 1px solid;
   border-radius: 2px;
-  &:hover {
-    background: #cbcaca;
-  }
 `
 
 export const CommentEdit = styled.div`
@@ -27,15 +24,12 @@ export const CommentInput = styled.textarea`
   resize: none;
 `
 
-export const UserCommentDelete = styled.div`
+export const UserCommentBar = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #cbcaca;
-  height: 20px;
-  width: 20px;
-  border-radius: 2px;
-  &:hover {
-    background: white;
-  }
+  font-size: 10px;
+`
+
+export const CommentBorders = styled.div`
+  text-indent: 5px;
+  margin: 5px;
 `

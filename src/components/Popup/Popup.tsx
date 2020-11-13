@@ -9,6 +9,7 @@ interface Props {
 }
 
 export const Popup: React.FC<Props> = ({ width, height, setPopupState, children }) => {
+
   const buttonPos: number = Number(width.slice(0, width.length - 2)) - 10;
 
   return (

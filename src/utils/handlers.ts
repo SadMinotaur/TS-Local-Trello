@@ -27,7 +27,6 @@ export const addCard = function (state: AState, action: CardAction): AState {
 
 export const changeCard = function (state: AState, action: CardAction): AState {
   const { id, name, desc } = action.payload;
-  console.log("here")
   return {
     ...state,
     cards: state.cards.map((card) =>
@@ -51,7 +50,7 @@ export const addComm = function (state: AState, action: СommAction): AState {
   const { id, author, content, cardId } = action.payload;
   return {
     ...state,
-    comments: [...state.comments, { id, author, content, idCard: cardId }]
+    comments: [...state.comments, { id: id, author: author, content: content, idCard: cardId }]
   };
 };
 
@@ -61,8 +60,7 @@ export const changeCommContent = function (state: AState, action: СommAction): 
     ...state,
     comments: state.comments.map((comm) =>
       comm.id === id ? {
-        id, content: content, author: comm.author,
-        idCard: comm.idCard
+        id, content: content, author: comm.author, idCard: comm.idCard
       } : comm)
   };
 };

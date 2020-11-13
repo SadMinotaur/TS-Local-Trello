@@ -7,6 +7,7 @@ import {
 import { Popup } from "../Popup";
 import { useStateValue } from "../AppContext/GlobalContext";
 import { Card } from "../../utils/global-context-types";
+import { CardComment } from "../Comment";
 
 export const CardPopup: React.FC = () => {
 
@@ -25,12 +26,10 @@ export const CardPopup: React.FC = () => {
   });
 
   const res = state.cards.find((crd) => crd.id === state.popup.idCard);
-  const [nameValue, setNameValue] = useState<string>(res ? res.name : "");
-  const [descValue, setDescValue] = useState<string>(res ? res.desc : "");
   if (!res) return null;
   const card: Card = res as Card;
 
-  function setPopupState(setState: boolean) {
+  function setPopupState(setState: boolean): void {
     reducer({ type: "CHANGE_POPUP", payload: { state: setState, idCard: -1 } })
   }
 
@@ -39,26 +38,38 @@ export const CardPopup: React.FC = () => {
   }
 
   function changeName(ev: React.ChangeEvent<HTMLInputElement>): void {
+    const { id, author, desc, idColumn } = card;
     const v: string = ev.target.value;
     if (v.trim() === "") return;
-    setNameValue(v);
-  }
-
-  function changeNameOnBlur(ev: React.ChangeEvent<HTMLInputElement>): void {
-    const { id, author, idColumn } = card;
-    setChangeNamePopup(ps => !ps);
     reducer({
       type: "CHANGE_CARD", payload:
-        { id: id, name: nameValue, author: author, columnId: idColumn, desc: descValue }
+        { id: id, name: ev.target.value, author: author, columnId: idColumn, desc: desc }
     });
   }
 
   function changeDesc(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
-
+    const { id, name, author, idColumn } = card;
+    const v: string = ev.target.value;
+    if (v.trim() === "") return;
+    reducer({
+      type: "CHANGE_CARD", payload:
+        { id: id, name: name, author: author, columnId: idColumn, desc: ev.target.value }
+    });
   }
 
-  function saveComment() {
+  function changeNameOnBlur(ev: React.ChangeEvent<HTMLInputElement>): void {
+    setChangeNamePopup(ps => !ps);
+  }
 
+  function saveComment(): void {
+    if (newCommentValue.trim() === "") return;
+    setCommentValue("");
+    reducer({
+      type: "ADD_COMM", payload: {
+        id: state.comments.length, author: state.user,
+        content: newCommentValue, cardId: card.id,
+      }
+    });
   }
 
   return <Popup
@@ -68,11 +79,11 @@ export const CardPopup: React.FC = () => {
     <PopupContent>
       {!changeNamePopup && <CardName
         onClick={() => setChangeNamePopup(ps => !ps)}>
-        {nameValue}
+        {card.name}
       </CardName>}
       {changeNamePopup && <NameInput
         onMouseOver={e => e.currentTarget.focus()}
-        value={nameValue}
+        value={card.name}
         onChange={changeName}
         onBlur={changeNameOnBlur}
       />}
@@ -87,13 +98,13 @@ export const CardPopup: React.FC = () => {
       </PopupText>
       {!descState && <PopupDescDiv
         onClick={() => setDescState(ps => !ps)}>
-        {descValue}
+        {card.desc}
       </PopupDescDiv>}
       {descState && <PopupDesc
-        value={descValue}
+        value={card.desc}
         onMouseOver={e => e.currentTarget.focus()}
         onBlur={() => setDescState(ps => !ps)}
-        onChange={e => setDescValue(e.target.value)} />}
+        onChange={changeDesc} />}
       <PopupText>
         Comments
       </PopupText>
@@ -104,11 +115,13 @@ export const CardPopup: React.FC = () => {
           value={newCommentValue}
           onChange={event => setCommentValue(event.target.value)} />
         {addCommentState && <CommentsInputButton
-          onClick={() => saveComment()}>
+          onClick={saveComment}>
           Save
           </CommentsInputButton>}
       </CommentsBorder>
       <CommentsArray>
+        {state.comments.map((comm) => comm.idCard === card.id &&
+          <CardComment key={comm.id} id={comm.id} />)}
       </CommentsArray>
     </PopupContent>
   </Popup >

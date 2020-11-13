@@ -12,7 +12,7 @@ import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useStateValue } from "../AppContext/GlobalContext";
-import { Card } from "../../utils/global-context-types";
+import { Card, Comm } from "../../utils/global-context-types";
 interface Props {
   id: number;
 }
@@ -21,38 +21,24 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
 
   const { state, reducer } = useStateValue();
 
-  console.log(state);
-
-  const stateCard = state.cards.find((card) => id === card.id);
-  const [cardName, setCardName] = useState<string>(stateCard ? stateCard.name : "");
-
   const [changeNameState, setChangeNameState] = useState<boolean>(false);
   const [rightClickState, setRightClickState] = useState<boolean>(false);
 
+  const stateCard = state.cards.find((card) => id === card.id);
   if (!stateCard) return null;
+  const card: Card = stateCard as Card;
+  const comments: Comm[] = state.comments.filter((comment) => id === comment.idCard);
 
-  const card = stateCard as Card;
-  const comments = state.comments.map(({ idCard }) => idCard === id);
-
-  function onRightClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  function onRightClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
     event.preventDefault();
     setRightClickState(prevState => !prevState);
   }
 
-  function onEditBlur(event: React.ChangeEvent<HTMLInputElement>) {
+  function onEditBlur(event: React.ChangeEvent<HTMLInputElement>): void {
     setChangeNameState(prevState => !prevState);
-    reducer({
-      type: "CHANGE_CARD", payload: {
-        id: id,
-        name: cardName,
-        desc: card.desc,
-        author: card.author,
-        columnId: card.idColumn
-      }
-    })
   }
 
-  function onClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  function onClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
     reducer({
       type: "DEL_CARD", payload: {
         id: id,
@@ -64,13 +50,21 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
     });
   }
 
-  function nameInput(event: React.ChangeEvent<HTMLInputElement>) {
+  function nameInput(event: React.ChangeEvent<HTMLInputElement>): void {
     const v: string = event.target.value;
     if (v.trim() === "") return;
-    setCardName(v);
+    reducer({
+      type: "CHANGE_CARD", payload: {
+        id: id,
+        name: v,
+        desc: card.desc,
+        author: card.author,
+        columnId: card.idColumn
+      }
+    });
   }
 
-  function togglePopup(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  function togglePopup(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
     reducer({ type: "CHANGE_POPUP", payload: { idCard: id, state: true } })
   }
 
@@ -79,11 +73,11 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
       {!changeNameState && <CardContent
         onClick={togglePopup}
         empty={comments.length === 0}>
-        {cardName}
+        {card.name}
       </CardContent>}
       {changeNameState && <NameInput
         type="text"
-        value={cardName}
+        value={card.name}
         onChange={nameInput}
         onBlur={onEditBlur} />}
       <EditCardButton
