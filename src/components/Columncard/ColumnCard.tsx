@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   CardComments,
   CardContainer,
@@ -7,37 +7,29 @@ import {
   NameInput,
   EditCardButton
 } from "./styles";
-import { Card, Comments } from "../../utils/columns-content";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
-import { CardPopup } from "../Cardpopup";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { PopupCardContext } from "../../utils/popup-context";
+import { useStateValue } from "../AppContext/GlobalContext";
 interface Props {
-  card: Card;
-  column: string;
-  saveCardState: (card: Card, index: number) => void;
-  deleteCard: (i: number) => void;
+  id: number;
 }
 
-export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, deleteCard }) => {
-  const { id, name, author, desc, comments } = card;
+export const ColumnCard: React.FC<Props> = ({ id }) => {
 
-  const [cardName, setCardName] = useState<string>(name);
-  const [cardDesc, setCardDesc] = useState<string>(desc);
-  const [cardComments, setComments] = useState<Comments[]>(comments);
+  const { state, reducer } = useStateValue()
 
-  const [popupState, setPopupState] = useState<boolean>(false);
+  const stateCard = state.cards.find((card) => id === card.id)
+
+  const [cardName, setCardName] = useState<string>(stateCard ? stateCard.name : "");
+
   const [changeNameState, setChangeNameState] = useState<boolean>(false);
   const [rightClickState, setRightClickState] = useState<boolean>(false);
 
-  useEffect(() => {
-    // Parent is rendering new card on saveCardState call.
-    if (name !== cardName || desc !== cardDesc || comments !== cardComments) {
-      saveCardState({ id: id, name: cardName, author: author, desc: cardDesc, comments: cardComments }, id);
-    }
-  }, [id, cardName, author, cardDesc, cardComments, saveCardState, name, desc, comments]);
+  if (!stateCard) return null;
+
+  const comments = state.comments.map(({ idCard }) => idCard === id);
 
   return <CardContainer>
     <ColCard onContextMenu={e => {
@@ -45,8 +37,8 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
       setRightClickState(prevState => !prevState);
     }}>
       {!changeNameState && <CardContent
-        onClick={() => { setPopupState(prevState => !prevState); }}
-        empty={cardComments.length === 0}>
+        onClick={() => { }}
+        empty={comments.length === 0}>
         {cardName}
       </CardContent>}
       {changeNameState && <NameInput
@@ -60,30 +52,15 @@ export const ColumnCard: React.FC<Props> = ({ card, column, saveCardState, delet
         onBlur={() => setChangeNameState(prevState => !prevState)} />}
       <EditCardButton
         onClick={() => setChangeNameState(prevState => !prevState)}
-        empty={cardComments.length === 0}>
+        empty={comments.length === 0}>
         <FontAwesomeIcon icon={faEdit} />
       </EditCardButton>
-      {cardComments.length !== 0 && <CardComments>
-        <FontAwesomeIcon icon={faComment} /> : {cardComments.length}
+      {comments.length !== 0 && <CardComments>
+        <FontAwesomeIcon icon={faComment} /> : {comments.length}
       </CardComments>}
-      {rightClickState && <CardComments onClick={() => deleteCard(id)}>
+      {rightClickState && <CardComments>
         <FontAwesomeIcon icon={faTimes} />
       </CardComments>}
     </ColCard>
-    {popupState &&
-      <PopupCardContext.Provider value={{
-        name: cardName,
-        desc: cardDesc,
-        comments: cardComments,
-        author: localStorage.getItem("user") as string,
-        changeCardName: setCardName,
-        changeCardDesc: setCardDesc,
-        setCardsComments: setComments
-      }}>
-        <CardPopup
-          column={column}
-          setPopupState={setPopupState}
-        />
-      </PopupCardContext.Provider>}
   </CardContainer >
 }

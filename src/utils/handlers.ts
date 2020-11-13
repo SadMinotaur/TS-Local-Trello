@@ -18,19 +18,22 @@ export const changeColName = function (state: AState, action: ColumnAction): ASt
 }
 
 export const addCard = function (state: AState, action: CardAction): AState {
-  const { id, name, columnId, author } = action.payload;
+  const { id, name, desc, columnId, author } = action.payload;
   return {
     ...state,
-    cards: [...state.cards, { id: id, name: name, author: author, idColumn: columnId }]
+    cards: [...state.cards, { id: id, name: name, desc: desc, author: author, idColumn: columnId }]
   };
 }
 
-export const changeCardName = function (state: AState, action: CardAction): AState {
-  const { id, name } = action.payload;
+export const changeCard = function (state: AState, action: CardAction): AState {
+  const { id, name, desc } = action.payload;
   return {
     ...state,
     cards: state.cards.map((card) =>
-      card.id === id ? { id: card.id, name: name, author: card.author, idColumn: card.idColumn } : card)
+      card.id === id ? {
+        id: card.id, name: name, desc: desc,
+        author: card.author, idColumn: card.idColumn
+      } : card)
   };
 }
 
@@ -55,7 +58,10 @@ export const changeCommContent = function (state: AState, action: СommAction): 
   return {
     ...state,
     comments: state.comments.map((comm) =>
-      comm.id === id ? { id, content: content, author: comm.author, idCard: comm.idCard } : comm)
+      comm.id === id ? {
+        id, content: content, author: comm.author,
+        idCard: comm.idCard
+      } : comm)
   };
 }
 

@@ -14,6 +14,7 @@ export interface Card {
   id: number;
   name: string;
   author: string;
+  desc: string;
   idColumn: number;
 }
 

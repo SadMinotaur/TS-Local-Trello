@@ -11,50 +11,30 @@ interface Props {
 
 export const BoardColumn: React.FC<Props> = ({ id, initName }) => {
 
-  // const column: ColumnsContent = JSON.parse(localStorage.getItem(initName) as string);
-
-  const context = useStateValue()
+  const { state, reducer } = useStateValue()
 
   const [name, setName] = useState<string>(initName);
-  const [colCards, setCardsArray] = useState<Card[]>([]);
   const [cardInput, setCardInput] = useState<string>("");
 
   const [nameInputState, setNameInputState] = useState<boolean>(false);
   const [newCardState, setNewCardState] = useState<boolean>(false);
 
-  // const isFirstRun = useRef<boolean>(true);
-
-  // useEffect(() => {
-  //   if (isFirstRun.current) {
-  //     isFirstRun.current = false;
-  //   } else {
-  //     localStorage.setItem(initName, JSON.stringify({ name: name, cards: colCards }));
-  //   }
-  // }, [colCards, initName, name]);
-
   const saveNewCard = useCallback(() => {
     if (cardInput.trim() === "") return;
     setCardInput("");
-    setCardsArray(colCards.concat({
-      id: colCards.length,
-      name: cardInput,
-      author: localStorage.getItem("user") as string,
-      comments: [],
-      desc: ""
-    }));
+    reducer({
+      type: "ADD_CARD",
+      payload: {
+        id: state.cards.length,
+        name: cardInput,
+        author: state.user,
+        desc: "",
+        columnId: id
+      }
+    });
     setNewCardState(prevState => !prevState);
   },
-    [cardInput, colCards]
-  );
-
-  const saveCardChanges = useCallback((card: Card, index: number) =>
-    setCardsArray(colCards.map((cardArray): Card => cardArray.id !== index ? cardArray : card)),
-    [colCards]
-  );
-
-  const deleteCard = useCallback((index: number) =>
-    setCardsArray(colCards.filter(value => value.id !== index)),
-    [colCards]
+    [cardInput, id, reducer, state.cards.length, state.user]
   );
 
   return <ColumnBorder>
@@ -72,17 +52,15 @@ export const BoardColumn: React.FC<Props> = ({ id, initName }) => {
         setName(v)
       }}
       onBlur={() => {
-        context.reducer({ type: "CHANGE_COL_NAME", payload: { id: id, name: name } })
+        reducer({ type: "CHANGE_COL_NAME", payload: { id: id, name: name } });
         setNameInputState(prevState => !prevState)
       }}
     />}
-    {colCards.map((card) => <ColumnCard
-      column={name}
-      card={card}
-      key={card.id}
-      deleteCard={deleteCard}
-      saveCardState={saveCardChanges}
-    />)}
+    {
+      state.cards.map((card) => card.idColumn === id && <ColumnCard
+        key={card.id}
+        id={card.id}
+      />)}
     {!newCardState && <ColumnAddCardDiv
       onClick={() => setNewCardState(prevState => !prevState)}>
       Add new card

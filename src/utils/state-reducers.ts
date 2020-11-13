@@ -1,8 +1,8 @@
 import { AState } from "./global-context-types";
-import { changeUser, changeColName, addCard, changeCardName, delCard, addComm, changeCommContent, delComm } from "./handlers";
+import { changeUser, changeColName, addCard, changeCard, delCard, addComm, changeCommContent, delComm } from "./handlers";
 
 export const mainReducer = (state: AState, action: Action) => {
-  // This is bad.
+  // TODO: Fix this.
   const handler: (state: AState, action: any) => AState = AllActionCollection[action.type];
   return handler ? handler(state, action) : state;
 }
@@ -11,7 +11,7 @@ export const AllActionCollection = {
   'CHANGE_USER': changeUser,
   'CHANGE_COL_NAME': changeColName,
   'ADD_CARD': addCard,
-  'CHANGE_CARD_NAME': changeCardName,
+  'CHANGE_CARD': changeCard,
   'DEL_CARD': delCard,
   'ADD_COMM': addComm,
   'CHANGE_COMM_CONTENT': changeCommContent,
@@ -32,7 +32,7 @@ export type ColumnAction =
 
 export type CardAction =
   | { type: 'ADD_CARD', payload: ICardPayload }
-  | { type: 'CHANGE_CARD_NAME', payload: ICardPayload }
+  | { type: 'CHANGE_CARD', payload: ICardPayload }
   | { type: 'DEL_CARD', payload: ICardPayload };
 
 export type СommAction =
@@ -49,7 +49,7 @@ interface IColumnPayload {
 }
 
 interface ICardPayload {
-  id: number, name: string, author: string, columnId: number
+  id: number, name: string, desc: string, author: string, columnId: number
 }
 
 interface ICommPayload {
