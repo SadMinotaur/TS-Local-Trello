@@ -7,9 +7,9 @@ import { Header } from "./components/Header";
 import { MainComponent } from "./components/Mainblock";
 import { AppState } from './components/AppContext/GlobalContext';
 import { AState } from './utils/global-context-types';
-import { reducer } from './utils/state-reducers';
+import { mainReducer } from './utils/state-reducers';
 
-// localStorage.clear()
+localStorage.clear()
 
 if (localStorage.getItem("Column0") === null) {
   localStorage.setItem("Column0", "{\"name\":\"TODO\",\"cards\":[]}");
@@ -29,7 +29,7 @@ ReactDOM.render(
   <React.StrictMode>
     <AppState
       initialState={localStorage.getItem("state") === null ? initialState : JSON.parse(localStorage.getItem("state") as string)}
-      reducer={reducer}>
+      reducer={mainReducer}>
       <Header />
       <MainComponent />
     </AppState>

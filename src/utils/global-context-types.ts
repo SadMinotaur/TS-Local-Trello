@@ -13,7 +13,8 @@ export interface Column {
 export interface Card {
   id: number;
   name: string;
-  idColumn: string;
+  author: string;
+  idColumn: number;
 }
 
 export interface Comm {

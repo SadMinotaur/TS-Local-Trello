@@ -26,7 +26,6 @@ export enum IBoardActionType {
 // ) => {
 //   return function (state = initialState, action: BoardActionTypes) {
 //     const handler = handlersCollection[action.type];
-
 //     return handler ? handler(state, action) : state;
 //   };
-// };
+// }; 
