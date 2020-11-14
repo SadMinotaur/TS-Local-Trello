@@ -9,15 +9,6 @@ import { AppState } from './components/AppContext/GlobalContext';
 import { AState } from './utils/global-context-types';
 import { mainReducer } from './utils/state-reducers';
 
-localStorage.clear()
-
-if (localStorage.getItem("Column0") === null) {
-  localStorage.setItem("Column0", "{\"name\":\"TODO\",\"cards\":[]}");
-  localStorage.setItem("Column1", "{\"name\":\"In Progress\",\"cards\":[]}");
-  localStorage.setItem("Column2", "{\"name\":\"Testing\",\"cards\":[]}");
-  localStorage.setItem("Column3", "{\"name\":\"Done\",\"cards\":[]}");
-}
-
 const initialState: AState = {
   user: "",
   columns: [{ id: 0, name: "TODO" }, { id: 1, name: "In Progress" }, { id: 2, name: "Testing" }, { id: 3, name: "DONE" }],
