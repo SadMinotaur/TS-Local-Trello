@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { ColumnNameInput, ColumnBorder, ColumnNameDiv, ColumnAddCardDiv, ButtonDiv } from "./styles";
 import { ColumnCard } from "../Columncard";
 import { useStateValue } from "../AppContext/GlobalContext";
@@ -18,7 +18,7 @@ export const BoardColumn: React.FC<Props> = ({ id, initName }) => {
   const [nameInputState, setNameInputState] = useState<boolean>(false);
   const [newCardState, setNewCardState] = useState<boolean>(false);
 
-  const saveNewCard = useCallback(() => {
+  function saveNewCard() {
     if (cardInput.trim() === "") return;
     setCardInput("");
     reducer({
@@ -31,50 +31,51 @@ export const BoardColumn: React.FC<Props> = ({ id, initName }) => {
         columnId: id
       }
     });
-    setNewCardState(prevState => !prevState);
-  },
-    [cardInput, id, reducer, state.cards.length, state.user]
-  );
+    setNewCardState(pS => !pS);
+  }
+
+  function nameInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    const v: string = e.target.value;
+    if (v.trim() === "") return;
+    setName(v);
+  }
+
+  function onBlurInput() {
+    reducer({ type: "CHANGE_COL_NAME", payload: { id: id, name: name } });
+    setNameInputState(pS => !pS);
+  }
 
   return <ColumnBorder>
     {!nameInputState && <ColumnNameDiv
-      onClick={() => setNameInputState(prevState => !prevState)}>
+      onClick={() => setNameInputState(pS => !pS)}>
       {name}
     </ColumnNameDiv>}
     {nameInputState && <ColumnNameInput
       value={name}
       type="text"
-      onMouseOver={event => event.currentTarget.focus()}
-      onChange={event => {
-        const v: string = event.target.value;
-        if (v.trim() === "") return;
-        setName(v)
-      }}
-      onBlur={() => {
-        reducer({ type: "CHANGE_COL_NAME", payload: { id: id, name: name } });
-        setNameInputState(prevState => !prevState)
-      }}
+      onMouseOver={e => e.currentTarget.focus()}
+      onChange={nameInputChange}
+      onBlur={onBlurInput}
     />}
-    {
-      state.cards.map((card) => card.idColumn === id && <ColumnCard
-        key={card.id}
-        id={card.id}
-      />)}
+    {state.cards.map((card) => card.idColumn === id && <ColumnCard
+      key={card.id}
+      id={card.id}
+    />)}
     {!newCardState && <ColumnAddCardDiv
-      onClick={() => setNewCardState(prevState => !prevState)}>
+      onClick={() => setNewCardState(pS => !pS)}>
       Add new card
     </ColumnAddCardDiv>}
     {newCardState && <ColumnNameInput
-      onMouseOver={event => event.currentTarget.focus()}
+      onMouseOver={e => e.currentTarget.focus()}
       value={cardInput}
-      onChange={event => setCardInput(event.target.value)}
+      onChange={e => setCardInput(e.target.value)}
       placeholder="Add new card"
     />}
     {newCardState && <ButtonDiv>
       <button className="btn primary" onClick={saveNewCard}>
         Add card
       </button>
-      <button className="btn" onClick={() => setNewCardState(prevState => !prevState)}>
+      <button className="btn" onClick={() => setNewCardState(pS => !pS)}>
         Cancel
       </button>
     </ButtonDiv>}

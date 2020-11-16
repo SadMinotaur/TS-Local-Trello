@@ -20,45 +20,51 @@ export const CardPopup: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener('keydown', handleEsc);
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-    };
+    return () => window.removeEventListener('keydown', handleEsc);
   });
 
-  const res = state.cards.find((crd) => crd.id === state.popup.idCard);
-  if (!res) return null;
-  const card: Card = res as Card;
+  function handleEsc(event: { keyCode: number }): void {
+    if (event.keyCode === 27) setPopupState(false);
+  }
+
+  const findCard = state.cards.find((crd) => crd.id === state.popup.idCard);
+  if (!findCard) return null;
+  const card: Card = findCard as Card;
 
   function setPopupState(setState: boolean): void {
     reducer({ type: "CHANGE_POPUP", payload: { state: setState, idCard: -1 } })
   }
 
-  function handleEsc(event: { keyCode: number }): void {
-    if (event.keyCode === 27) { setPopupState(false) };
-  }
-
-  function changeName(ev: React.ChangeEvent<HTMLInputElement>): void {
-    const { id, author, desc, idColumn } = card;
-    const v: string = ev.target.value;
-    if (v.trim() === "") return;
-    reducer({
-      type: "CHANGE_CARD", payload:
-        { id: id, name: ev.target.value, author: author, columnId: idColumn, desc: desc }
-    });
-  }
-
-  function changeDesc(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
-    const { id, name, author, idColumn } = card;
-    const v: string = ev.target.value;
-    if (v.trim() === "") return;
-    reducer({
-      type: "CHANGE_CARD", payload:
-        { id: id, name: name, author: author, columnId: idColumn, desc: ev.target.value }
-    });
-  }
-
-  function changeNameOnBlur(ev: React.ChangeEvent<HTMLInputElement>): void {
+  function changeNameState(): void {
     setChangeNamePopup(ps => !ps);
+  }
+
+  function onMouseOver(e: React.MouseEvent<HTMLElement, MouseEvent>): void {
+    e.currentTarget.focus();
+  }
+
+  function toggleDescription(): void {
+    setDescState(ps => !ps)
+  }
+
+  function changeName(e: React.ChangeEvent<HTMLInputElement>): void {
+    const { id, author, desc, idColumn } = card;
+    const v: string = e.target.value;
+    if (v.trim() === "") return;
+    reducer({
+      type: "CHANGE_CARD", payload:
+        { id: id, name: e.target.value, author: author, columnId: idColumn, desc: desc }
+    });
+  }
+
+  function changeDesc(e: React.ChangeEvent<HTMLTextAreaElement>): void {
+    const { id, name, author, idColumn } = card;
+    const v: string = e.target.value;
+    if (v.trim() === "") return;
+    reducer({
+      type: "CHANGE_CARD", payload:
+        { id: id, name: name, author: author, columnId: idColumn, desc: e.target.value }
+    });
   }
 
   function saveComment(): void {
@@ -78,14 +84,15 @@ export const CardPopup: React.FC = () => {
     setPopupState={setPopupState}>
     <PopupContent>
       {!changeNamePopup && <CardName
-        onClick={() => setChangeNamePopup(ps => !ps)}>
+        onClick={changeNameState}>
         {card.name}
       </CardName>}
       {changeNamePopup && <NameInput
-        onMouseOver={e => e.currentTarget.focus()}
+        type="text"
+        onMouseOver={onMouseOver}
         value={card.name}
         onChange={changeName}
-        onBlur={changeNameOnBlur}
+        onBlur={changeNameState}
       />}
       <PopupText>
         In column: {state.columns.find((col) => col.id === card.idColumn)?.name}
@@ -97,23 +104,23 @@ export const CardPopup: React.FC = () => {
         Description
       </PopupText>
       {!descState && <PopupDescDiv
-        onClick={() => setDescState(ps => !ps)}>
+        onClick={toggleDescription}>
         {card.desc}
       </PopupDescDiv>}
       {descState && <PopupDesc
         value={card.desc}
-        onMouseOver={e => e.currentTarget.focus()}
-        onBlur={() => setDescState(ps => !ps)}
+        onMouseOver={onMouseOver}
+        onBlur={toggleDescription}
         onChange={changeDesc} />}
       <PopupText>
-        Comments
+        Actions
       </PopupText>
       <CommentsBorder>
         <CommentsInput
           onClick={() => setAddCommentState(true)}
           placeholder={"Write new comment"}
           value={newCommentValue}
-          onChange={event => setCommentValue(event.target.value)} />
+          onChange={e => setCommentValue(e.target.value)} />
         {addCommentState && <CommentsInputButton
           onClick={saveComment}>
           Save

@@ -1,8 +1,8 @@
 import { AState } from "./global-context-types";
-import { changeUser, changeColName, addCard, changeCard, delCard, addComm, changeCommContent, delComm, popupChange } from "./handlers";
+import { changeUser, changeColName, addCard, changeCard, delCard, addComm, changeCommContent, delComm, popupChange } from "./context-handlers";
 
 export const mainReducer = (state: AState, action: Action) => {
-  // TODO: Fix this.
+  // TODO: Fix any type.
   const handler: (state: AState, action: any) => AState = AllActionCollection[action.type];
   return handler ? handler(state, action) : state;
 }
@@ -62,6 +62,5 @@ interface ICommPayload {
 }
 
 interface IPopupPayload {
-  state: boolean,
-  idCard: number
+  state: boolean, idCard: number
 }

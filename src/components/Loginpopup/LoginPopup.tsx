@@ -19,8 +19,8 @@ export const LoginPopup: React.FC<Props> = ({ togglePopup }) => {
   }
 
   return <Popup height={"180px"} width={"350px"}>
-    <PopupContent onKeyDown={event => {
-      if (event.key === 'Enter') changeDisplayState()
+    <PopupContent onKeyDown={e => {
+      if (e.key === 'Enter') changeDisplayState()
     }}>
       <div>
         <h3>Hi!</h3>
@@ -31,7 +31,7 @@ export const LoginPopup: React.FC<Props> = ({ togglePopup }) => {
           type="text"
           placeholder="Name"
           value={inputState}
-          onChange={event => changeInputState(event.target.value)} />
+          onChange={e => changeInputState(e.target.value)} />
       </div>
       <div className="modal-footer">
         <button onClick={changeDisplayState} className="btn primary">

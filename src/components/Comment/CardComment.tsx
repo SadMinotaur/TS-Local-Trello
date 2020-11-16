@@ -26,7 +26,7 @@ export const CardComment: React.FC<Props> = ({ id }) => {
     });
   }
 
-  function deleteCard(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+  function deleteComm(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
     const { id, author, content, idCard } = comment;
     reducer({
       type: "DEL_COMM",
@@ -41,7 +41,7 @@ export const CardComment: React.FC<Props> = ({ id }) => {
         {comment.content}
       </UserComment>
       <UserCommentBar>
-        <div onClick={deleteCard}>
+        <div onClick={deleteComm}>
           Delete
         </div>
         <div onClick={() => setNameState(ps => !ps)}>
