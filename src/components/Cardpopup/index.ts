@@ -1,2 +1,1 @@
-export {CardPopup} from "./CardPopup";
-
+export { CardPopup } from "./CardPopup";

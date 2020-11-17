@@ -1,1 +1,1 @@
-export {ColumnCard} from "./ColumnCard";
+export { ColumnCard } from "./ColumnCard";

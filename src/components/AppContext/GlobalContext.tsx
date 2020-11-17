@@ -7,27 +7,34 @@ interface AppContextContent {
   reducer: Dispatch<Action>;
 }
 
-const AppContext = React.createContext<AppContextContent>(null!)
+const AppContext = React.createContext<AppContextContent>(null!);
 
 interface Props {
   initialState: AState;
   reducer: (state: AState, action: Action) => AState;
 }
 
-export const AppState: React.FC<Props> = ({ initialState, reducer, children }) => {
-
+export const AppState: React.FC<Props> = ({
+  initialState,
+  reducer,
+  children,
+}) => {
   const [state, red] = useReducer(reducer, initialState);
 
   useEffect(() => {
     localStorage.setItem("state", JSON.stringify(state));
-  })
+  });
 
-  return <AppContext.Provider value={{
-    state: state,
-    reducer: red
-  }} >
-    {children}
-  </AppContext.Provider>
-}
+  return (
+    <AppContext.Provider
+      value={{
+        state: state,
+        reducer: red,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};
 
 export const useStateValue = () => useContext(AppContext);

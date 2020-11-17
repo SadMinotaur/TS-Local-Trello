@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { CommentInput, UserComment, CommentEdit, CommentBorders, UserCommentBar } from "./styles";
+import {
+  CommentInput,
+  UserComment,
+  CommentEdit,
+  CommentBorders,
+  UserCommentBar,
+} from "./styles";
 import { useStateValue } from "../AppContext/GlobalContext";
 import { Comm } from "../../utils/global-context-types";
 
@@ -8,7 +14,6 @@ interface Props {
 }
 
 export const CardComment: React.FC<Props> = ({ id }) => {
-
   const { state, reducer } = useStateValue();
   const [nameState, setNameState] = useState<boolean>(false);
 
@@ -22,38 +27,41 @@ export const CardComment: React.FC<Props> = ({ id }) => {
     if (v === "") return;
     reducer({
       type: "CHANGE_COMM_CONTENT",
-      payload: { id, author, content: v, cardId: idCard }
+      payload: { id, author, content: v, cardId: idCard },
     });
   }
 
-  function deleteComm(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+  function deleteComm(
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ): void {
     const { id, author, content, idCard } = comment;
     reducer({
       type: "DEL_COMM",
-      payload: { id, author, content, cardId: idCard }
+      payload: { id, author, content, cardId: idCard },
     });
   }
 
-  return <div>
-    {!nameState && <CommentBorders>
-      {comment.author}
-      <UserComment>
-        {comment.content}
-      </UserComment>
-      <UserCommentBar>
-        <div onClick={deleteComm}>
-          Delete
-        </div>
-        <div onClick={() => setNameState(ps => !ps)}>
-          Change
-        </div>
-      </UserCommentBar>
-    </CommentBorders>}
-    {nameState && <CommentEdit>
-      <CommentInput
-        value={comment.content}
-        onChange={onChange}
-        onBlur={() => setNameState(ps => !ps)} />
-    </CommentEdit>}
-  </div>
-}
+  return (
+    <div>
+      {!nameState && (
+        <CommentBorders>
+          {comment.author}
+          <UserComment>{comment.content}</UserComment>
+          <UserCommentBar>
+            <div onClick={deleteComm}>Delete</div>
+            <div onClick={() => setNameState((ps) => !ps)}>Change</div>
+          </UserCommentBar>
+        </CommentBorders>
+      )}
+      {nameState && (
+        <CommentEdit>
+          <CommentInput
+            value={comment.content}
+            onChange={onChange}
+            onBlur={() => setNameState((ps) => !ps)}
+          />
+        </CommentEdit>
+      )}
+    </div>
+  );
+};
