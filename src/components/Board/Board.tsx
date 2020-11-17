@@ -8,7 +8,7 @@ export const Board: React.FC = () => {
   const context = useStateValue()
 
   return <ColumnsContainer>
-    {context.state.columns.map(({ id, name }) =>
-      <BoardColumn initName={name} key={id} id={id} />)}
+    {context.state.columns.map(({ id }) =>
+      <BoardColumn key={id} id={id} />)}
   </ColumnsContainer>
 }

@@ -2,17 +2,18 @@ import React, { useState } from "react";
 import { ColumnNameInput, ColumnBorder, ColumnNameDiv, ColumnAddCardDiv, ButtonDiv } from "./styles";
 import { ColumnCard } from "../Columncard";
 import { useStateValue } from "../AppContext/GlobalContext";
+import { Column } from "../../utils/global-context-types";
 
 interface Props {
   id: number;
-  initName: string;
 }
 
-export const BoardColumn: React.FC<Props> = ({ id, initName }) => {
+export const BoardColumn: React.FC<Props> = ({ id }) => {
 
-  const { state, reducer } = useStateValue()
+  const { state, reducer } = useStateValue();
 
-  const [name, setName] = useState<string>(initName);
+  const column: Column = state.columns.find((v) => v.id === id) as Column;
+
   const [cardInput, setCardInput] = useState<string>("");
 
   const [nameInputState, setNameInputState] = useState<boolean>(false);
@@ -37,21 +38,20 @@ export const BoardColumn: React.FC<Props> = ({ id, initName }) => {
   function nameInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const v: string = e.target.value;
     if (v.trim() === "") return;
-    setName(v);
+    reducer({ type: "CHANGE_COL_NAME", payload: { id: id, name: v } });
   }
 
   function onBlurInput() {
-    reducer({ type: "CHANGE_COL_NAME", payload: { id: id, name: name } });
     setNameInputState(pS => !pS);
   }
 
   return <ColumnBorder>
     {!nameInputState && <ColumnNameDiv
       onClick={() => setNameInputState(pS => !pS)}>
-      {name}
+      {column.name}
     </ColumnNameDiv>}
     {nameInputState && <ColumnNameInput
-      value={name}
+      value={column.name}
       type="text"
       onMouseOver={e => e.currentTarget.focus()}
       onChange={nameInputChange}
