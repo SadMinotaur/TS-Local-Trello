@@ -71,8 +71,6 @@ export const CardPopup: React.FC = () => {
 
   function changeDesc(e: React.ChangeEvent<HTMLTextAreaElement>): void {
     const { id, name, author, idColumn } = card;
-    const v: string = e.target.value;
-    if (v.trim() === "") return;
     reducer({
       type: "CHANGE_CARD",
       payload: {
