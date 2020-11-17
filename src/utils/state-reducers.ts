@@ -6,28 +6,32 @@ import {
   changeCard,
   delCard,
   addComm,
-  changeCommContent,
+  changeComm,
   delComm,
   popupChange,
 } from "./context-handlers";
 
 export const mainReducer = (state: AState, action: Action) => {
-  // TODO: Fix any type.
-  const handler: (state: AState, action: any) => AState =
-    AllActionCollection[action.type];
-  return handler ? handler(state, action) : state;
-};
-
-export const AllActionCollection = {
-  CHANGE_USER: changeUser,
-  CHANGE_COL_NAME: changeColName,
-  ADD_CARD: addCard,
-  CHANGE_CARD: changeCard,
-  DEL_CARD: delCard,
-  ADD_COMM: addComm,
-  CHANGE_COMM_CONTENT: changeCommContent,
-  DEL_COMM: delComm,
-  CHANGE_POPUP: popupChange,
+  switch (action.type) {
+    case "CHANGE_USER":
+      return changeUser(state, action);
+    case "CHANGE_COL":
+      return changeColName(state, action);
+    case "ADD_CARD":
+      return addCard(state, action);
+    case "CHANGE_CARD":
+      return changeCard(state, action);
+    case "DEL_CARD":
+      return delCard(state, action);
+    case "ADD_COMM":
+      return addComm(state, action);
+    case "CHANGE_COMM":
+      return changeComm(state, action);
+    case "DEL_COMM":
+      return delComm(state, action);
+    case "CHANGE_POPUP":
+      return popupChange(state, action);
+  }
 };
 
 export type Action =
@@ -39,7 +43,7 @@ export type Action =
 
 export type UserActions = { type: "CHANGE_USER"; payload: IUserPayload };
 
-export type ColumnAction = { type: "CHANGE_COL_NAME"; payload: IColumnPayload };
+export type ColumnAction = { type: "CHANGE_COL"; payload: IColumnPayload };
 
 export type CardAction =
   | { type: "ADD_CARD"; payload: ICardPayload }
@@ -48,7 +52,7 @@ export type CardAction =
 
 export type СommAction =
   | { type: "ADD_COMM"; payload: ICommPayload }
-  | { type: "CHANGE_COMM_CONTENT"; payload: ICommPayload }
+  | { type: "CHANGE_COMM"; payload: ICommPayload }
   | { type: "DEL_COMM"; payload: ICommPayload };
 
 export type PopupAction = { type: "CHANGE_POPUP"; payload: IPopupPayload };

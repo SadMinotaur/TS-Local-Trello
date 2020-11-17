@@ -30,18 +30,18 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
     (comment) => id === comment.idCard
   );
 
-  function onRightClick(
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ): void {
-    event.preventDefault();
+  function onRightClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+    e.preventDefault();
     setRightClickState((prevState) => !prevState);
   }
 
-  function onEditBlur(event: React.ChangeEvent<HTMLInputElement>): void {
+  function onEditBlur(e: React.ChangeEvent<HTMLInputElement>): void {
     setChangeNameState((prevState) => !prevState);
   }
 
-  function onClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+  function onDeleteClick(
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ): void {
     reducer({
       type: "DEL_CARD",
       payload: {
@@ -54,8 +54,8 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
     });
   }
 
-  function nameInput(event: React.ChangeEvent<HTMLInputElement>): void {
-    const v: string = event.target.value;
+  function nameInput(e: React.ChangeEvent<HTMLInputElement>): void {
+    const v: string = e.target.value;
     if (v.trim() === "") return;
     reducer({
       type: "CHANGE_CARD",
@@ -69,9 +69,7 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
     });
   }
 
-  function togglePopup(
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ): void {
+  function togglePopup(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
     reducer({ type: "CHANGE_POPUP", payload: { idCard: id, state: true } });
   }
 
@@ -103,7 +101,7 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
           </CardComments>
         )}
         {rightClickState && (
-          <CardComments onClick={onClick}>
+          <CardComments onClick={onDeleteClick}>
             <FontAwesomeIcon icon={faTimes} />
           </CardComments>
         )}

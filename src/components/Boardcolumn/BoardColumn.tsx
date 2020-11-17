@@ -43,7 +43,7 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
   function nameInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const v: string = e.target.value;
     if (v.trim() === "") return;
-    reducer({ type: "CHANGE_COL_NAME", payload: { id: id, name: v } });
+    reducer({ type: "CHANGE_COL", payload: { id: id, name: v } });
   }
 
   function onBlurInput() {

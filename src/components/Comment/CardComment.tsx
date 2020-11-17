@@ -26,7 +26,7 @@ export const CardComment: React.FC<Props> = ({ id }) => {
     const v = event.target.value;
     if (v === "") return;
     reducer({
-      type: "CHANGE_COMM_CONTENT",
+      type: "CHANGE_COMM",
       payload: { id, author, content: v, cardId: idCard },
     });
   }

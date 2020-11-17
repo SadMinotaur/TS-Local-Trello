@@ -43,7 +43,8 @@ export const ColCard = styled.div`
 export const CardName = styled.div`
   margin: 0 0 10px 0;
   font-size: 22px;
-  line-height: 15px;
+  line-height: 20px;
+  word-wrap: break-word;
 `;
 
 export const NameInput = styled.input`

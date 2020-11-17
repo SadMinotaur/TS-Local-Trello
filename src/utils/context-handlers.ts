@@ -79,10 +79,7 @@ export const addComm = function (state: AState, action: СommAction): AState {
   };
 };
 
-export const changeCommContent = function (
-  state: AState,
-  action: СommAction
-): AState {
+export const changeComm = function (state: AState, action: СommAction): AState {
   const { id, content } = action.payload;
   return {
     ...state,
