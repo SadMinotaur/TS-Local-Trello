@@ -9,8 +9,6 @@ import { AppState } from "./components/AppContext/GlobalContext";
 import { AState } from "./utils/global-context-types";
 import { mainReducer } from "./utils/state-reducers";
 
-localStorage.clear();
-
 const initialState: AState = {
   user: "",
   columns: [
@@ -26,17 +24,8 @@ const initialState: AState = {
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppState
-      initialState={
-        localStorage.getItem("state") === null
-          ? initialState
-          : JSON.parse(localStorage.getItem("state") as string)
-      }
-      reducer={mainReducer}
-    >
-      <Header />
-      <MainComponent />
-    </AppState>
+    <Header />
+    <MainComponent />
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -7,16 +7,16 @@ import { useStateValue } from "../AppContext/GlobalContext";
 import { CardPopup } from "../Cardpopup/CardPopup";
 
 export const MainComponent: React.FC = () => {
-  const { state } = useStateValue();
-  const [popupState, setPopupState] = useState<boolean>(
-    state.user === "" ? true : false
-  );
+  // const { state } = useStateValue();
+  // const [popupState, setPopupState] = useState<boolean>(
+  //   state.user === "" ? true : false
+  // );
 
   return (
     <MainComp>
       <Board />
-      {popupState && <LoginPopup togglePopup={setPopupState} />}
-      {state.popup.state && <CardPopup />}
+      {/* {popupState && <LoginPopup togglePopup={setPopupState} />} */}
+      {/* {state.popup.state && <CardPopup />} */}
     </MainComp>
   );
 };
