@@ -13,7 +13,6 @@ export const changeUser = function (
 ): AState {
   return {
     ...state,
-    user: action.payload.name,
   };
 };
 

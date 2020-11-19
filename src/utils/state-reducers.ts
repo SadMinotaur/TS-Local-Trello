@@ -10,8 +10,23 @@ import {
   delComm,
   popupChange,
 } from "./context-handlers";
+import { combineReducers } from "@reduxjs/toolkit";
 
-export const mainReducer = (state: AState, action: Action) => {
+const initialState: AState = {
+  userId: -1,
+  userArray: [],
+  columns: [
+    { id: 0, name: "TODO" },
+    { id: 1, name: "In Progress" },
+    { id: 2, name: "Testing" },
+    { id: 3, name: "Done" },
+  ],
+  cards: [],
+  comments: [],
+  popup: { idCard: -1, state: false },
+};
+
+function mainReducer(state: AState = initialState, action: Action): AState {
   switch (action.type) {
     case "CHANGE_USER":
       return changeUser(state, action);
@@ -32,7 +47,12 @@ export const mainReducer = (state: AState, action: Action) => {
     case "CHANGE_POPUP":
       return popupChange(state, action);
   }
-};
+  // Initial state
+  return state;
+}
+
+export const rootReducer = combineReducers({ mainReducer });
+export type RootState = ReturnType<typeof rootReducer>;
 
 export type Action =
   | UserActions

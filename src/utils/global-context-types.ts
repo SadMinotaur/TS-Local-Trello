@@ -1,5 +1,6 @@
 export interface AState {
-  user: string;
+  userId: number;
+  userArray: User[];
   columns: Column[];
   cards: Card[];
   comments: Comm[];
@@ -29,4 +30,9 @@ export interface Comm {
 export interface Popup {
   idCard: number;
   state: boolean;
+}
+
+export interface User {
+  id: number;
+  name: string;
 }

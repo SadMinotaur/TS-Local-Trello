@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import "../Board/Board";
 import { Board } from "../Board";
 import { MainComp } from "./styles";
 import { LoginPopup } from "../Loginpopup/LoginPopup";
-import { useStateValue } from "../AppContext/GlobalContext";
 import { CardPopup } from "../Cardpopup/CardPopup";
+import { persistor, store } from "../../utils/store";
 
 export const MainComponent: React.FC = () => {
-  // const { state } = useStateValue();
-  // const [popupState, setPopupState] = useState<boolean>(
-  //   state.user === "" ? true : false
-  // );
+  // console.log(store);
+  console.log(persistor);
 
   return (
     <MainComp>
