@@ -14,3 +14,4 @@ const persistedReducer = persistReducer<RootState>(
 
 export const store = createStore(persistedReducer, applyMiddleware());
 export const persistor = persistStore(store);
+export type storeDispatchType = typeof store.dispatch;

@@ -1,107 +1,87 @@
-import { AState } from "./global-context-types";
-import {
-  changeUser,
-  changeColName,
-  addCard,
-  changeCard,
-  delCard,
-  addComm,
-  changeComm,
-  delComm,
-  popupChange,
-} from "./context-handlers";
-import { combineReducers } from "@reduxjs/toolkit";
+import { Card, Column, Comm, User } from "./global-context-types";
+import { combineReducers, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: AState = {
-  userId: -1,
-  userArray: [],
-  columns: [
+export const userIdSlice = createSlice({
+  name: "userId",
+  initialState: -1,
+  reducers: {
+    changeUserId: (state, action: PayloadAction<number>) => action.payload,
+  },
+});
+
+export const popupSlice = createSlice({
+  name: "popup",
+  initialState: -1,
+  reducers: {
+    changePopup: (state, action: PayloadAction<number>) => action.payload,
+  },
+});
+
+export const cardsArraySlice = createSlice({
+  name: "cardsArray",
+  initialState: [] as Card[],
+  reducers: {
+    cardsArrayAdd: (state: Card[], action: PayloadAction<Card>) => [
+      ...state,
+      action.payload,
+    ],
+    cardsArrayChange: (state: Card[], action: PayloadAction<Card>) =>
+      state.map((v: Card) => (v.id !== action.payload.id ? v : action.payload)),
+    cardsArrayRemove: (state: Card[], action: PayloadAction<number>) =>
+      state.filter((v: User) => v.id !== action.payload),
+  },
+});
+
+export const commentsSlice = createSlice({
+  name: "commentsArray",
+  initialState: [] as Comm[],
+  reducers: {
+    commArrayAdd: (state: Comm[], action: PayloadAction<Comm>) => [
+      ...state,
+      action.payload,
+    ],
+    commArrayChange: (state: Comm[], action: PayloadAction<Comm>) =>
+      state.map((v: Comm) => (v.id !== action.payload.id ? v : action.payload)),
+    commArrayRemove: (state: Comm[], action: PayloadAction<number>) =>
+      state.filter((v: Comm) => v.id !== action.payload),
+  },
+});
+
+export const userArraySlice = createSlice({
+  name: "userArray",
+  initialState: [] as User[],
+  reducers: {
+    userArrayAdd: (state: User[], action: PayloadAction<User>) => [
+      ...state,
+      action.payload,
+    ],
+    userArrayChange: (state: User[], action: PayloadAction<User>) =>
+      state.map((v: User) => (v.id !== action.payload.id ? v : action.payload)),
+    userArrayRemove: (state: User[], action: PayloadAction<number>) =>
+      state.filter((v: User) => v.id !== action.payload),
+  },
+});
+
+export const columnSlice = createSlice({
+  name: "column",
+  initialState: [
     { id: 0, name: "TODO" },
     { id: 1, name: "In Progress" },
     { id: 2, name: "Testing" },
     { id: 3, name: "Done" },
   ],
-  cards: [],
-  comments: [],
-  popup: { idCard: -1, state: false },
-};
+  reducers: {
+    changeColumn: (state, action: PayloadAction<Column>) =>
+      state.map((v) => (v.id !== action.payload.id ? v : action.payload)),
+  },
+});
 
-function mainReducer(state: AState = initialState, action: Action): AState {
-  switch (action.type) {
-    case "CHANGE_USER":
-      return changeUser(state, action);
-    case "CHANGE_COL":
-      return changeColName(state, action);
-    case "ADD_CARD":
-      return addCard(state, action);
-    case "CHANGE_CARD":
-      return changeCard(state, action);
-    case "DEL_CARD":
-      return delCard(state, action);
-    case "ADD_COMM":
-      return addComm(state, action);
-    case "CHANGE_COMM":
-      return changeComm(state, action);
-    case "DEL_COMM":
-      return delComm(state, action);
-    case "CHANGE_POPUP":
-      return popupChange(state, action);
-  }
-  // Initial state
-  return state;
-}
-
-export const rootReducer = combineReducers({ mainReducer });
+export const rootReducer = combineReducers({
+  popup: popupSlice.reducer,
+  user: userIdSlice.reducer,
+  columnsArray: columnSlice.reducer,
+  usersArray: userArraySlice.reducer,
+  commentsArray: commentsSlice.reducer,
+  cardsArray: cardsArraySlice.reducer,
+});
 export type RootState = ReturnType<typeof rootReducer>;
-
-export type Action =
-  | UserActions
-  | ColumnAction
-  | CardAction
-  | PopupAction
-  | СommAction;
-
-export type UserActions = { type: "CHANGE_USER"; payload: IUserPayload };
-
-export type ColumnAction = { type: "CHANGE_COL"; payload: IColumnPayload };
-
-export type CardAction =
-  | { type: "ADD_CARD"; payload: ICardPayload }
-  | { type: "CHANGE_CARD"; payload: ICardPayload }
-  | { type: "DEL_CARD"; payload: ICardPayload };
-
-export type СommAction =
-  | { type: "ADD_COMM"; payload: ICommPayload }
-  | { type: "CHANGE_COMM"; payload: ICommPayload }
-  | { type: "DEL_COMM"; payload: ICommPayload };
-
-export type PopupAction = { type: "CHANGE_POPUP"; payload: IPopupPayload };
-
-interface IUserPayload {
-  name: string;
-}
-
-interface IColumnPayload {
-  id: number;
-  name: string;
-}
-
-interface ICardPayload {
-  id: number;
-  name: string;
-  desc: string;
-  author: string;
-  columnId: number;
-}
-
-interface ICommPayload {
-  id: number;
-  content: string;
-  author: string;
-  cardId: number;
-}
-
-interface IPopupPayload {
-  state: boolean;
-  idCard: number;
-}

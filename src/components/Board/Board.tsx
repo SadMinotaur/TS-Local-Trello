@@ -1,15 +1,17 @@
 import React from "react";
 import { ColumnsContainer } from "./styles";
 import { BoardColumn } from "../Boardcolumn";
+import { useSelector } from "react-redux";
+import { RootState } from "../../utils/state-reducers";
 
 export const Board: React.FC = () => {
-  // const context = useStateValue();
+  const boardState = useSelector((store: RootState) => store.columnsArray);
 
   return (
     <ColumnsContainer>
-      {/* {context.state.columns.map(({ id }) => (
+      {boardState.map(({ id }) => (
         <BoardColumn key={id} id={id} />
-      ))} */}
+      ))}
     </ColumnsContainer>
   );
 };

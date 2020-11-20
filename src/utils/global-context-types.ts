@@ -1,12 +1,3 @@
-export interface AState {
-  userId: number;
-  userArray: User[];
-  columns: Column[];
-  cards: Card[];
-  comments: Comm[];
-  popup: Popup;
-}
-
 export interface Column {
   id: number;
   name: string;

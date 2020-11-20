@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { Popup } from "../Popup";
 import { PopupContent } from "./styles";
 
-interface Props {
-  togglePopup: (val: boolean) => void;
-}
-
-export const LoginPopup: React.FC<Props> = ({ togglePopup }) => {
+export const LoginPopup: React.FC = () => {
   // const [inputState, changeInputState] = useState("");
 
   // function changeDisplayState(): void {
