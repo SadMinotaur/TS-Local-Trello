@@ -1,1 +1,1 @@
-export {BoardColumn} from "./BoardColumn";
+export { BoardColumn } from "./BoardColumn";

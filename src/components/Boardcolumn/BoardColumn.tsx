@@ -7,9 +7,13 @@ import {
   ButtonDiv,
 } from "./styles";
 import { ColumnCard } from "../Columncard";
-import { Card, Column } from "../../utils/global-context-types";
-import { columnSlice, RootState } from "../../utils/state-reducers";
-import { storeDispatchType } from "../../utils/store";
+import { Card, Column } from "../../utils/global--types";
+import {
+  cardsArraySlice,
+  columnSlice,
+  RootState,
+} from "../../utils/state-reducers";
+import { StoreDispatchType } from "../../utils/store";
 import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
@@ -21,30 +25,32 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
     (store: RootState) =>
       store.columnsArray.find((v: Column) => v.id === id) as Column
   );
-  const cards: Card[] = useSelector((store: RootState) =>
-    store.cardsArray.filter((v: Card) => v.idColumn === id)
-  );
+  const allCards: Card[] = useSelector((store: RootState) => store.cardsArray);
+  const cards: Card[] = allCards.filter((v: Card) => v.columnId === id);
+
+  const userId: number = useSelector((store: RootState) => store.user);
 
   const [cardInput, setCardInput] = useState<string>("");
 
   const [nameInputState, setNameInputState] = useState<boolean>(false);
   const [newCardState, setNewCardState] = useState<boolean>(false);
 
-  const dispatch: storeDispatchType = useDispatch();
+  const dispatch: StoreDispatchType = useDispatch();
+
+  if (!column) return null;
 
   function saveNewCard() {
     if (cardInput.trim() === "") return;
+    dispatch(
+      cardsArraySlice.actions.cardsArrayAdd({
+        id: allCards.length,
+        name: cardInput,
+        authorId: userId,
+        desc: "",
+        columnId: id,
+      })
+    );
     setCardInput("");
-    // reducer({
-    //   type: "ADD_CARD",
-    //   payload: {
-    //     id: state.cards.length,
-    //     name: cardInput,
-    //     author: state.user,
-    //     desc: "",
-    //     columnId: id,
-    //   },
-    // });
     setNewCardState((pS) => !pS);
   }
 
@@ -56,6 +62,10 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
 
   function onChangeInput() {
     setNameInputState((pS) => !pS);
+  }
+
+  function onButtonClick() {
+    setNewCardState((pS) => !pS);
   }
 
   return (
@@ -76,7 +86,7 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
         <ColumnCard key={card.id} id={card.id} />
       ))}
       {!newCardState && (
-        <ColumnAddCardDiv onClick={() => setNewCardState((pS) => !pS)}>
+        <ColumnAddCardDiv onClick={onButtonClick}>
           Add new card
         </ColumnAddCardDiv>
       )}
@@ -93,7 +103,7 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
           <button className="btn primary" onClick={saveNewCard}>
             Add card
           </button>
-          <button className="btn" onClick={() => setNewCardState((pS) => !pS)}>
+          <button className="btn" onClick={onButtonClick}>
             Cancel
           </button>
         </ButtonDiv>

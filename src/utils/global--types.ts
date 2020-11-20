@@ -6,21 +6,16 @@ export interface Column {
 export interface Card {
   id: number;
   name: string;
-  author: string;
   desc: string;
-  idColumn: number;
+  authorId: number;
+  columnId: number;
 }
 
 export interface Comm {
   id: number;
-  author: string;
+  authorId: number;
   content: string;
-  idCard: number;
-}
-
-export interface Popup {
-  idCard: number;
-  state: boolean;
+  cardId: number;
 }
 
 export interface User {

@@ -1,4 +1,4 @@
-import { Card, Column, Comm, User } from "./global-context-types";
+import { Card, Column, Comm, User } from "./global--types";
 import { combineReducers, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const userIdSlice = createSlice({
@@ -21,14 +21,23 @@ export const cardsArraySlice = createSlice({
   name: "cardsArray",
   initialState: [] as Card[],
   reducers: {
+    // Solves problem with same indexes after card deletion.
     cardsArrayAdd: (state: Card[], action: PayloadAction<Card>) => [
-      ...state,
+      ...state.map((v: Card, i: number) => {
+        return {
+          id: i,
+          name: v.name,
+          desc: v.desc,
+          authorId: v.authorId,
+          columnId: v.columnId,
+        };
+      }),
       action.payload,
     ],
     cardsArrayChange: (state: Card[], action: PayloadAction<Card>) =>
       state.map((v: Card) => (v.id !== action.payload.id ? v : action.payload)),
     cardsArrayRemove: (state: Card[], action: PayloadAction<number>) =>
-      state.filter((v: User) => v.id !== action.payload),
+      state.filter((v: Card) => v.id !== action.payload),
   },
 });
 

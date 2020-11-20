@@ -5,7 +5,7 @@ import { CardPopup, ClosePopup } from "./styles";
 interface Props {
   width: string;
   height: string;
-  setPopupState?: (state: boolean) => void;
+  setPopupState?: () => void;
 }
 
 export const Popup: React.FC<Props> = ({
@@ -20,7 +20,7 @@ export const Popup: React.FC<Props> = ({
     <CardPopupBack>
       <CardPopup height={height} width={width}>
         {setPopupState !== undefined && (
-          <ClosePopup width={buttonPos} onClick={() => setPopupState?.(false)}>
+          <ClosePopup width={buttonPos} onClick={() => setPopupState?.()}>
             x
           </ClosePopup>
         )}

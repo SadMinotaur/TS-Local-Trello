@@ -12,144 +12,148 @@ import {
   PopupText,
 } from "./styles";
 import { Popup } from "../Popup";
-import { Card } from "../../utils/global-context-types";
+import { Card, Column, Comm } from "../../utils/global--types";
 import { CardComment } from "../Comment";
+import { StoreDispatchType } from "../../utils/store";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  cardsArraySlice,
+  commentsSlice,
+  popupSlice,
+  RootState,
+} from "../../utils/state-reducers";
 
 export const CardPopup: React.FC = () => {
-  // const { state, reducer } = useStateValue();
-  // const [newCommentValue, setCommentValue] = useState<string>("");
+  const id: number = useSelector((store: RootState) => store.popup);
+  const card: Card = useSelector((store: RootState) =>
+    store.cardsArray.find((v) => v.id === id)
+  ) as Card;
+  const column: Column = useSelector((store: RootState) =>
+    store.columnsArray.find((v) => v.id === card.id)
+  ) as Column;
+  const allComments: Comm[] = useSelector(
+    (store: RootState) => store.commentsArray
+  );
+  const comments = allComments.filter((v) => v.cardId === card.id);
 
-  // const [changeNamePopup, setChangeNamePopup] = useState<boolean>(false);
-  // const [addCommentState, setAddCommentState] = useState<boolean>(false);
-  // const [descState, setDescState] = useState<boolean>(false);
+  const [newCommentValue, setCommentValue] = useState<string>("");
 
-  // useEffect(() => {
-  //   window.addEventListener("keydown", handleEsc);
-  //   return () => window.removeEventListener("keydown", handleEsc);
-  // });
+  const [changeNamePopup, setChangeNamePopup] = useState<boolean>(false);
+  const [addCommentState, setAddCommentState] = useState<boolean>(false);
+  const [descState, setDescState] = useState<boolean>(false);
 
-  // function handleEsc(event: { keyCode: number }): void {
-  //   if (event.keyCode === 27) setPopupState(false);
-  // }
+  const dispatch: StoreDispatchType = useDispatch();
 
-  // const findCard = state.cards.find((crd) => crd.id === state.popup.idCard);
-  // if (!findCard) return null;
-  // const card: Card = findCard as Card;
+  useEffect(() => {
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  });
 
-  // function setPopupState(setState: boolean): void {
-  //   reducer({ type: "CHANGE_POPUP", payload: { state: setState, idCard: -1 } });
-  // }
+  function handleEsc(event: { keyCode: number }): void {
+    if (event.keyCode === 27) setPopupState();
+  }
 
-  // function changeNameState(): void {
-  //   setChangeNamePopup((ps) => !ps);
-  // }
+  function setPopupState(): void {
+    dispatch(popupSlice.actions.changePopup(-1));
+  }
 
-  // function onMouseOver(e: React.MouseEvent<HTMLElement, MouseEvent>): void {
-  //   e.currentTarget.focus();
-  // }
+  function changeNameState(): void {
+    setChangeNamePopup((ps) => !ps);
+  }
 
-  // function toggleDescription(): void {
-  //   setDescState((ps) => !ps);
-  // }
+  function onMouseOver(e: React.MouseEvent<HTMLElement, MouseEvent>): void {
+    e.currentTarget.focus();
+  }
 
-  // function changeName(e: React.ChangeEvent<HTMLInputElement>): void {
-  //   const { id, author, desc, idColumn } = card;
-  //   const v: string = e.target.value;
-  //   if (v.trim() === "") return;
-  //   reducer({
-  //     type: "CHANGE_CARD",
-  //     payload: {
-  //       id: id,
-  //       name: e.target.value,
-  //       author: author,
-  //       columnId: idColumn,
-  //       desc: desc,
-  //     },
-  //   });
-  // }
+  function toggleDescription(): void {
+    setDescState((ps) => !ps);
+  }
 
-  // function changeDesc(e: React.ChangeEvent<HTMLTextAreaElement>): void {
-  //   const { id, name, author, idColumn } = card;
-  //   reducer({
-  //     type: "CHANGE_CARD",
-  //     payload: {
-  //       id: id,
-  //       name: name,
-  //       author: author,
-  //       columnId: idColumn,
-  //       desc: e.target.value,
-  //     },
-  //   });
-  // }
+  function cardChangeDispatch(name: string, desc: string) {
+    const { id, authorId, columnId } = card;
+    dispatch(
+      cardsArraySlice.actions.cardsArrayChange({
+        id,
+        name,
+        desc,
+        authorId,
+        columnId,
+      })
+    );
+  }
 
-  // function saveComment(): void {
-  //   if (newCommentValue.trim() === "") return;
-  //   setCommentValue("");
-  //   reducer({
-  //     type: "ADD_COMM",
-  //     payload: {
-  //       id: state.comments.length,
-  //       author: state.user,
-  //       content: newCommentValue,
-  //       cardId: card.id,
-  //     },
-  //   });
-  // }
+  function changeName(e: React.ChangeEvent<HTMLInputElement>): void {
+    const v: string = e.target.value;
+    if (v.trim() === "") return;
+    cardChangeDispatch(v, card.desc);
+  }
 
-  return null;
-  // <Popup height={"fit-content"} width={"768px"} setPopupState={setPopupState}>
-  //   <PopupContent>
-  //     {!changeNamePopup && (
-  //       <CardName onClick={changeNameState}>{card.name}</CardName>
-  //     )}
-  //     {changeNamePopup && (
-  //       <NameInput
-  //         type="text"
-  //         onMouseOver={onMouseOver}
-  //         value={card.name}
-  //         onChange={changeName}
-  //         onBlur={changeNameState}
-  //       />
-  //     )}
-  //     <PopupText>
-  //       In column:{" "}
-  //       {state.columns.find((col) => col.id === card.idColumn)?.name}
-  //     </PopupText>
-  //     <PopupText>Created by: {card.author}</PopupText>
-  //     <PopupText>Description</PopupText>
-  //     {!descState && (
-  //       <PopupDescDiv onClick={toggleDescription}>{card.desc}</PopupDescDiv>
-  //     )}
-  //     {descState && (
-  //       <PopupDesc
-  //         value={card.desc}
-  //         onMouseOver={onMouseOver}
-  //         onBlur={toggleDescription}
-  //         onChange={changeDesc}
-  //       />
-  //     )}
-  //     <PopupText>Actions</PopupText>
-  //     <CommentsBorder>
-  //       <CommentsInput
-  //         onClick={() => setAddCommentState(true)}
-  //         placeholder={"Write new comment"}
-  //         value={newCommentValue}
-  //         onChange={(e) => setCommentValue(e.target.value)}
-  //       />
-  //       {addCommentState && (
-  //         <CommentsInputButton onClick={saveComment}>
-  //           Save
-  //         </CommentsInputButton>
-  //       )}
-  //     </CommentsBorder>
-  //     <CommentsArray>
-  //       {state.comments.map(
-  //         (comm) =>
-  //           comm.idCard === card.id && (
-  //             <CardComment key={comm.id} id={comm.id} />
-  //           )
-  //       )}
-  //     </CommentsArray>
-  //   </PopupContent>
-  // </Popup>
+  function changeDesc(e: React.ChangeEvent<HTMLTextAreaElement>): void {
+    cardChangeDispatch(card.name, e.target.value);
+  }
+
+  function saveComment(): void {
+    if (newCommentValue.trim() === "") return;
+    dispatch(
+      commentsSlice.actions.commArrayAdd({
+        id: allComments.length,
+        content: newCommentValue,
+        authorId: card.authorId,
+        cardId: card.id,
+      })
+    );
+    setCommentValue("");
+  }
+
+  return (
+    <Popup height={"fit-content"} width={"768px"} setPopupState={setPopupState}>
+      <PopupContent>
+        {!changeNamePopup && (
+          <CardName onClick={changeNameState}>{card.name}</CardName>
+        )}
+        {changeNamePopup && (
+          <NameInput
+            type="text"
+            onMouseOver={onMouseOver}
+            value={card.name}
+            onChange={changeName}
+            onBlur={changeNameState}
+          />
+        )}
+        <PopupText>In column: {column.name}</PopupText>
+        {/* <PopupText>Created by: {card.author}</PopupText> */}
+        <PopupText>Description</PopupText>
+        {!descState && (
+          <PopupDescDiv onClick={toggleDescription}>{card.desc}</PopupDescDiv>
+        )}
+        {descState && (
+          <PopupDesc
+            value={card.desc}
+            onMouseOver={onMouseOver}
+            onBlur={toggleDescription}
+            onChange={changeDesc}
+          />
+        )}
+        <PopupText>Actions</PopupText>
+        <CommentsBorder>
+          <CommentsInput
+            onClick={() => setAddCommentState(true)}
+            placeholder={"Write new comment"}
+            value={newCommentValue}
+            onChange={(e) => setCommentValue(e.target.value)}
+          />
+          {addCommentState && (
+            <CommentsInputButton onClick={saveComment}>
+              Save
+            </CommentsInputButton>
+          )}
+        </CommentsBorder>
+        <CommentsArray>
+          {comments.map((comm) => (
+            <CardComment key={comm.id} id={comm.id} />
+          ))}
+        </CommentsArray>
+      </PopupContent>
+    </Popup>
+  );
 };

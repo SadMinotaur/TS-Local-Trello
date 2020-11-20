@@ -1,5 +1,6 @@
 import { applyMiddleware, createStore } from "@reduxjs/toolkit";
 import { rootReducer, RootState } from "./state-reducers";
+import logger from "redux-logger";
 import storage from "redux-persist/lib/storage";
 import { persistStore, persistReducer } from "redux-persist";
 
@@ -8,10 +9,11 @@ const persistedReducer = persistReducer<RootState>(
     key: "root",
     storage: storage,
   },
-  // TODO: Figure out types
-  rootReducer as any
+  rootReducer
 );
 
-export const store = createStore(persistedReducer, applyMiddleware());
+// localStorage.clear();
+
+export const store = createStore(persistedReducer, applyMiddleware(logger));
 export const persistor = persistStore(store);
-export type storeDispatchType = typeof store.dispatch;
+export type StoreDispatchType = typeof store.dispatch;
