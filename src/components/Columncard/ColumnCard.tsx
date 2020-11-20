@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Card, Comm } from "../../utils/global--types";
+import { Card, Comm } from "../../utils/global-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
   cardsArraySlice,

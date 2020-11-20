@@ -1,4 +1,4 @@
-import { Card, Column, Comm, User } from "./global--types";
+import { Card, Column, Comm, User } from "./global-types";
 import { combineReducers, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const userIdSlice = createSlice({
@@ -46,7 +46,14 @@ export const commentsSlice = createSlice({
   initialState: [] as Comm[],
   reducers: {
     commArrayAdd: (state: Comm[], action: PayloadAction<Comm>) => [
-      ...state,
+      ...state.map((v: Comm, i: number) => {
+        return {
+          id: i,
+          authorId: v.authorId,
+          content: v.content,
+          cardId: v.id,
+        };
+      }),
       action.payload,
     ],
     commArrayChange: (state: Comm[], action: PayloadAction<Comm>) =>
@@ -61,7 +68,12 @@ export const userArraySlice = createSlice({
   initialState: [] as User[],
   reducers: {
     userArrayAdd: (state: User[], action: PayloadAction<User>) => [
-      ...state,
+      ...state.map((v: User, i: number) => {
+        return {
+          id: i,
+          name: v.name,
+        };
+      }),
       action.payload,
     ],
     userArrayChange: (state: User[], action: PayloadAction<User>) =>

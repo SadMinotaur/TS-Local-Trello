@@ -14,7 +14,7 @@ export const MainComponent: React.FC = () => {
   return (
     <MainComp>
       <Board />
-      {userId !== -1 && <LoginPopup />}
+      {userId === -1 && <LoginPopup />}
       {popupState !== -1 && <CardPopup />}
     </MainComp>
   );

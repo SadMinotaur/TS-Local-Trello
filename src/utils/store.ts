@@ -12,7 +12,7 @@ const persistedReducer = persistReducer<RootState>(
   rootReducer
 );
 
-// localStorage.clear();
+localStorage.clear();
 
 export const store = createStore(persistedReducer, applyMiddleware(logger));
 export const persistor = persistStore(store);

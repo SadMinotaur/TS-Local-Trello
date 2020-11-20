@@ -12,7 +12,7 @@ import {
   PopupText,
 } from "./styles";
 import { Popup } from "../Popup";
-import { Card, Column, Comm } from "../../utils/global--types";
+import { Card, Column, Comm, User } from "../../utils/global-types";
 import { CardComment } from "../Comment";
 import { StoreDispatchType } from "../../utils/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +31,10 @@ export const CardPopup: React.FC = () => {
   const column: Column = useSelector((store: RootState) =>
     store.columnsArray.find((v) => v.id === card.id)
   ) as Column;
+  const author: User = useSelector(
+    (store: RootState) =>
+      store.usersArray.find((v) => v.id === card.authorId) as User
+  );
   const allComments: Comm[] = useSelector(
     (store: RootState) => store.commentsArray
   );
@@ -121,7 +125,7 @@ export const CardPopup: React.FC = () => {
           />
         )}
         <PopupText>In column: {column.name}</PopupText>
-        {/* <PopupText>Created by: {card.author}</PopupText> */}
+        <PopupText>Created by: {author.name}</PopupText>
         <PopupText>Description</PopupText>
         {!descState && (
           <PopupDescDiv onClick={toggleDescription}>{card.desc}</PopupDescDiv>

@@ -7,7 +7,7 @@ import {
   ButtonDiv,
 } from "./styles";
 import { ColumnCard } from "../Columncard";
-import { Card, Column } from "../../utils/global--types";
+import { Card, Column } from "../../utils/global-types";
 import {
   cardsArraySlice,
   columnSlice,
