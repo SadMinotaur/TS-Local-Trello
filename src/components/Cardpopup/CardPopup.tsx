@@ -24,12 +24,11 @@ import {
 } from "../../utils/state-reducers";
 
 export const CardPopup: React.FC = () => {
-  const id: number = useSelector((store: RootState) => store.popup);
   const card: Card = useSelector((store: RootState) =>
-    store.cardsArray.find((v) => v.id === id)
+    store.cardsArray.find((v) => v.id === store.popup)
   ) as Card;
   const column: Column = useSelector((store: RootState) =>
-    store.columnsArray.find((v) => v.id === card.id)
+    store.columnsArray.find((v) => v.id === card.columnId)
   ) as Column;
   const author: User = useSelector(
     (store: RootState) =>
@@ -38,7 +37,8 @@ export const CardPopup: React.FC = () => {
   const allComments: Comm[] = useSelector(
     (store: RootState) => store.commentsArray
   );
-  const comments = allComments.filter((v) => v.cardId === card.id);
+  const userId: number = useSelector((store: RootState) => store.user);
+  const comments: Comm[] = allComments.filter((v) => v.cardId === card.id);
 
   const [newCommentValue, setCommentValue] = useState<string>("");
 
@@ -77,11 +77,11 @@ export const CardPopup: React.FC = () => {
     const { id, authorId, columnId } = card;
     dispatch(
       cardsArraySlice.actions.cardsArrayChange({
-        id,
-        name,
-        desc,
-        authorId,
-        columnId,
+        id: id,
+        name: name,
+        desc: desc,
+        authorId: authorId,
+        columnId: columnId,
       })
     );
   }
@@ -102,7 +102,7 @@ export const CardPopup: React.FC = () => {
       commentsSlice.actions.commArrayAdd({
         id: allComments.length,
         content: newCommentValue,
-        authorId: card.authorId,
+        authorId: userId,
         cardId: card.id,
       })
     );

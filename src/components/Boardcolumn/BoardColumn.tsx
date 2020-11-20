@@ -26,7 +26,7 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
       store.columnsArray.find((v: Column) => v.id === id) as Column
   );
   const allCards: Card[] = useSelector((store: RootState) => store.cardsArray);
-  const cards: Card[] = allCards.filter((v: Card) => v.columnId === id);
+  const cards: Card[] = allCards.filter((v: Card) => v.columnId === column.id);
 
   const userId: number = useSelector((store: RootState) => store.user);
 
@@ -57,7 +57,7 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
   function nameInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const v: string = e.target.value;
     if (v.trim() === "") return;
-    dispatch(columnSlice.actions.changeColumn({ id: id, name: v }));
+    dispatch(columnSlice.actions.changeColumn({ id: column.id, name: v }));
   }
 
   function onChangeInput() {

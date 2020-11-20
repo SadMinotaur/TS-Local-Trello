@@ -51,7 +51,7 @@ export const commentsSlice = createSlice({
           id: i,
           authorId: v.authorId,
           content: v.content,
-          cardId: v.id,
+          cardId: v.cardId,
         };
       }),
       action.payload,

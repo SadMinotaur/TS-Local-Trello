@@ -13,18 +13,22 @@ import { PopupContent } from "./styles";
 export const LoginPopup: React.FC = () => {
   const [inputState, changeInputState] = useState("");
   const users: User[] = useSelector((store: RootState) => store.usersArray);
-
   const dispatch: StoreDispatchType = useDispatch();
 
   function changeDisplayState(): void {
     if (inputState.trim() === "") return;
-    dispatch(userIdSlice.actions.changeUserId(users.length));
-    dispatch(
-      userArraySlice.actions.userArrayAdd({
-        id: users.length,
-        name: inputState,
-      })
-    );
+    const user = users.find((v) => v.name === inputState);
+    if (user !== undefined) {
+      dispatch(userIdSlice.actions.changeUserId(user.id));
+    } else {
+      dispatch(userIdSlice.actions.changeUserId(users.length));
+      dispatch(
+        userArraySlice.actions.userArrayAdd({
+          id: users.length,
+          name: inputState,
+        })
+      );
+    }
   }
 
   return (

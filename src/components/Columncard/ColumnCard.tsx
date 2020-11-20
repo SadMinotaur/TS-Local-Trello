@@ -29,7 +29,7 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
       store.cardsArray.find((v: Card) => v.id === id) as Card
   );
   const comments: Comm[] = useSelector((store: RootState) =>
-    store.commentsArray.filter((v: Comm) => v.cardId === id)
+    store.commentsArray.filter((v: Comm) => v.cardId === card.id)
   );
 
   const [changeNameState, setChangeNameState] = useState<boolean>(false);
@@ -51,7 +51,7 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
   function onDeleteClick(
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ): void {
-    dispatch(cardsArraySlice.actions.cardsArrayRemove(id));
+    dispatch(cardsArraySlice.actions.cardsArrayRemove(card.id));
   }
 
   function nameInput(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -70,7 +70,7 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
   }
 
   function togglePopup(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
-    dispatch(popupSlice.actions.changePopup(id));
+    dispatch(popupSlice.actions.changePopup(card.id));
   }
 
   return (

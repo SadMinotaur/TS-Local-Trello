@@ -20,10 +20,11 @@ export const CardComment: React.FC<Props> = ({ id }) => {
     (store: RootState) =>
       store.commentsArray.find((v: Comm) => v.id === id) as Comm
   );
-  const author = useSelector(
+  const author: User = useSelector(
     (store: RootState) =>
-      store.usersArray.find((v: User) => v.id === id) as User
+      store.usersArray.find((v: User) => v.id === comment.authorId) as User
   );
+  const currentUser: number = useSelector((store: RootState) => store.user);
   const dispatch: StoreDispatchType = useDispatch();
 
   const [nameState, setNameState] = useState<boolean>(false);
@@ -32,7 +33,7 @@ export const CardComment: React.FC<Props> = ({ id }) => {
   function onChange(event: React.ChangeEvent<HTMLTextAreaElement>): void {
     const { id, authorId, cardId } = comment;
     const v = event.target.value;
-    if (v === "") return;
+    if (v === "" || authorId !== currentUser) return;
     dispatch(
       commentsSlice.actions.commArrayChange({
         id,
@@ -43,9 +44,8 @@ export const CardComment: React.FC<Props> = ({ id }) => {
     );
   }
 
-  function deleteComm(
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ): void {
+  function deleteComm(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+    if (comment.authorId !== currentUser) return;
     dispatch(commentsSlice.actions.commArrayRemove(id));
   }
 
@@ -55,10 +55,12 @@ export const CardComment: React.FC<Props> = ({ id }) => {
         <CommentBorders>
           {author.name}
           <UserComment>{comment.content}</UserComment>
-          <UserCommentBar>
-            <div onClick={deleteComm}>Delete</div>
-            <div onClick={() => setNameState((ps) => !ps)}>Change</div>
-          </UserCommentBar>
+          {comment.authorId === currentUser && (
+            <UserCommentBar>
+              <div onClick={deleteComm}>Delete</div>
+              <div onClick={() => setNameState((ps) => !ps)}>Change</div>
+            </UserCommentBar>
+          )}
         </CommentBorders>
       )}
       {nameState && (
