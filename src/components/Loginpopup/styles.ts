@@ -8,3 +8,7 @@ export const PopupContent = styled.div`
   flex-direction: column;
   justify-content: space-around;
 `;
+
+export const NameInput = styled.input`
+  width: 70%;
+`;

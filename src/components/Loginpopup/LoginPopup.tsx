@@ -8,7 +8,7 @@ import {
 } from "../../utils/state-reducers";
 import { StoreDispatchType } from "../../utils/store";
 import { Popup } from "../Popup";
-import { PopupContent } from "./styles";
+import { NameInput, PopupContent } from "./styles";
 
 export const LoginPopup: React.FC = () => {
   const [inputState, changeInputState] = useState("");
@@ -43,7 +43,7 @@ export const LoginPopup: React.FC = () => {
           <p>Enter your name</p>
         </div>
         <div className="modal-body">
-          <input
+          <NameInput
             type="text"
             placeholder="Name"
             value={inputState}
