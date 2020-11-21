@@ -60,6 +60,8 @@ export const commentsSlice = createSlice({
       state.map((v: Comm) => (v.id !== action.payload.id ? v : action.payload)),
     commArrayRemove: (state: Comm[], action: PayloadAction<number>) =>
       state.filter((v: Comm) => v.id !== action.payload),
+    commArrayCardIdRemove: (state: Comm[], action: PayloadAction<number>) =>
+      state.filter((v: Comm) => v.cardId !== action.payload),
   },
 });
 

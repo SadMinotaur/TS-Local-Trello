@@ -73,7 +73,7 @@ export const CardPopup: React.FC = () => {
     setDescState((ps) => !ps);
   }
 
-  function cardChangeDispatch(name: string, desc: string) {
+  function cardChangeDispatch(name: string, desc: string): void {
     const { id, authorId, columnId } = card;
     dispatch(
       cardsArraySlice.actions.cardsArrayChange({

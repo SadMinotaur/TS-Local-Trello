@@ -32,7 +32,7 @@ export const CardComment: React.FC<Props> = ({ id }) => {
 
   function onChange(event: React.ChangeEvent<HTMLTextAreaElement>): void {
     const { id, authorId, cardId } = comment;
-    const v = event.target.value;
+    const v: string = event.target.value;
     if (v === "" || authorId !== currentUser) return;
     dispatch(
       commentsSlice.actions.commArrayChange({

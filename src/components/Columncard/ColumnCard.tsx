@@ -15,6 +15,7 @@ import { Card, Comm } from "../../utils/global-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
   cardsArraySlice,
+  commentsSlice,
   popupSlice,
   RootState,
 } from "../../utils/state-reducers";
@@ -52,6 +53,7 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ): void {
     dispatch(cardsArraySlice.actions.cardsArrayRemove(card.id));
+    dispatch(commentsSlice.actions.commArrayCardIdRemove(id));
   }
 
   function nameInput(e: React.ChangeEvent<HTMLInputElement>): void {

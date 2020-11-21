@@ -39,7 +39,7 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
 
   if (!column) return null;
 
-  function saveNewCard() {
+  function saveNewCard(): void {
     if (cardInput.trim() === "") return;
     dispatch(
       cardsArraySlice.actions.cardsArrayAdd({
@@ -60,11 +60,11 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
     dispatch(columnSlice.actions.changeColumn({ id: column.id, name: v }));
   }
 
-  function onChangeInput() {
+  function onChangeInput(): void {
     setNameInputState((pS) => !pS);
   }
 
-  function onButtonClick() {
+  function onButtonClick(): void {
     setNewCardState((pS) => !pS);
   }
 
