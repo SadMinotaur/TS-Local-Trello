@@ -73,8 +73,9 @@ export const CommentSelector = createStructuredSelector<
 interface CardPopupRet {
   card: Card;
   column: Column;
-  user: User;
+  cardAuthor: User;
   comments: Comm[];
+  currUser: number;
 }
 
 const selectorGetCard = (state: RootState) =>
@@ -91,10 +92,11 @@ export const CardPopupSelector = createStructuredSelector<
       (v: Column) => v.key === card.columnId
     ) as Column;
   },
-  user: (state: RootState) => {
+  cardAuthor: (state: RootState) => {
     const card: Card = selectorGetCard(state);
     return state.usersArray.find((v: User) => v.key === card.authorId) as User;
   },
   comments: (state: RootState) =>
     state.commentsArray.filter((v: Comm) => v.cardId === state.popup),
+  currUser: (state: RootState) => state.user,
 });
