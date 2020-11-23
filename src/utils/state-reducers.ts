@@ -26,16 +26,12 @@ export const cardsArraySlice = createSlice({
         ...state,
         action.payload,
       ],
-      prepare: (card: Card) => {
-        const { name, authorId, columnId } = card;
-        const newId: number =
-          Array.from(name).reduce(stringHash, 0) * getRandInt(1000) +
-          columnId * 3 +
-          authorId * 3;
-        return {
-          payload: { ...card, id: newId },
-        };
-      },
+      prepare: (card: Card) => ({
+        payload: {
+          ...card,
+          key: stringHash(card.name) + card.columnId * 3 + card.authorId * 3,
+        },
+      }),
     },
     cardsArrayChange: (state: Card[], action: PayloadAction<Card>) =>
       state.map((v: Card) =>
@@ -55,14 +51,15 @@ export const commentsSlice = createSlice({
         ...state,
         action.payload,
       ],
-      prepare: (comment: Comm) => {
-        const { content, authorId, cardId } = comment;
-        const newId: number =
-          Array.from(content).reduce(stringHash, 0) * getRandInt(1000) +
-          cardId * 3 +
-          authorId * 3;
-        return { payload: { ...comment, id: newId } };
-      },
+      prepare: (comment: Comm) => ({
+        payload: {
+          ...comment,
+          key:
+            stringHash(comment.content) +
+            comment.cardId * 3 +
+            comment.authorId * 3,
+        },
+      }),
     },
     commArrayChange: (state: Comm[], action: PayloadAction<Comm>) =>
       state.map((v: Comm) =>
@@ -80,12 +77,10 @@ export const userArraySlice = createSlice({
   initialState: [] as User[],
   reducers: {
     userArrayAdd: (state: User[], action: PayloadAction<User>) => [
-      ...state.map((v: User, i: number) => {
-        return {
-          key: i,
-          name: v.name,
-        };
-      }),
+      ...state.map((v: User, i: number) => ({
+        key: i,
+        name: v.name,
+      })),
       action.payload,
     ],
     userArrayChange: (state: User[], action: PayloadAction<User>) =>
@@ -100,14 +95,14 @@ export const userArraySlice = createSlice({
 export const columnSlice = createSlice({
   name: "column",
   initialState: [
-    { id: 0, name: "TODO" },
-    { id: 1, name: "In Progress" },
-    { id: 2, name: "Testing" },
-    { id: 3, name: "Done" },
+    { key: 0, name: "TODO" },
+    { key: 1, name: "In Progress" },
+    { key: 2, name: "Testing" },
+    { key: 3, name: "Done" },
   ],
   reducers: {
     changeColumn: (state, action: PayloadAction<Column>) =>
-      state.map((v) => (v.id !== action.payload.id ? v : action.payload)),
+      state.map((v) => (v.key !== action.payload.key ? v : action.payload)),
   },
 });
 
@@ -122,4 +117,6 @@ export const rootReducer = combineReducers({
 export type RootState = ReturnType<typeof rootReducer>;
 
 const getRandInt = (max: number) => Math.floor(Math.random() * Math.floor(max));
-const stringHash = (s: number, c: string) => s + c.charCodeAt(0);
+const stringHash = (string: string) =>
+  Array.from(string).reduce((s: number, c: string) => s + c.charCodeAt(0), 0) *
+  getRandInt(1000);

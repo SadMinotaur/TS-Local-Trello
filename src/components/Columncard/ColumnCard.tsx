@@ -11,7 +11,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Card, Comm } from "../../utils/global-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
   cardsArraySlice,
@@ -20,25 +19,20 @@ import {
   RootState,
 } from "../../utils/state-reducers";
 import { StoreDispatchType } from "../../utils/store";
+import { CardSelector } from "../../utils/state-selectors";
 interface Props {
-  id: number;
+  keyProp: number;
 }
 
-export const ColumnCard: React.FC<Props> = ({ id }) => {
-  const card: Card = useSelector(
-    (store: RootState) =>
-      store.cardsArray.find((v: Card) => v.key === id) as Card
-  );
-  const comments: Comm[] = useSelector((store: RootState) =>
-    store.commentsArray.filter((v: Comm) => v.cardId === card.key)
+export const ColumnCard: React.FC<Props> = ({ keyProp }) => {
+  const { card, comments } = useSelector((state: RootState) =>
+    CardSelector(state, { key: keyProp })
   );
 
   const [changeNameState, setChangeNameState] = useState<boolean>(false);
   const [rightClickState, setRightClickState] = useState<boolean>(false);
 
   const dispatch: StoreDispatchType = useDispatch();
-
-  if (!card) return null;
 
   function onRightClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
     e.preventDefault();
@@ -53,20 +47,16 @@ export const ColumnCard: React.FC<Props> = ({ id }) => {
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ): void {
     dispatch(cardsArraySlice.actions.cardsArrayRemove(card.key));
-    dispatch(commentsSlice.actions.commArrayCardIdRemove(id));
+    dispatch(commentsSlice.actions.commArrayCardIdRemove(keyProp));
   }
 
   function nameInput(e: React.ChangeEvent<HTMLInputElement>): void {
-    const { key, desc, authorId, columnId } = card;
     const v: string = e.target.value;
     if (v.trim() === "") return;
     dispatch(
       cardsArraySlice.actions.cardsArrayChange({
-        key: key,
+        ...card,
         name: v,
-        desc: desc,
-        authorId: authorId,
-        columnId: columnId,
       })
     );
   }
