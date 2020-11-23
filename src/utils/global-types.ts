@@ -4,7 +4,7 @@ export interface Column {
 }
 
 export interface Card {
-  id: number;
+  key: number;
   name: string;
   desc: string;
   authorId: number;
@@ -12,13 +12,13 @@ export interface Card {
 }
 
 export interface Comm {
-  id: number;
+  key: number;
   authorId: number;
   content: string;
   cardId: number;
 }
 
 export interface User {
-  id: number;
+  key: number;
   name: string;
 }

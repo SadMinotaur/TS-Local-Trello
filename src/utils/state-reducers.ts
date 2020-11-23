@@ -21,23 +21,28 @@ export const cardsArraySlice = createSlice({
   name: "cardsArray",
   initialState: [] as Card[],
   reducers: {
-    // Solves problem with same indexes after card deletion.
-    cardsArrayAdd: (state: Card[], action: PayloadAction<Card>) => [
-      ...state.map((v: Card, i: number) => {
+    cardsArrayAdd: {
+      reducer: (state: Card[], action: PayloadAction<Card>) => [
+        ...state,
+        action.payload,
+      ],
+      prepare: (card: Card) => {
+        const { name, authorId, columnId } = card;
+        const newId: number =
+          Array.from(name).reduce(stringHash, 0) * getRandInt(1000) +
+          columnId * 3 +
+          authorId * 3;
         return {
-          id: i,
-          name: v.name,
-          desc: v.desc,
-          authorId: v.authorId,
-          columnId: v.columnId,
+          payload: { ...card, id: newId },
         };
-      }),
-      action.payload,
-    ],
+      },
+    },
     cardsArrayChange: (state: Card[], action: PayloadAction<Card>) =>
-      state.map((v: Card) => (v.id !== action.payload.id ? v : action.payload)),
+      state.map((v: Card) =>
+        v.key !== action.payload.key ? v : action.payload
+      ),
     cardsArrayRemove: (state: Card[], action: PayloadAction<number>) =>
-      state.filter((v: Card) => v.id !== action.payload),
+      state.filter((v: Card) => v.key !== action.payload),
   },
 });
 
@@ -45,21 +50,26 @@ export const commentsSlice = createSlice({
   name: "commentsArray",
   initialState: [] as Comm[],
   reducers: {
-    commArrayAdd: (state: Comm[], action: PayloadAction<Comm>) => [
-      ...state.map((v: Comm, i: number) => {
-        return {
-          id: i,
-          authorId: v.authorId,
-          content: v.content,
-          cardId: v.cardId,
-        };
-      }),
-      action.payload,
-    ],
+    commArrayAdd: {
+      reducer: (state: Comm[], action: PayloadAction<Comm>) => [
+        ...state,
+        action.payload,
+      ],
+      prepare: (comment: Comm) => {
+        const { content, authorId, cardId } = comment;
+        const newId: number =
+          Array.from(content).reduce(stringHash, 0) * getRandInt(1000) +
+          cardId * 3 +
+          authorId * 3;
+        return { payload: { ...comment, id: newId } };
+      },
+    },
     commArrayChange: (state: Comm[], action: PayloadAction<Comm>) =>
-      state.map((v: Comm) => (v.id !== action.payload.id ? v : action.payload)),
+      state.map((v: Comm) =>
+        v.key !== action.payload.key ? v : action.payload
+      ),
     commArrayRemove: (state: Comm[], action: PayloadAction<number>) =>
-      state.filter((v: Comm) => v.id !== action.payload),
+      state.filter((v: Comm) => v.key !== action.payload),
     commArrayCardIdRemove: (state: Comm[], action: PayloadAction<number>) =>
       state.filter((v: Comm) => v.cardId !== action.payload),
   },
@@ -72,16 +82,18 @@ export const userArraySlice = createSlice({
     userArrayAdd: (state: User[], action: PayloadAction<User>) => [
       ...state.map((v: User, i: number) => {
         return {
-          id: i,
+          key: i,
           name: v.name,
         };
       }),
       action.payload,
     ],
     userArrayChange: (state: User[], action: PayloadAction<User>) =>
-      state.map((v: User) => (v.id !== action.payload.id ? v : action.payload)),
+      state.map((v: User) =>
+        v.key !== action.payload.key ? v : action.payload
+      ),
     userArrayRemove: (state: User[], action: PayloadAction<number>) =>
-      state.filter((v: User) => v.id !== action.payload),
+      state.filter((v: User) => v.key !== action.payload),
   },
 });
 
@@ -108,3 +120,6 @@ export const rootReducer = combineReducers({
   cardsArray: cardsArraySlice.reducer,
 });
 export type RootState = ReturnType<typeof rootReducer>;
+
+const getRandInt = (max: number) => Math.floor(Math.random() * Math.floor(max));
+const stringHash = (s: number, c: string) => s + c.charCodeAt(0);

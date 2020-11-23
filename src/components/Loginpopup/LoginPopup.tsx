@@ -19,12 +19,12 @@ export const LoginPopup: React.FC = () => {
     if (inputState.trim() === "") return;
     const user = users.find((v) => v.name === inputState);
     if (user !== undefined) {
-      dispatch(userIdSlice.actions.changeUserId(user.id));
+      dispatch(userIdSlice.actions.changeUserId(user.key));
     } else {
       dispatch(userIdSlice.actions.changeUserId(users.length));
       dispatch(
         userArraySlice.actions.userArrayAdd({
-          id: users.length,
+          key: users.length,
           name: inputState,
         })
       );

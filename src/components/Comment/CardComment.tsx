@@ -18,11 +18,11 @@ interface Props {
 export const CardComment: React.FC<Props> = ({ id }) => {
   const comment: Comm = useSelector(
     (store: RootState) =>
-      store.commentsArray.find((v: Comm) => v.id === id) as Comm
+      store.commentsArray.find((v: Comm) => v.key === id) as Comm
   );
   const author: User = useSelector(
     (store: RootState) =>
-      store.usersArray.find((v: User) => v.id === comment.authorId) as User
+      store.usersArray.find((v: User) => v.key === comment.authorId) as User
   );
   const currentUser: number = useSelector((store: RootState) => store.user);
   const dispatch: StoreDispatchType = useDispatch();
@@ -31,12 +31,12 @@ export const CardComment: React.FC<Props> = ({ id }) => {
   if (!comment) return null;
 
   function onChange(event: React.ChangeEvent<HTMLTextAreaElement>): void {
-    const { id, authorId, cardId } = comment;
+    const { key, authorId, cardId } = comment;
     const v: string = event.target.value;
     if (v === "" || authorId !== currentUser) return;
     dispatch(
       commentsSlice.actions.commArrayChange({
-        id,
+        key,
         content: v,
         authorId,
         cardId,

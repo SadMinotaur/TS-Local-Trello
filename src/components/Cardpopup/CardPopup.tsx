@@ -25,20 +25,20 @@ import {
 
 export const CardPopup: React.FC = () => {
   const card: Card = useSelector((store: RootState) =>
-    store.cardsArray.find((v) => v.id === store.popup)
+    store.cardsArray.find((v) => v.key === store.popup)
   ) as Card;
   const column: Column = useSelector((store: RootState) =>
     store.columnsArray.find((v) => v.id === card.columnId)
   ) as Column;
   const author: User = useSelector(
     (store: RootState) =>
-      store.usersArray.find((v) => v.id === card.authorId) as User
+      store.usersArray.find((v) => v.key === card.authorId) as User
   );
   const allComments: Comm[] = useSelector(
     (store: RootState) => store.commentsArray
   );
   const userId: number = useSelector((store: RootState) => store.user);
-  const comments: Comm[] = allComments.filter((v) => v.cardId === card.id);
+  const comments: Comm[] = allComments.filter((v) => v.cardId === card.key);
 
   const [newCommentValue, setCommentValue] = useState<string>("");
 
@@ -74,10 +74,10 @@ export const CardPopup: React.FC = () => {
   }
 
   function cardChangeDispatch(name: string, desc: string): void {
-    const { id, authorId, columnId } = card;
+    const { key, authorId, columnId } = card;
     dispatch(
       cardsArraySlice.actions.cardsArrayChange({
-        id: id,
+        key: key,
         name: name,
         desc: desc,
         authorId: authorId,
@@ -100,10 +100,10 @@ export const CardPopup: React.FC = () => {
     if (newCommentValue.trim() === "") return;
     dispatch(
       commentsSlice.actions.commArrayAdd({
-        id: allComments.length,
+        key: allComments.length,
         content: newCommentValue,
         authorId: userId,
-        cardId: card.id,
+        cardId: card.key,
       })
     );
     setCommentValue("");
@@ -154,7 +154,7 @@ export const CardPopup: React.FC = () => {
         </CommentsBorder>
         <CommentsArray>
           {comments.map((comm) => (
-            <CardComment key={comm.id} id={comm.id} />
+            <CardComment key={comm.key} id={comm.key} />
           ))}
         </CommentsArray>
       </PopupContent>

@@ -43,7 +43,7 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
     if (cardInput.trim() === "") return;
     dispatch(
       cardsArraySlice.actions.cardsArrayAdd({
-        id: allCards.length,
+        key: -1,
         name: cardInput,
         authorId: userId,
         desc: "",
@@ -83,7 +83,7 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
         />
       )}
       {cards.map((card) => (
-        <ColumnCard key={card.id} id={card.id} />
+        <ColumnCard key={card.key} id={card.key} />
       ))}
       {!newCardState && (
         <ColumnAddCardDiv onClick={onButtonClick}>
