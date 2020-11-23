@@ -7,7 +7,6 @@ import {
   ButtonDiv,
 } from "./styles";
 import { ColumnCard } from "../Columncard";
-import { Card, Column } from "../../utils/global-types";
 import {
   cardsArraySlice,
   columnSlice,
@@ -15,20 +14,16 @@ import {
 } from "../../utils/state-reducers";
 import { StoreDispatchType } from "../../utils/store";
 import { useDispatch, useSelector } from "react-redux";
+import { ColumnSelector } from "../../utils/state-selectors";
 
 interface Props {
-  id: number;
+  objectKey: number;
 }
 
-export const BoardColumn: React.FC<Props> = ({ id }) => {
-  const column: Column = useSelector(
-    (store: RootState) =>
-      store.columnsArray.find((v: Column) => v.id === id) as Column
+export const BoardColumn: React.FC<Props> = ({ objectKey }) => {
+  const { column, cards, userId } = useSelector((state: RootState) =>
+    ColumnSelector(state, { key: objectKey })
   );
-  const allCards: Card[] = useSelector((store: RootState) => store.cardsArray);
-  const cards: Card[] = allCards.filter((v: Card) => v.columnId === column.id);
-
-  const userId: number = useSelector((store: RootState) => store.user);
 
   const [cardInput, setCardInput] = useState<string>("");
 
@@ -37,17 +32,15 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
 
   const dispatch: StoreDispatchType = useDispatch();
 
-  if (!column) return null;
-
   function saveNewCard(): void {
     if (cardInput.trim() === "") return;
     dispatch(
       cardsArraySlice.actions.cardsArrayAdd({
-        id: allCards.length,
+        key: -1,
         name: cardInput,
         authorId: userId,
         desc: "",
-        columnId: id,
+        columnId: objectKey,
       })
     );
     setCardInput("");
@@ -57,7 +50,7 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
   function nameInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const v: string = e.target.value;
     if (v.trim() === "") return;
-    dispatch(columnSlice.actions.changeColumn({ id: column.id, name: v }));
+    dispatch(columnSlice.actions.changeColumn({ key: column.key, name: v }));
   }
 
   function onChangeInput(): void {
@@ -83,7 +76,7 @@ export const BoardColumn: React.FC<Props> = ({ id }) => {
         />
       )}
       {cards.map((card) => (
-        <ColumnCard key={card.id} id={card.id} />
+        <ColumnCard key={card.key} keyProp={card.key} />
       ))}
       {!newCardState && (
         <ColumnAddCardDiv onClick={onButtonClick}>

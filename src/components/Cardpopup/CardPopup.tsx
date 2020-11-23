@@ -22,23 +22,12 @@ import {
   popupSlice,
   RootState,
 } from "../../utils/state-reducers";
+import { CardPopupSelector } from "../../utils/state-selectors";
 
 export const CardPopup: React.FC = () => {
-  const card: Card = useSelector((store: RootState) =>
-    store.cardsArray.find((v) => v.id === store.popup)
-  ) as Card;
-  const column: Column = useSelector((store: RootState) =>
-    store.columnsArray.find((v) => v.id === card.columnId)
-  ) as Column;
-  const author: User = useSelector(
-    (store: RootState) =>
-      store.usersArray.find((v) => v.id === card.authorId) as User
+  const { card, column, comments, user } = useSelector((store: RootState) =>
+    CardPopupSelector(store)
   );
-  const allComments: Comm[] = useSelector(
-    (store: RootState) => store.commentsArray
-  );
-  const userId: number = useSelector((store: RootState) => store.user);
-  const comments: Comm[] = allComments.filter((v) => v.cardId === card.id);
 
   const [newCommentValue, setCommentValue] = useState<string>("");
 
@@ -74,10 +63,10 @@ export const CardPopup: React.FC = () => {
   }
 
   function cardChangeDispatch(name: string, desc: string): void {
-    const { id, authorId, columnId } = card;
+    const { key, authorId, columnId } = card;
     dispatch(
       cardsArraySlice.actions.cardsArrayChange({
-        id: id,
+        key: key,
         name: name,
         desc: desc,
         authorId: authorId,
@@ -100,10 +89,10 @@ export const CardPopup: React.FC = () => {
     if (newCommentValue.trim() === "") return;
     dispatch(
       commentsSlice.actions.commArrayAdd({
-        id: allComments.length,
+        key: -1,
         content: newCommentValue,
-        authorId: userId,
-        cardId: card.id,
+        authorId: user.key,
+        cardId: card.key,
       })
     );
     setCommentValue("");
@@ -125,7 +114,7 @@ export const CardPopup: React.FC = () => {
           />
         )}
         <PopupText>In column: {column.name}</PopupText>
-        <PopupText>Created by: {author.name}</PopupText>
+        <PopupText>Created by: {user.name}</PopupText>
         <PopupText>Description</PopupText>
         {!descState && (
           <PopupDescDiv onClick={toggleDescription}>{card.desc}</PopupDescDiv>
@@ -154,7 +143,7 @@ export const CardPopup: React.FC = () => {
         </CommentsBorder>
         <CommentsArray>
           {comments.map((comm) => (
-            <CardComment key={comm.id} id={comm.id} />
+            <CardComment key={comm.key} keyProp={comm.key} />
           ))}
         </CommentsArray>
       </PopupContent>

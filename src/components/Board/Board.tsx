@@ -12,8 +12,8 @@ export const Board: React.FC = () => {
 
   return (
     <ColumnsContainer>
-      {boardState.map(({ id }) => (
-        <BoardColumn key={id} id={id} />
+      {boardState.map(({ key }) => (
+        <BoardColumn key={key} objectKey={key} />
       ))}
     </ColumnsContainer>
   );

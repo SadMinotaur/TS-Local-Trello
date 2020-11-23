@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Comm, User } from "../../utils/global-types";
 import { commentsSlice, RootState } from "../../utils/state-reducers";
+import { CommentSelector } from "../../utils/state-selectors";
 import { StoreDispatchType } from "../../utils/store";
 import {
   CommentInput,
@@ -12,41 +12,32 @@ import {
 } from "./styles";
 
 interface Props {
-  id: number;
+  keyProp: number;
 }
 
-export const CardComment: React.FC<Props> = ({ id }) => {
-  const comment: Comm = useSelector(
-    (store: RootState) =>
-      store.commentsArray.find((v: Comm) => v.id === id) as Comm
+export const CardComment: React.FC<Props> = ({ keyProp }) => {
+  const { author, comment, currUser } = useSelector((store: RootState) =>
+    CommentSelector(store, { key: keyProp })
   );
-  const author: User = useSelector(
-    (store: RootState) =>
-      store.usersArray.find((v: User) => v.id === comment.authorId) as User
-  );
-  const currentUser: number = useSelector((store: RootState) => store.user);
   const dispatch: StoreDispatchType = useDispatch();
 
   const [nameState, setNameState] = useState<boolean>(false);
   if (!comment) return null;
 
   function onChange(event: React.ChangeEvent<HTMLTextAreaElement>): void {
-    const { id, authorId, cardId } = comment;
     const v: string = event.target.value;
-    if (v === "" || authorId !== currentUser) return;
+    if (v === "" || author.key !== currUser) return;
     dispatch(
       commentsSlice.actions.commArrayChange({
-        id,
+        ...comment,
         content: v,
-        authorId,
-        cardId,
       })
     );
   }
 
   function deleteComm(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
-    if (comment.authorId !== currentUser) return;
-    dispatch(commentsSlice.actions.commArrayRemove(id));
+    if (author.key !== currUser) return;
+    dispatch(commentsSlice.actions.commArrayRemove(keyProp));
   }
 
   return (
@@ -55,7 +46,7 @@ export const CardComment: React.FC<Props> = ({ id }) => {
         <CommentBorders>
           {author.name}
           <UserComment>{comment.content}</UserComment>
-          {comment.authorId === currentUser && (
+          {author.key === currUser && (
             <UserCommentBar>
               <div onClick={deleteComm}>Delete</div>
               <div onClick={() => setNameState((ps) => !ps)}>Change</div>

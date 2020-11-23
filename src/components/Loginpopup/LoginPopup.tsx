@@ -11,20 +11,22 @@ import { Popup } from "../Popup";
 import { NameInput, PopupContent } from "./styles";
 
 export const LoginPopup: React.FC = () => {
-  const [inputState, changeInputState] = useState("");
   const users: User[] = useSelector((store: RootState) => store.usersArray);
   const dispatch: StoreDispatchType = useDispatch();
+
+  const [inputState, changeInputState] = useState("");
 
   function changeDisplayState(): void {
     if (inputState.trim() === "") return;
     const user = users.find((v) => v.name === inputState);
     if (user !== undefined) {
-      dispatch(userIdSlice.actions.changeUserId(user.id));
+      dispatch(userIdSlice.actions.changeUserId(user.key));
     } else {
+      // I will leave this unchanged because I cant get generated key from action prepare callback
       dispatch(userIdSlice.actions.changeUserId(users.length));
       dispatch(
         userArraySlice.actions.userArrayAdd({
-          id: users.length,
+          key: users.length,
           name: inputState,
         })
       );
