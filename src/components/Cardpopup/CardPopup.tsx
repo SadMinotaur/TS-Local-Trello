@@ -12,7 +12,6 @@ import {
   PopupText,
 } from "./styles";
 import { Popup } from "../Popup";
-import { Card, Column, Comm, User } from "../../utils/global-types";
 import { CardComment } from "../Comment";
 import { StoreDispatchType } from "../../utils/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,9 +24,13 @@ import {
 import { CardPopupSelector } from "../../utils/state-selectors";
 
 export const CardPopup: React.FC = () => {
-  const { card, column, comments, user } = useSelector((store: RootState) =>
-    CardPopupSelector(store)
-  );
+  const {
+    card,
+    column,
+    comments,
+    cardAuthor,
+    currUser,
+  } = useSelector((store: RootState) => CardPopupSelector(store));
 
   const [newCommentValue, setCommentValue] = useState<string>("");
 
@@ -63,14 +66,11 @@ export const CardPopup: React.FC = () => {
   }
 
   function cardChangeDispatch(name: string, desc: string): void {
-    const { key, authorId, columnId } = card;
     dispatch(
       cardsArraySlice.actions.cardsArrayChange({
-        key: key,
+        ...card,
         name: name,
         desc: desc,
-        authorId: authorId,
-        columnId: columnId,
       })
     );
   }
@@ -91,7 +91,7 @@ export const CardPopup: React.FC = () => {
       commentsSlice.actions.commArrayAdd({
         key: -1,
         content: newCommentValue,
-        authorId: user.key,
+        authorId: currUser,
         cardId: card.key,
       })
     );
@@ -114,7 +114,7 @@ export const CardPopup: React.FC = () => {
           />
         )}
         <PopupText>In column: {column.name}</PopupText>
-        <PopupText>Created by: {user.name}</PopupText>
+        <PopupText>Created by: {cardAuthor.name}</PopupText>
         <PopupText>Description</PopupText>
         {!descState && (
           <PopupDescDiv onClick={toggleDescription}>{card.desc}</PopupDescDiv>
