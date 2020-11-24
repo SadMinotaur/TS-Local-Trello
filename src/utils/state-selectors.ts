@@ -100,3 +100,16 @@ export const CardPopupSelector = createStructuredSelector<
     state.commentsArray.filter((v: Comm) => v.cardId === state.popup),
   currUser: (state: RootState) => state.user,
 });
+
+interface MainComponentRet {
+  popup: number;
+  user: number;
+}
+
+export const MainComponentSelector = createStructuredSelector<
+  RootState,
+  MainComponentRet
+>({
+  popup: (state: RootState) => state.popup,
+  user: (state: RootState) => state.user,
+});
